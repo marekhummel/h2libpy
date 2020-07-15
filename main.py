@@ -1,4 +1,4 @@
-from avector import AVector
+from h2libpy.data.vector.avector import AVector
 
 vec = AVector(5)
 vec.rand()
