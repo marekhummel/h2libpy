@@ -1,33 +1,43 @@
-from ctypes import c_uint, c_void_p, c_double, Structure, POINTER
-import ctypes
-import h2libpy.util.lib_helper as lh
-
-lib = ctypes.CDLL('./lib/libh2.so')
+from h2libpy.util.lib.structs import LibAVector
+import h2libpy.util.lib.func as lib
+from ctypes import c_double, c_uint, c_void_p, POINTER
 
 
-class AVector(Structure):
-    _fields_ = [
-        ('v', POINTER(c_double)),
-        ('dim', c_uint),
-        ('owner', c_void_p)
-    ]
+class AVector():
+    # ***** Constructors / destructor *****
 
-    def __init__(self, dim):
-        new_avector = lh.func('new_avector', POINTER(AVector), [c_uint])
-        self.obj = new_avector(c_uint(dim))
+    def __init__(self, cobj):
+        assert(isinstance(cobj, POINTER(LibAVector)))
+        self._as_parameter_ = cobj
+
+    def __del__(self):
+        lib.del_avector(self)
+
+    @classmethod
+    def new(cls, dim: int):
+        return cls(lib.new_avector(dim))
+
+    @classmethod
+    def from_subvector(cls, src: 'LibAVector', dim: int, off: int):
+        v = lib.new_avector(dim)
+        lib.init_sub_avector(v, src, dim, off)
+        return cls(v)
+
+    # ***** Properties *****
+
+    def dim(self):
+        return self._as_parameter_.contents.dim
+
+    def values(self):
+        return self._as_parameter_.contents.v[:self.dim()]
+
+    # ***** Methods ******
 
     def fill(self, value):
-        fill_avector = lh.func('fill_avector', None,
-                               [POINTER(AVector), c_double])
-        fill_avector(self.obj, c_double(value))
+        lib.fill_avector(self, c_double(value))
 
     def rand(self):
-        random_avector = lh.func('random_avector', None, [POINTER(AVector)])
-        random_avector(self.obj)
-
-    def get_dim(self):
-        return self.obj.contents.dim
+        lib.random_avector(self)
 
     def norm(self):
-        norm2_avector = lh.func('norm2_avector', c_double, [POINTER(AVector)])
-        return norm2_avector(self.obj)
+        return lib.norm2_avector(self)
