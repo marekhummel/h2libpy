@@ -3,38 +3,31 @@ import h2libpy.util.lib.func as lib
 from ctypes import c_double, c_uint, c_void_p, POINTER
 
 
-class AVector():
+class AVector(LibAVector):
     # ***** Constructors / destructor *****
 
-    def __init__(self, cobj):
-        assert(isinstance(cobj, POINTER(LibAVector)))
-        self._as_parameter_ = cobj
+    def __new__(cls, *args, **kwargs):
+        dim = args[0] if len(args) > 0 else 0
+        instance = lib.new_avector(dim).contents
+        instance.__class__ = AVector
+        return instance
 
-    def __del__(self):
-        lib.del_avector(self)
-
-    @classmethod
-    def new(cls, dim: int):
-        return cls(lib.new_avector(dim))
-
-    @classmethod
-    def from_subvector(cls, src: 'LibAVector', dim: int, off: int):
-        v = lib.new_avector(dim)
-        lib.init_sub_avector(v, src, dim, off)
-        return cls(v)
+    def __init__(self, dim):
+        pass
+        # lib.resize_avector(self, dim)
 
     # ***** Properties *****
 
-    def dim(self):
-        return self._as_parameter_.contents.dim
+    # def dim(self):
+    #     return self._as_parameter_.contents.dim
 
-    def values(self):
-        return self._as_parameter_.contents.v[:self.dim()]
+    # def values(self):
+    #     return self._as_parameter_.contents.v[:self.dim()]
 
     # ***** Methods ******
 
-    def fill(self, value):
-        lib.fill_avector(self, c_double(value))
+    # def fill(self, value):
+    #     lib.fill_avector(self, c_double(value))
 
     def rand(self):
         lib.random_avector(self)

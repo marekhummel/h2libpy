@@ -10,3 +10,4 @@ init_sub_avector = get_func('init_sub_avector', PTR(struct.LibAVector), [PTR(str
 fill_avector = get_func('fill_avector', None, [PTR(struct.LibAVector), c_double])
 random_avector = get_func('random_avector', None, [PTR(struct.LibAVector)])
 norm2_avector = get_func('norm2_avector', c_double, [PTR(struct.LibAVector)])
+resize_avector = get_func('resize_avector', None, [PTR(struct.LibAVector), c_uint])

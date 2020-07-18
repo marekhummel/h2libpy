@@ -1,7 +1,9 @@
 from h2libpy.data.vector.avector import AVector
+import ctypes
 
-vec = AVector.new(4)
+
+vec = AVector(4)
 vec.rand()
 print(vec.norm())
-print(vec.dim())
-print(vec.values())
+print(vec.dim)
+print(vec.v[0:4])
