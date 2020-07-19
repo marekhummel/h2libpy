@@ -1,7 +1,7 @@
 from ctypes import CFUNCTYPE
 from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
-from ctypes import c_bool, c_uint
+from ctypes import c_bool, c_uint, c_void_p
 from enum import IntEnum
 
 # from h2libpy.util.helper import get_func
@@ -48,6 +48,8 @@ class LibBasisFunctionBem3d(IntEnum):
 # ------------------------------------
 
 FuncQuadPoints3d = CFUNCTYPE(None, [PTR(LibBem3d), real*3, real*3, real, PTR(PTR(real))*3, PTR(PTR(real))*3])
+
+FuncBoundaryFunc3d = CFUNCTYPE(field, [PTR(real), PTR(real), c_void_p])
 
 # ------------------------------------
 
