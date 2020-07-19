@@ -1,13 +1,12 @@
-from h2libpy.util.lib.structs import LibAVector
-import h2libpy.util.lib.func as lib
-from ctypes import c_double, c_uint, c_void_p, POINTER
+import h2libpy.util.lib.avector as lib
+from ctypes import c_double, POINTER
 
 
 class AVector():
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert(isinstance(cobj, POINTER(LibAVector)))
+        assert(isinstance(cobj, POINTER(lib.LibAVector)))
         self._as_parameter_ = cobj
 
     def __del__(self):
@@ -18,7 +17,7 @@ class AVector():
         return cls(lib.new_avector(dim))
 
     @classmethod
-    def from_subvector(cls, src: 'LibAVector', dim: int, off: int):
+    def from_subvector(cls, src: 'lib.LibAVector', dim: int, off: int):
         v = lib.new_avector(dim)
         lib.init_sub_avector(v, src, dim, off)
         return cls(v)
