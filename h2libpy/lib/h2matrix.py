@@ -2,7 +2,7 @@ from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
 from ctypes import c_uint
 
-# nfrom h2libpy.util.helper import get_func
+# nfrom h2libpy.lib.util.helper import get_func
 from h2libpy.lib.amatrix import LibAMatrix
 from h2libpy.lib.clusterbasis import LibClusterBasis
 from h2libpy.lib.uniform import LibUniform

@@ -18,7 +18,7 @@ from h2libpy.lib.macrosurface3d import (build_from_macrosurface3d_surface3d,
                                         del_macrosurface3d,
                                         new_sphere_macrosurface3d)
 from h2libpy.lib.surface3d import del_surface3d
-from h2libpy.util.helper import uninit
+from h2libpy.lib.util.helper import uninit
 
 
 def main():

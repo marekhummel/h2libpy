@@ -2,7 +2,7 @@ from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
 from ctypes import c_uint, c_void_p, c_size_t
 
-from h2libpy.util.helper import get_func
+from h2libpy.lib.util.helper import get_func
 from h2libpy.lib.settings import field
 from h2libpy.lib.avector import LibAVector
 

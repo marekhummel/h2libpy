@@ -1,7 +1,7 @@
 from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
 
-# from h2libpy.util.helper import get_func
+# from h2libpy.lib.util.helper import get_func
 
 # ------------------------
 
