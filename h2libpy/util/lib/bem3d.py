@@ -4,8 +4,9 @@ from ctypes import Structure as Struct
 from ctypes import c_bool, c_uint, c_void_p
 from enum import IntEnum
 
-# from h2libpy.util.helper import get_func
+from h2libpy.util.helper import get_func
 from h2libpy.util.lib.amatrix import LibAMatrix
+from h2libpy.util.lib.avector import LibAVector
 from h2libpy.util.lib.cluster import LibCluster
 from h2libpy.util.lib.clusterbasis import LibClusterBasis
 from h2libpy.util.lib.clusteroperator import LibClusterOperator
@@ -35,21 +36,16 @@ class LibGreenClusterBasis3d(Struct): pass
 class LibAdmisBlock(Struct): pass
 class LibCompData(Struct): pass
 
-
-class LibBasisFunctionBem3d(IntEnum):
-    BASIS_NONE_BEM3D = 0,
-    BASIS_CONSTANT_BEM3D = int('c'),
-    BASIS_LINEAR_BEM3D = int('l')
-
-    def __init__(self, value):
-        self._as_parameter_ = int(value)
+class LibBasisFunctionBem3d(c_uint): pass
 
 
 # ------------------------------------
 
-FuncQuadPoints3d = CFUNCTYPE(None, [PTR(LibBem3d), real*3, real*3, real, PTR(PTR(real))*3, PTR(PTR(real))*3])
 
-FuncBoundaryFunc3d = CFUNCTYPE(field, [PTR(real), PTR(real), c_void_p])
+FuncQuadPoints3d = CFUNCTYPE(None, *[PTR(LibBem3d), real*3, real*3, real, PTR(PTR(real))*3, PTR(PTR(real))*3])
+
+FuncBoundaryFunc3d = CFUNCTYPE(field, *[PTR(real), PTR(real), c_void_p])
+
 
 # ------------------------------------
 
@@ -176,3 +172,18 @@ LibCompData._fields_ = [
     ('cblock', PTR(PTR(LibAdmisBlock))),
     ('rblock', PTR(PTR(LibAdmisBlock))),
 ]
+
+
+LibBasisFunctionBem3d.BASIS_NONE_BEM3D = LibBasisFunctionBem3d(0)
+LibBasisFunctionBem3d.BASIS_CONSTANT_BEM3D = LibBasisFunctionBem3d(ord('c'))
+LibBasisFunctionBem3d.BASIS_LINEAR_BEM3D = LibBasisFunctionBem3d(ord('l'))
+
+# ------------------------------------
+
+
+assemble_bem3d_amatrix = get_func('assemble_bem3d_amatrix', None, [PTR(LibBem3d), PTR(LibAMatrix)])
+projectL2_bem3d_c_avector = get_func('projectL2_bem3d_c_avector', None, [PTR(LibBem3d), PTR(FuncBoundaryFunc3d), PTR(LibAVector), c_void_p])
+normL2diff_c_bem3d = get_func('normL2diff_c_bem3d', real, [PTR(LibBem3d), PTR(LibAVector), FuncBoundaryFunc3d, c_void_p])
+normL2_bem3d = get_func('normL2_bem3d', real, [PTR(LibBem3d), FuncBoundaryFunc3d, c_void_p])
+del_bem3d = get_func('del_bem3d', None, [PTR(LibBem3d)])
+projectL2_bem3d_c_avector = get_func('projectL2_bem3d_c_avector', None, [PTR(LibBem3d), FuncBoundaryFunc3d, PTR(LibAVector), c_void_p])

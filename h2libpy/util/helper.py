@@ -12,11 +12,14 @@ def get_func(name: str, returntype, argtypes):
 def init():
     global lib
     lib = ctypes.CDLL('lib/libh2.so')
-
     init_h2lib = get_func('init_h2lib', None,
                           [PTR(c_int), PTR(PTR(PTR(c_char)))])
     init_h2lib(c_int(0), None)
 
 
-lib = None
+def uninit():
+    uninit_h2lib = get_func('uninit_h2lib', None, [])
+    uninit_h2lib()
+
+
 init()

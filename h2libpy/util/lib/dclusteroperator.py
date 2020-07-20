@@ -4,7 +4,7 @@ from ctypes import c_uint
 
 # from h2libpy.util.helper import get_func
 from h2libpy.util.lib.amatrix import LibAMatrix
-from h2libpy.util.lib.cluster import LibDCluster
+from h2libpy.util.lib.dcluster import LibDCluster
 
 
 # ------------------------

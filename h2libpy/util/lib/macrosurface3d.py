@@ -2,9 +2,9 @@ from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
 from ctypes import c_uint, c_void_p
 
-# from h2libpy.util.helper import get_func
+from h2libpy.util.helper import get_func
 from h2libpy.util.lib.settings import real
-
+from h2libpy.util.lib.surface3d import LibSurface3d
 
 # ------------------------
 
@@ -28,3 +28,8 @@ LibMacroSurface3d._fields_ = [
 
 
 # ------------------------
+
+
+new_sphere_macrosurface3d = get_func('new_sphere_macrosurface3d', PTR(LibMacroSurface3d), [])
+build_from_macrosurface3d_surface3d = get_func('build_from_macrosurface3d_surface3d', PTR(LibSurface3d), [PTR(LibMacroSurface3d), c_uint])
+del_macrosurface3d = get_func('del_macrosurface3d', None, [PTR(LibMacroSurface3d)])
