@@ -3,9 +3,9 @@ from ctypes import Structure as Struct
 from ctypes import c_uint
 
 # from h2libpy.util.helper import get_func
-from h2libpy.util.lib.amatrix import LibAMatrix
-from h2libpy.util.lib.dclusterbasis import LibDClusterBasis
-from h2libpy.util.lib.duniform import LibDUniform
+from h2libpy.lib.amatrix import LibAMatrix
+from h2libpy.lib.dclusterbasis import LibDClusterBasis
+from h2libpy.lib.duniform import LibDUniform
 
 # ------------------------
 

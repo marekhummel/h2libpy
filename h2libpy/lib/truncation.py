@@ -1,7 +1,7 @@
 from ctypes import Structure as Struct
 from ctypes import c_bool
 
-from h2libpy.util.lib.settings import real
+from h2libpy.lib.settings import real
 
 
 class LibTruncmode(Struct): pass

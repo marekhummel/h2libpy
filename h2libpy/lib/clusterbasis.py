@@ -13,9 +13,9 @@ class LibClusterBasis(Struct): pass
 
 # ------------------------
 
-from h2libpy.util.lib.amatrix import LibAMatrix
-from h2libpy.util.lib.cluster import LibCluster
-from h2libpy.util.lib.uniform import LibUniform
+from h2libpy.lib.amatrix import LibAMatrix
+from h2libpy.lib.cluster import LibCluster
+from h2libpy.lib.uniform import LibUniform
 
 
 LibClusterBasis._fields_ = [

@@ -5,21 +5,21 @@ from ctypes import c_bool, c_uint, c_void_p
 from enum import IntEnum
 
 from h2libpy.util.helper import get_func
-from h2libpy.util.lib.amatrix import LibAMatrix
-from h2libpy.util.lib.avector import LibAVector
-from h2libpy.util.lib.cluster import LibCluster
-from h2libpy.util.lib.clusterbasis import LibClusterBasis
-from h2libpy.util.lib.clusteroperator import LibClusterOperator
-from h2libpy.util.lib.dblock import LibDBlock
-from h2libpy.util.lib.dclusterbasis import LibDClusterBasis
-from h2libpy.util.lib.dclusteroperator import LibDClusterOperator
-from h2libpy.util.lib.dh2matrix import LibDH2Matrix
-from h2libpy.util.lib.h2matrix import LibH2Matrix
-from h2libpy.util.lib.hmatrix import LibHMatrix
-from h2libpy.util.lib.settings import field, real
-from h2libpy.util.lib.singquad2d import LibSingquad2d
-from h2libpy.util.lib.surface3d import LibSurface3d
-from h2libpy.util.lib.truncation import LibTruncmode
+from h2libpy.lib.amatrix import LibAMatrix
+from h2libpy.lib.avector import LibAVector
+from h2libpy.lib.cluster import LibCluster
+from h2libpy.lib.clusterbasis import LibClusterBasis
+from h2libpy.lib.clusteroperator import LibClusterOperator
+from h2libpy.lib.dblock import LibDBlock
+from h2libpy.lib.dclusterbasis import LibDClusterBasis
+from h2libpy.lib.dclusteroperator import LibDClusterOperator
+from h2libpy.lib.dh2matrix import LibDH2Matrix
+from h2libpy.lib.h2matrix import LibH2Matrix
+from h2libpy.lib.hmatrix import LibHMatrix
+from h2libpy.lib.settings import field, real
+from h2libpy.lib.singquad2d import LibSingquad2d
+from h2libpy.lib.surface3d import LibSurface3d
+from h2libpy.lib.truncation import LibTruncmode
 
 # ------------------------------------
 

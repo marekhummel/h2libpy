@@ -1,22 +1,23 @@
 import ctypes
 import time
 
-from h2libpy.util.lib.amatrix import (addeval_amatrix_avector, del_amatrix,
+
+from h2libpy.lib.amatrix import (addeval_amatrix_avector, del_amatrix,
                                  getsize_amatrix, new_amatrix)
-from h2libpy.util.lib.avector import (clear_avector, del_avector, getsize_avector,
+from h2libpy.lib.avector import (clear_avector, del_avector, getsize_avector,
                                  new_avector)
-from h2libpy.util.lib.bem3d import (FuncBoundaryFunc3d, LibBasisFunctionBem3d,
+from h2libpy.lib.bem3d import (FuncBoundaryFunc3d, LibBasisFunctionBem3d,
                                assemble_bem3d_amatrix, del_bem3d, normL2_bem3d,
                                normL2diff_c_bem3d, projectL2_bem3d_c_avector)
-from h2libpy.util.lib.krylovsolvers import solve_cg_amatrix_avector
-from h2libpy.util.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
+from h2libpy.lib.krylovsolvers import solve_cg_amatrix_avector
+from h2libpy.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
                                       eval_neumann_fundamental_laplacebem3d,
                                       new_dlp_laplace_bem3d,
                                       new_slp_laplace_bem3d)
-from h2libpy.util.lib.macrosurface3d import (build_from_macrosurface3d_surface3d,
+from h2libpy.lib.macrosurface3d import (build_from_macrosurface3d_surface3d,
                                         del_macrosurface3d,
                                         new_sphere_macrosurface3d)
-from h2libpy.util.lib.surface3d import del_surface3d
+from h2libpy.lib.surface3d import del_surface3d
 from h2libpy.util.helper import uninit
 
 

@@ -3,9 +3,9 @@ from ctypes import Structure as Struct
 from ctypes import c_uint
 
 # from h2libpy.util.helper import get_func
-from h2libpy.util.lib.amatrix import LibAMatrix
-from h2libpy.util.lib.cluster import LibCluster
-from h2libpy.util.lib.rkmatrix import LibRKMatrix
+from h2libpy.lib.amatrix import LibAMatrix
+from h2libpy.lib.cluster import LibCluster
+from h2libpy.lib.rkmatrix import LibRKMatrix
 
 # ------------------------
 

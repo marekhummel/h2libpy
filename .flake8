@@ -1,4 +1,4 @@
 [flake8]
 per-file-ignores =
-    h2libpy/util/lib/*.py:E302,E402,E501,E701
+    h2libpy/lib/*.py:E302,E402,E501,E701
     example_amatrix_bem3d.py:E303,E501

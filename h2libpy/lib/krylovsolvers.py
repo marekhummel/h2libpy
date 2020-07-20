@@ -2,9 +2,9 @@ from ctypes import POINTER as PTR
 from ctypes import c_uint
 
 from h2libpy.util.helper import get_func
-from h2libpy.util.lib.amatrix import LibAMatrix
-from h2libpy.util.lib.avector import LibAVector
-from h2libpy.util.lib.settings import real
+from h2libpy.lib.amatrix import LibAMatrix
+from h2libpy.lib.avector import LibAVector
+from h2libpy.lib.settings import real
 
 # ------------------------
 

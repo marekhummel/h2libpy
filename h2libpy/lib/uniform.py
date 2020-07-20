@@ -12,8 +12,8 @@ class LibUniform(Struct): pass
 # ------------------------
 
 
-from h2libpy.util.lib.amatrix import LibAMatrix
-from h2libpy.util.lib.clusterbasis import LibClusterBasis
+from h2libpy.lib.amatrix import LibAMatrix
+from h2libpy.lib.clusterbasis import LibClusterBasis
 
 
 LibUniform._fields_ = [

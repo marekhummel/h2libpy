@@ -2,7 +2,7 @@ from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
 from ctypes import c_uint
 
-from h2libpy.util.lib.settings import real
+from h2libpy.lib.settings import real
 
 
 class LibSingquad2d(Struct):

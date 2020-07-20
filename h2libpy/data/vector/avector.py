@@ -1,4 +1,4 @@
-import h2libpy.util.lib.avector as lib
+import h2libpy.lib.avector as lib
 from ctypes import c_double, POINTER
 
 
