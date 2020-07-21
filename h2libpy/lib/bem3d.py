@@ -3,7 +3,6 @@ from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
 from ctypes import c_bool, c_uint, c_void_p
 
-from h2libpy.lib.util.helper import get_func
 from h2libpy.lib.amatrix import CStructAMatrix
 from h2libpy.lib.avector import CStructAVector
 from h2libpy.lib.cluster import CStructCluster
@@ -15,10 +14,13 @@ from h2libpy.lib.dclusteroperator import CStructDClusterOperator
 from h2libpy.lib.dh2matrix import CStructDH2Matrix
 from h2libpy.lib.h2matrix import CStructH2Matrix
 from h2libpy.lib.hmatrix import CStructHMatrix
+from h2libpy.lib.realavector import CStructRealAVector
+from h2libpy.lib.rkmatrix import CStructRKMatrix
 from h2libpy.lib.settings import field, real
 from h2libpy.lib.singquad2d import CStructSingquad2d
 from h2libpy.lib.surface3d import CStructSurface3d
 from h2libpy.lib.truncation import CStructTruncmode
+from h2libpy.lib.util.helper import get_func
 
 # ------------------------------------
 
@@ -42,9 +44,27 @@ class CEnumBasisFunctionBem3d(c_uint): pass
 
 
 CFuncQuadPoints3d = CFUNCTYPE(None, *[PTR(CStructBem3d), real*3, real*3, real, PTR(PTR(real))*3, PTR(PTR(real))*3])
-
 CFuncBoundaryFunc3d = CFUNCTYPE(field, *[PTR(real), PTR(real), c_void_p])
+CFuncNearField = CFUNCTYPE(None, *[PTR(c_uint), PTR(c_uint), PTR(CStructBem3d), c_bool, PTR(CStructAMatrix)])
+CFuncFarFieldRk = CFUNCTYPE(None, *[PTR(CStructCluster), c_uint, PTR(CStructCluster), c_uint, PTR(CStructBem3d), PTR(CStructRKMatrix)])
+CFuncFarFieldU = CFUNCTYPE(None, *[c_uint, c_uint, c_uint, PTR(CStructBem3d)])
+CFuncLeafRowCol = CFUNCTYPE(None, *[c_uint, PTR(CStructBem3d)])
+CFuncTransferRowCol = CFuncLeafRowCol
 
+CFuncFundamental = CFUNCTYPE(None, *[PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(CStructAMatrix)])
+CFuncFundamentalWave = CFUNCTYPE(None, *[PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(real), PTR(CStructAMatrix)])
+CFuncDnyFundamental = CFUNCTYPE(None, *[PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(real*3), PTR(CStructAMatrix)])
+CFuncDnxDnyFundamental = CFUNCTYPE(None, *[PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(real*3), PTR(real*3), PTR(CStructAMatrix)])
+CFuncKernelRowCol = CFUNCTYPE(None, *[PTR(c_uint), PTR(real*3), PTR(CStructBem3d), PTR(CStructAMatrix)])
+CFuncDnzKernelRowCol = CFUNCTYPE(None, *[PTR(c_uint), PTR(real*3), PTR(real*3), PTR(CStructBem3d), PTR(CStructAMatrix)])
+CFuncFundamentalRowCol = CFuncKernelRowCol
+CFuncDnzFundamentalRowCol = CFuncDnzKernelRowCol
+CFuncLagrangeRowCol = CFUNCTYPE(None, *[PTR(c_uint), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(CStructBem3d), PTR(CStructAMatrix)])
+CFuncLagrangeWaveRowCol = CFUNCTYPE(None, *[PTR(c_uint), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(real), PTR(CStructBem3d), PTR(CStructAMatrix)])
+
+CEnumBasisFunctionBem3d.BASIS_NONE_BEM3D = CEnumBasisFunctionBem3d(0)
+CEnumBasisFunctionBem3d.BASIS_CONSTANT_BEM3D = CEnumBasisFunctionBem3d(ord('c'))
+CEnumBasisFunctionBem3d.BASIS_LINEAR_BEM3D = CEnumBasisFunctionBem3d(ord('l'))
 
 # ------------------------------------
 
@@ -59,16 +79,43 @@ CStructBem3d._fields_ = [
     ('k', field),
     ('kernel_const', field),
     ('v2t', PTR(PTR(CStructListNode))),
+    ('nearfield', CFuncNearField),
+    ('nearfield_far', CFuncNearField),
+    ('farfield_rk', CFuncFarFieldRk),
+    ('farfield_u', CFuncFarFieldU),
+    ('farfield_wave_u', CFuncFarFieldU),
+    ('leaf_row', CFuncLeafRowCol),
+    ('leaf_wave_row', CFuncLeafRowCol),
+    ('leaf_col', CFuncLeafRowCol),
+    ('leaf_wave_col', CFuncLeafRowCol),
+    ('transfer_row', CFuncTransferRowCol),
+    ('transfer_wave_row', CFuncTransferRowCol),
+    ('transfer_wave_wave_row', CFuncTransferRowCol),
+    ('transfer_col', CFuncTransferRowCol),
+    ('transfer_wave_col', CFuncTransferRowCol),
+    ('transfer_wave_wave_col', CFuncTransferRowCol),
     ('aprx', PTR(CStructAprxBem3d)),
     ('par', PTR(CStructParBem3d)),
     ('kernels', PTR(CStructKernelBem3d)),
 ]
 
-CStructKernelBem3d._fields_ = []
-
-CStructVertList._fields_ = [
-    ('v', c_uint),
-    ('next', PTR(CStructVertList))
+CStructKernelBem3d._fields_ = [
+    ('fundamental', CFuncFundamental),
+    ('fundamental_wave', CFuncFundamentalWave),
+    ('dny_fundamental', CFuncDnyFundamental),
+    ('dnx_dny_fundamental', CFuncDnxDnyFundamental),
+    ('kernel_row', CFuncKernelRowCol),
+    ('kernel_col', CFuncKernelRowCol),
+    ('dnz_kernel_row', CFuncDnzKernelRowCol),
+    ('dnz_kernel_col', CFuncDnzKernelRowCol),
+    ('fundamental_row', CFuncFundamentalRowCol),
+    ('fundamental_col', CFuncFundamentalRowCol),
+    ('dnz_fundamental_row', CFuncDnzFundamentalRowCol),
+    ('dnz_fundamental_col', CFuncDnzFundamentalRowCol),
+    ('lagrange_row', CFuncLagrangeRowCol),
+    ('lagrange_wave_row', CFuncLagrangeWaveRowCol),
+    ('lagrange_col', CFuncLagrangeRowCol),
+    ('lagrange_wave_col', CFuncLagrangeWaveRowCol)
 ]
 
 CStructListNode._fields_ = [
@@ -80,6 +127,11 @@ CStructTriList._fields_ = [
     ('t', c_uint),
     ('vl', PTR(CStructVertList)),
     ('next', PTR(CStructTriList))
+]
+
+CStructVertList._fields_ = [
+    ('v', c_uint),
+    ('next', PTR(CStructVertList))
 ]
 
 CStructAprxBem3d._fields_ = [
@@ -172,10 +224,6 @@ CStructCompData._fields_ = [
     ('rblock', PTR(PTR(CStructAdmisBlock))),
 ]
 
-
-CEnumBasisFunctionBem3d.BASIS_NONE_BEM3D = CEnumBasisFunctionBem3d(0)
-CEnumBasisFunctionBem3d.BASIS_CONSTANT_BEM3D = CEnumBasisFunctionBem3d(ord('c'))
-CEnumBasisFunctionBem3d.BASIS_LINEAR_BEM3D = CEnumBasisFunctionBem3d(ord('l'))
 
 # ------------------------------------
 
