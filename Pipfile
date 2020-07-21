@@ -8,6 +8,7 @@ verify_ssl = true
 [dev-packages]
 flake8 = "*"
 mypy = "*"
+rope = "*"
 
 [requires]
 python_version = "3.8"
