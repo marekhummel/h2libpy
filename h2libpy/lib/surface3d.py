@@ -18,6 +18,11 @@ LibSurface3d._fields_ = [
     ('vertices', c_uint),
     ('edges', c_uint),
     ('triangles', c_uint),
+    ('x', PTR(real * 3)),
+    ('e', PTR(c_uint * 2)),
+    ('t', PTR(c_uint * 3)),
+    ('s', PTR(c_uint * 3)),
+    ('n', PTR(real * 3)),
     ('g', PTR(real)),
     ('hmin', real),
     ('hmax', real)
@@ -27,4 +32,5 @@ LibSurface3d._fields_ = [
 # ------------------------
 
 
+new_surface3d = get_func('new_surface3d', PTR(LibSurface3d), [c_uint, c_uint, c_uint])
 del_surface3d = get_func('del_surface3d', None, [PTR(LibSurface3d)])
