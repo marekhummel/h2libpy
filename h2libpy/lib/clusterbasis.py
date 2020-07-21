@@ -8,29 +8,29 @@ from ctypes import c_uint
 # ------------------------
 
 
-class LibClusterBasis(Struct): pass
+class CStructClusterBasis(Struct): pass
 
 
 # ------------------------
 
-from h2libpy.lib.amatrix import LibAMatrix
-from h2libpy.lib.cluster import LibCluster
-from h2libpy.lib.uniform import LibUniform
+from h2libpy.lib.amatrix import CStructAMatrix
+from h2libpy.lib.cluster import CStructCluster
+from h2libpy.lib.uniform import CStructUniform
 
 
-LibClusterBasis._fields_ = [
-    ('t', PTR(LibCluster)),
+CStructClusterBasis._fields_ = [
+    ('t', PTR(CStructCluster)),
     ('k', c_uint),
     ('ktree', c_uint),
     ('kbranch', c_uint),
-    ('V', LibAMatrix),
-    ('E', LibAMatrix),
+    ('V', CStructAMatrix),
+    ('E', CStructAMatrix),
     ('sons', c_uint),
-    ('son', PTR(PTR(LibClusterBasis))),
-    ('Z', PTR(LibAMatrix)),
+    ('son', PTR(PTR(CStructClusterBasis))),
+    ('Z', PTR(CStructAMatrix)),
     ('refs', c_uint),
-    ('rlist', PTR(LibUniform)),
-    ('clist', PTR(LibUniform))
+    ('rlist', PTR(CStructUniform)),
+    ('clist', PTR(CStructUniform))
 ]
 
 

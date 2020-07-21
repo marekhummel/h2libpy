@@ -6,7 +6,7 @@ from h2libpy.lib.amatrix import (addeval_amatrix_avector, del_amatrix,
                                  getsize_amatrix, new_amatrix)
 from h2libpy.lib.avector import (clear_avector, del_avector, getsize_avector,
                                  new_avector)
-from h2libpy.lib.bem3d import (FuncBoundaryFunc3d, LibBasisFunctionBem3d,
+from h2libpy.lib.bem3d import (CFuncBoundaryFunc3d, CEnumBasisFunctionBem3d,
                                assemble_bem3d_amatrix, del_bem3d, normL2_bem3d,
                                normL2diff_c_bem3d, projectL2_bem3d_c_avector)
 from h2libpy.lib.krylovsolvers import solve_cg_amatrix_avector
@@ -26,14 +26,14 @@ def main():
     tt = time.time()
     q_reg = ctypes.c_uint(2)
     q_sing = ctypes.c_uint(q_reg.value + 2)
-    basis = LibBasisFunctionBem3d.BASIS_CONSTANT_BEM3D
+    basis = CEnumBasisFunctionBem3d.BASIS_CONSTANT_BEM3D
     eps_solve = ctypes.c_double(1.0E-10)
     maxiter = ctypes.c_uint(500)
 
 
     # Geometry
     mg = new_sphere_macrosurface3d()
-    gr = build_from_macrosurface3d_surface3d(mg,  ctypes.c_uint(32))
+    gr = build_from_macrosurface3d_surface3d(mg,  ctypes.c_uint(8))
     print(f'Created geometry with {gr.contents.vertices} vertices, {gr.contents.edges} edges and {gr.contents.triangles} triangles')
 
 
@@ -69,7 +69,7 @@ def main():
     gd = new_avector(gr.contents.triangles)
     print('Compute L2-projection of Dirichlet data:')
     start = time.time()
-    projectL2_bem3d_c_avector(bem_dlp, FuncBoundaryFunc3d(eval_dirichlet_fundamental_laplacebem3d), gd, ctypes.cast(bem_dlp, ctypes.c_void_p))
+    projectL2_bem3d_c_avector(bem_dlp, CFuncBoundaryFunc3d(eval_dirichlet_fundamental_laplacebem3d), gd, ctypes.cast(bem_dlp, ctypes.c_void_p))
     t = time.time() - start
     size = getsize_avector(gd) / 1024 / 1024
     print(f'  {t:.2f} s')
@@ -102,7 +102,7 @@ def main():
     # Compute L2-error compared to analytical solution of the Neumann data.
     print('Compute L2-error against analytical solution of the Neumann data:')
     start = time.time()
-    norm = normL2diff_c_bem3d(bem_slp, x, FuncBoundaryFunc3d(eval_neumann_fundamental_laplacebem3d), None)
+    norm = normL2diff_c_bem3d(bem_slp, x, CFuncBoundaryFunc3d(eval_neumann_fundamental_laplacebem3d), None)
     t = time.time() - start
     print('Abs. L2-error:')
     print(f'  {t:.2f} s')
@@ -110,7 +110,7 @@ def main():
 
     print('Rel. L2-error:')
     start = time.time()
-    norm /= normL2_bem3d(bem_slp, FuncBoundaryFunc3d(eval_neumann_fundamental_laplacebem3d), None)
+    norm /= normL2_bem3d(bem_slp, CFuncBoundaryFunc3d(eval_neumann_fundamental_laplacebem3d), None)
     t = time.time() - start
     print(f'  {t:.2f} s')
     print(f'  {norm:.5e}')

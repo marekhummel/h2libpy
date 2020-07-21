@@ -3,25 +3,25 @@ from ctypes import Structure as Struct
 from ctypes import c_uint
 
 # from h2libpy.lib.util.helper import get_func
-from h2libpy.lib.amatrix import LibAMatrix
-from h2libpy.lib.cluster import LibCluster
+from h2libpy.lib.amatrix import CStructAMatrix
+from h2libpy.lib.cluster import CStructCluster
 
 # ------------------------
 
 
-class LibClusterOperator(Struct): pass
+class CStructClusterOperator(Struct): pass
 
 
 # ------------------------
 
 
-LibClusterOperator._fields_ = [
-    ('t', PTR(LibCluster)),
+CStructClusterOperator._fields_ = [
+    ('t', PTR(CStructCluster)),
     ('krow', c_uint),
     ('kcol', c_uint),
-    ('C', LibAMatrix),
+    ('C', CStructAMatrix),
     ('sons', c_uint),
-    ('son', PTR(PTR(LibClusterOperator))),
+    ('son', PTR(PTR(CStructClusterOperator))),
     ('refs', c_uint),
 ]
 

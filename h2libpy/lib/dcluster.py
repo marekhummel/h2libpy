@@ -9,17 +9,17 @@ from h2libpy.lib.settings import real
 # ------------------------
 
 
-class LibDCluster(Struct): pass
+class CStructDCluster(Struct): pass
 
 
 # ------------------------
 
 
-LibDCluster._fields_ = [
+CStructDCluster._fields_ = [
     ('size', c_uint),
     ('idx', PTR(c_uint)),
     ('sons', c_uint),
-    ('son', PTR(PTR(LibDCluster))),
+    ('son', PTR(PTR(CStructDCluster))),
     ('dim', c_uint),
     ('bmin', PTR(real)),
     ('bmax', PTR(real)),

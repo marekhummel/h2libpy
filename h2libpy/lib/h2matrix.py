@@ -3,25 +3,25 @@ from ctypes import Structure as Struct
 from ctypes import c_uint
 
 # nfrom h2libpy.lib.util.helper import get_func
-from h2libpy.lib.amatrix import LibAMatrix
-from h2libpy.lib.clusterbasis import LibClusterBasis
-from h2libpy.lib.uniform import LibUniform
+from h2libpy.lib.amatrix import CStructAMatrix
+from h2libpy.lib.clusterbasis import CStructClusterBasis
+from h2libpy.lib.uniform import CStructUniform
 
 # ------------------------
 
 
-class LibH2Matrix(Struct): pass
+class CStructH2Matrix(Struct): pass
 
 
 # ------------------------
 
 
-LibH2Matrix._fields_ = [
-    ('rb', PTR(LibClusterBasis)),
-    ('cb', PTR(LibClusterBasis)),
-    ('u', PTR(LibUniform)),
-    ('f', PTR(LibAMatrix)),
-    ('son', PTR(PTR(LibH2Matrix))),
+CStructH2Matrix._fields_ = [
+    ('rb', PTR(CStructClusterBasis)),
+    ('cb', PTR(CStructClusterBasis)),
+    ('u', PTR(CStructUniform)),
+    ('f', PTR(CStructAMatrix)),
+    ('son', PTR(PTR(CStructH2Matrix))),
     ('rsons', c_uint),
     ('csons', c_uint),
     ('refs', c_uint),

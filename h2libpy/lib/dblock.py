@@ -3,26 +3,26 @@ from ctypes import Structure as Struct
 from ctypes import c_bool, c_uint
 
 # from h2libpy.lib.util.helper import get_func
-from h2libpy.lib.dcluster import LibDCluster
+from h2libpy.lib.dcluster import CStructDCluster
 
 # ------------------------
 
 
-class LibDBlock(Struct): pass
+class CStructDBlock(Struct): pass
 
 
 # ------------------------
 
 
-LibDBlock._fields_ = [
-    ('rc', PTR(LibDCluster)),
-    ('cc', PTR(LibDCluster)),
+CStructDBlock._fields_ = [
+    ('rc', PTR(CStructDCluster)),
+    ('cc', PTR(CStructDCluster)),
     ('rd', c_uint),
     ('cd', c_uint),
     ('adm', c_bool),
     ('rsons', c_uint),
     ('csons', c_uint),
-    ('son', PTR(PTR(LibDBlock))),
+    ('son', PTR(PTR(CStructDBlock))),
     ('desc', c_uint),
 ]
 

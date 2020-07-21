@@ -10,7 +10,7 @@ class MacroSurface3d(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert(isinstance(cobj, POINTER(libmacrosurface3d.LibMacroSurface3d)))
+        assert(isinstance(cobj, POINTER(libmacrosurface3d.CStructMacroSurface3d)))
         self._as_parameter_ = cobj
 
     def __del__(self):

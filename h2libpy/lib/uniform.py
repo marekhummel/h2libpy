@@ -6,24 +6,24 @@ from ctypes import Structure as Struct
 # ------------------------
 
 
-class LibUniform(Struct): pass
+class CStructUniform(Struct): pass
 
 
 # ------------------------
 
 
-from h2libpy.lib.amatrix import LibAMatrix
-from h2libpy.lib.clusterbasis import LibClusterBasis
+from h2libpy.lib.amatrix import CStructAMatrix
+from h2libpy.lib.clusterbasis import CStructClusterBasis
 
 
-LibUniform._fields_ = [
-    ('rb', PTR(LibClusterBasis)),
-    ('cb', PTR(LibClusterBasis)),
-    ('S', LibAMatrix),
-    ('rnext', PTR(LibUniform)),
-    ('rprev', PTR(LibUniform)),
-    ('cnext', PTR(LibUniform)),
-    ('cprev', PTR(LibUniform)),
+CStructUniform._fields_ = [
+    ('rb', PTR(CStructClusterBasis)),
+    ('cb', PTR(CStructClusterBasis)),
+    ('S', CStructAMatrix),
+    ('rnext', PTR(CStructUniform)),
+    ('rprev', PTR(CStructUniform)),
+    ('cnext', PTR(CStructUniform)),
+    ('cprev', PTR(CStructUniform)),
 ]
 
 

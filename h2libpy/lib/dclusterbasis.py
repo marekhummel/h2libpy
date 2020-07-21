@@ -3,30 +3,30 @@ from ctypes import Structure as Struct
 from ctypes import c_uint
 
 # from h2libpy.lib.util.helper import get_func
-from h2libpy.lib.amatrix import LibAMatrix
-from h2libpy.lib.dcluster import LibDCluster
+from h2libpy.lib.amatrix import CStructAMatrix
+from h2libpy.lib.dcluster import CStructDCluster
 
 
 # ------------------------
 
 
-class LibDClusterBasis(Struct): pass
+class CStructDClusterBasis(Struct): pass
 
 
 # ------------------------
 
 
-LibDClusterBasis._fields_ = [
-    ('t', PTR(LibDCluster)),
+CStructDClusterBasis._fields_ = [
+    ('t', PTR(CStructDCluster)),
     ('directions', c_uint),
     ('k', PTR(c_uint)),
     ('koff', PTR(c_uint)),
     ('ktree', c_uint),
     ('kbranch', c_uint),
-    ('V', PTR(LibAMatrix)),
-    ('E', PTR(PTR(LibAMatrix))),
+    ('V', PTR(CStructAMatrix)),
+    ('E', PTR(PTR(CStructAMatrix))),
     ('sons', c_uint),
-    ('son', PTR(PTR(LibDClusterBasis))),
+    ('son', PTR(PTR(CStructDClusterBasis))),
     ('dirson', PTR(PTR(c_uint))),
 ]
 

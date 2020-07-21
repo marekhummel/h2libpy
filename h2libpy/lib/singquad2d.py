@@ -5,7 +5,7 @@ from ctypes import c_uint
 from h2libpy.lib.settings import real
 
 
-class LibSingquad2d(Struct):
+class CStructSingquad2d(Struct):
     _fields_ = [
         ('x_id', PTR(real)),
         ('y_id', PTR(real)),

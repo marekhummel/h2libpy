@@ -4,10 +4,10 @@ from ctypes import c_bool
 from h2libpy.lib.settings import real
 
 
-class LibTruncmode(Struct): pass
+class CStructTruncmode(Struct): pass
 
 
-LibTruncmode._fields_ = [
+CStructTruncmode._fields_ = [
     ('frobenius', c_bool),
     ('absolute', c_bool),
     ('blocks', c_bool),

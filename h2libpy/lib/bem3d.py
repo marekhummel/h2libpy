@@ -4,85 +4,85 @@ from ctypes import Structure as Struct
 from ctypes import c_bool, c_uint, c_void_p
 
 from h2libpy.lib.util.helper import get_func
-from h2libpy.lib.amatrix import LibAMatrix
-from h2libpy.lib.avector import LibAVector
-from h2libpy.lib.cluster import LibCluster
-from h2libpy.lib.clusterbasis import LibClusterBasis
-from h2libpy.lib.clusteroperator import LibClusterOperator
-from h2libpy.lib.dblock import LibDBlock
-from h2libpy.lib.dclusterbasis import LibDClusterBasis
-from h2libpy.lib.dclusteroperator import LibDClusterOperator
-from h2libpy.lib.dh2matrix import LibDH2Matrix
-from h2libpy.lib.h2matrix import LibH2Matrix
-from h2libpy.lib.hmatrix import LibHMatrix
+from h2libpy.lib.amatrix import CStructAMatrix
+from h2libpy.lib.avector import CStructAVector
+from h2libpy.lib.cluster import CStructCluster
+from h2libpy.lib.clusterbasis import CStructClusterBasis
+from h2libpy.lib.clusteroperator import CStructClusterOperator
+from h2libpy.lib.dblock import CStructDBlock
+from h2libpy.lib.dclusterbasis import CStructDClusterBasis
+from h2libpy.lib.dclusteroperator import CStructDClusterOperator
+from h2libpy.lib.dh2matrix import CStructDH2Matrix
+from h2libpy.lib.h2matrix import CStructH2Matrix
+from h2libpy.lib.hmatrix import CStructHMatrix
 from h2libpy.lib.settings import field, real
-from h2libpy.lib.singquad2d import LibSingquad2d
-from h2libpy.lib.surface3d import LibSurface3d
-from h2libpy.lib.truncation import LibTruncmode
+from h2libpy.lib.singquad2d import CStructSingquad2d
+from h2libpy.lib.surface3d import CStructSurface3d
+from h2libpy.lib.truncation import CStructTruncmode
 
 # ------------------------------------
 
 
-class LibBem3d(Struct): pass
-class LibKernelBem3d(Struct): pass
-class LibVertList(Struct): pass
-class LibListNode(Struct): pass
-class LibTriList(Struct): pass
-class LibAprxBem3d(Struct): pass
-class LibParBem3d(Struct): pass
-class LibGreenCluster3d(Struct): pass
-class LibGreenClusterBasis3d(Struct): pass
-class LibAdmisBlock(Struct): pass
-class LibCompData(Struct): pass
+class CStructBem3d(Struct): pass
+class CStructKernelBem3d(Struct): pass
+class CStructVertList(Struct): pass
+class CStructListNode(Struct): pass
+class CStructTriList(Struct): pass
+class CStructAprxBem3d(Struct): pass
+class CStructParBem3d(Struct): pass
+class CStructGreenCluster3d(Struct): pass
+class CStructGreenClusterBasis3d(Struct): pass
+class CStructAdmisBlock(Struct): pass
+class CStructCompData(Struct): pass
 
-class LibBasisFunctionBem3d(c_uint): pass
-
-
-# ------------------------------------
-
-
-FuncQuadPoints3d = CFUNCTYPE(None, *[PTR(LibBem3d), real*3, real*3, real, PTR(PTR(real))*3, PTR(PTR(real))*3])
-
-FuncBoundaryFunc3d = CFUNCTYPE(field, *[PTR(real), PTR(real), c_void_p])
+class CEnumBasisFunctionBem3d(c_uint): pass
 
 
 # ------------------------------------
 
 
-LibBem3d._fields_ = [
-    ('gr', PTR(LibSurface3d)),
-    ('sq', PTR(LibSingquad2d)),
-    ('row_basis', LibBasisFunctionBem3d),
-    ('col_basis', LibBasisFunctionBem3d),
+CFuncQuadPoints3d = CFUNCTYPE(None, *[PTR(CStructBem3d), real*3, real*3, real, PTR(PTR(real))*3, PTR(PTR(real))*3])
+
+CFuncBoundaryFunc3d = CFUNCTYPE(field, *[PTR(real), PTR(real), c_void_p])
+
+
+# ------------------------------------
+
+
+CStructBem3d._fields_ = [
+    ('gr', PTR(CStructSurface3d)),
+    ('sq', PTR(CStructSingquad2d)),
+    ('row_basis', CEnumBasisFunctionBem3d),
+    ('col_basis', CEnumBasisFunctionBem3d),
     ('mass', PTR(real)),
     ('alpha', field),
     ('k', field),
     ('kernel_const', field),
-    ('v2t', PTR(PTR(LibListNode))),
-    ('aprx', PTR(LibAprxBem3d)),
-    ('par', PTR(LibParBem3d)),
-    ('kernels', PTR(LibKernelBem3d)),
+    ('v2t', PTR(PTR(CStructListNode))),
+    ('aprx', PTR(CStructAprxBem3d)),
+    ('par', PTR(CStructParBem3d)),
+    ('kernels', PTR(CStructKernelBem3d)),
 ]
 
-LibKernelBem3d._fields_ = []
+CStructKernelBem3d._fields_ = []
 
-LibVertList._fields_ = [
+CStructVertList._fields_ = [
     ('v', c_uint),
-    ('next', PTR(LibVertList))
+    ('next', PTR(CStructVertList))
 ]
 
-LibListNode._fields_ = [
+CStructListNode._fields_ = [
     ('data', c_uint),
-    ('next', PTR(LibListNode))
+    ('next', PTR(CStructListNode))
 ]
 
-LibTriList._fields_ = [
+CStructTriList._fields_ = [
     ('t', c_uint),
-    ('vl', PTR(LibVertList)),
-    ('next', PTR(LibTriList))
+    ('vl', PTR(CStructVertList)),
+    ('next', PTR(CStructTriList))
 ]
 
-LibAprxBem3d._fields_ = [
+CStructAprxBem3d._fields_ = [
     ('m_inter', c_uint),
     ('x_inter', PTR(real)),
     ('k_inter', c_uint),
@@ -93,11 +93,11 @@ LibAprxBem3d._fields_ = [
     ('delta_green', real),
     ('t_green', PTR(real)),
     ('w_green', PTR(real)),
-    ('quadpoints', FuncQuadPoints3d),
-    ('grc_green', PTR(LibGreenCluster3d)),
-    ('gcc_green', PTR(LibGreenCluster3d)),
-    ('grb_green', PTR(LibGreenClusterBasis3d)),
-    ('gcb_green', PTR(LibGreenClusterBasis3d)),
+    ('quadpoints', CFuncQuadPoints3d),
+    ('grc_green', PTR(CStructGreenCluster3d)),
+    ('gcc_green', PTR(CStructGreenCluster3d)),
+    ('grb_green', PTR(CStructGreenClusterBasis3d)),
+    ('gcb_green', PTR(CStructGreenClusterBasis3d)),
     ('accur_aca', real),
     ('recomp', c_bool),
     ('accur_recomp', real),
@@ -105,84 +105,84 @@ LibAprxBem3d._fields_ = [
     ('accur_coarsen', real),
     ('hiercomp', c_bool),
     ('accur_hiercomp', real),
-    ('tm', PTR(LibTruncmode))
+    ('tm', PTR(CStructTruncmode))
 ]
 
-LibParBem3d._fields_ = [
-    ('hn', PTR(PTR(LibHMatrix))),
-    ('h2n', PTR(PTR(LibH2Matrix))),
-    ('dh2n', PTR(PTR(LibDH2Matrix))),
-    ('rbn', PTR(PTR(LibClusterBasis))),
-    ('cbn', PTR(PTR(LibClusterBasis))),
-    ('drbn', PTR(PTR(LibDClusterBasis))),
-    ('dcbn', PTR(PTR(LibDClusterBasis))),
-    ('rwn', PTR(PTR(LibClusterOperator))),
-    ('cwn', PTR(PTR(LibClusterOperator))),
-    ('ron', PTR(PTR(LibDClusterOperator))),
-    ('con', PTR(PTR(LibDClusterOperator))),
+CStructParBem3d._fields_ = [
+    ('hn', PTR(PTR(CStructHMatrix))),
+    ('h2n', PTR(PTR(CStructH2Matrix))),
+    ('dh2n', PTR(PTR(CStructDH2Matrix))),
+    ('rbn', PTR(PTR(CStructClusterBasis))),
+    ('cbn', PTR(PTR(CStructClusterBasis))),
+    ('drbn', PTR(PTR(CStructDClusterBasis))),
+    ('dcbn', PTR(PTR(CStructDClusterBasis))),
+    ('rwn', PTR(PTR(CStructClusterOperator))),
+    ('cwn', PTR(PTR(CStructClusterOperator))),
+    ('ron', PTR(PTR(CStructDClusterOperator))),
+    ('con', PTR(PTR(CStructDClusterOperator))),
     ('leveln', PTR(c_uint)),
-    ('grcn', PTR(PTR(LibGreenCluster3d))),
+    ('grcn', PTR(PTR(CStructGreenCluster3d))),
     ('grcnn', c_uint),
-    ('gccn', PTR(PTR(LibGreenCluster3d))),
+    ('gccn', PTR(PTR(CStructGreenCluster3d))),
     ('gccnn', c_uint),
-    ('grbn', PTR(PTR(LibGreenClusterBasis3d))),
+    ('grbn', PTR(PTR(CStructGreenClusterBasis3d))),
     ('grbnn', c_uint),
-    ('gcbn', PTR(PTR(LibGreenClusterBasis3d))),
+    ('gcbn', PTR(PTR(CStructGreenClusterBasis3d))),
     ('gcbnn', c_uint),
 ]
 
-LibGreenCluster3d._fields_ = [
+CStructGreenCluster3d._fields_ = [
     ('xi', PTR(c_uint)),
     ('xihat', PTR(c_uint)),
-    ('V', PTR(LibAMatrix)),
-    ('t', PTR(LibCluster)),
+    ('V', PTR(CStructAMatrix)),
+    ('t', PTR(CStructCluster)),
     ('sons', c_uint)
 ]
 
-LibGreenClusterBasis3d._fields_ = [
+CStructGreenClusterBasis3d._fields_ = [
     ('xi', PTR(c_uint)),
     ('xihat', PTR(c_uint)),
-    ('Qinv', PTR(LibAMatrix)),
-    ('cb', PTR(LibClusterBasis)),
+    ('Qinv', PTR(CStructAMatrix)),
+    ('cb', PTR(CStructClusterBasis)),
     ('sons', c_uint),
     ('m', c_uint)
 ]
 
-LibAdmisBlock._fields_ = [
+CStructAdmisBlock._fields_ = [
     ('name', c_uint),
     ('rname', c_uint),
     ('cname', c_uint),
     ('father', c_uint),
     ('son', c_uint),
     ('length', c_uint),
-    ('next', PTR(LibAdmisBlock))
+    ('next', PTR(CStructAdmisBlock))
 ]
 
-LibCompData._fields_ = [
-    ('nco', PTR(PTR(LibDClusterOperator))),
-    ('nro', PTR(PTR(LibDClusterOperator))),
-    ('noro', PTR(PTR(LibDClusterOperator))),
-    ('noco', PTR(PTR(LibDClusterOperator))),
-    ('ncb', PTR(PTR(LibDClusterBasis))),
-    ('nrb', PTR(PTR(LibDClusterBasis))),
-    ('nb', PTR(PTR(LibDBlock))),
-    ('bem', PTR(LibBem3d)),
+CStructCompData._fields_ = [
+    ('nco', PTR(PTR(CStructDClusterOperator))),
+    ('nro', PTR(PTR(CStructDClusterOperator))),
+    ('noro', PTR(PTR(CStructDClusterOperator))),
+    ('noco', PTR(PTR(CStructDClusterOperator))),
+    ('ncb', PTR(PTR(CStructDClusterBasis))),
+    ('nrb', PTR(PTR(CStructDClusterBasis))),
+    ('nb', PTR(PTR(CStructDBlock))),
+    ('bem', PTR(CStructBem3d)),
     ('rows', c_bool),
-    ('cblock', PTR(PTR(LibAdmisBlock))),
-    ('rblock', PTR(PTR(LibAdmisBlock))),
+    ('cblock', PTR(PTR(CStructAdmisBlock))),
+    ('rblock', PTR(PTR(CStructAdmisBlock))),
 ]
 
 
-LibBasisFunctionBem3d.BASIS_NONE_BEM3D = LibBasisFunctionBem3d(0)
-LibBasisFunctionBem3d.BASIS_CONSTANT_BEM3D = LibBasisFunctionBem3d(ord('c'))
-LibBasisFunctionBem3d.BASIS_LINEAR_BEM3D = LibBasisFunctionBem3d(ord('l'))
+CEnumBasisFunctionBem3d.BASIS_NONE_BEM3D = CEnumBasisFunctionBem3d(0)
+CEnumBasisFunctionBem3d.BASIS_CONSTANT_BEM3D = CEnumBasisFunctionBem3d(ord('c'))
+CEnumBasisFunctionBem3d.BASIS_LINEAR_BEM3D = CEnumBasisFunctionBem3d(ord('l'))
 
 # ------------------------------------
 
 
-assemble_bem3d_amatrix = get_func('assemble_bem3d_amatrix', None, [PTR(LibBem3d), PTR(LibAMatrix)])
-projectL2_bem3d_c_avector = get_func('projectL2_bem3d_c_avector', None, [PTR(LibBem3d), PTR(FuncBoundaryFunc3d), PTR(LibAVector), c_void_p])
-normL2diff_c_bem3d = get_func('normL2diff_c_bem3d', real, [PTR(LibBem3d), PTR(LibAVector), FuncBoundaryFunc3d, c_void_p])
-normL2_bem3d = get_func('normL2_bem3d', real, [PTR(LibBem3d), FuncBoundaryFunc3d, c_void_p])
-del_bem3d = get_func('del_bem3d', None, [PTR(LibBem3d)])
-projectL2_bem3d_c_avector = get_func('projectL2_bem3d_c_avector', None, [PTR(LibBem3d), FuncBoundaryFunc3d, PTR(LibAVector), c_void_p])
+assemble_bem3d_amatrix = get_func('assemble_bem3d_amatrix', None, [PTR(CStructBem3d), PTR(CStructAMatrix)])
+projectL2_bem3d_c_avector = get_func('projectL2_bem3d_c_avector', None, [PTR(CStructBem3d), PTR(CFuncBoundaryFunc3d), PTR(CStructAVector), c_void_p])
+normL2diff_c_bem3d = get_func('normL2diff_c_bem3d', real, [PTR(CStructBem3d), PTR(CStructAVector), CFuncBoundaryFunc3d, c_void_p])
+normL2_bem3d = get_func('normL2_bem3d', real, [PTR(CStructBem3d), CFuncBoundaryFunc3d, c_void_p])
+del_bem3d = get_func('del_bem3d', None, [PTR(CStructBem3d)])
+projectL2_bem3d_c_avector = get_func('projectL2_bem3d_c_avector', None, [PTR(CStructBem3d), CFuncBoundaryFunc3d, PTR(CStructAVector), c_void_p])

@@ -2,20 +2,20 @@ from ctypes import Structure as Struct
 from ctypes import c_uint
 
 # from h2libpy.lib.util.helper import get_func
-from h2libpy.lib.amatrix import LibAMatrix
+from h2libpy.lib.amatrix import CStructAMatrix
 
 # ------------------------
 
 
-class LibRKMatrix(Struct): pass
+class CStructRKMatrix(Struct): pass
 
 
 # ------------------------
 
 
-LibRKMatrix._fields_ = [
-    ('A', LibAMatrix),
-    ('B', LibAMatrix),
+CStructRKMatrix._fields_ = [
+    ('A', CStructAMatrix),
+    ('B', CStructAMatrix),
     ('k', c_uint),
 ]
 

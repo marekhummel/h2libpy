@@ -8,13 +8,13 @@ from h2libpy.lib.settings import real
 # ------------------------
 
 
-class LibCluster(Struct): pass
+class CStructCluster(Struct): pass
 
 
 # ------------------------
 
 
-LibCluster._fields_ = [
+CStructCluster._fields_ = [
     ('size', c_uint),
     ('idx', PTR(c_uint)),
     ('sons', c_uint),

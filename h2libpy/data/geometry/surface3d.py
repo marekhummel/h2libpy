@@ -12,7 +12,7 @@ class Surface3d(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert(isinstance(cobj, POINTER(libsurface3d.LibSurface3d)))
+        assert(isinstance(cobj, POINTER(libsurface3d.CStructSurface3d)))
         self._as_parameter_ = cobj
 
     def __del__(self):
