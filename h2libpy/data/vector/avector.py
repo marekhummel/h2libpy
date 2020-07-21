@@ -1,8 +1,9 @@
 import h2libpy.lib.avector as lib
 from ctypes import c_double, POINTER
+from h2libpy.base.structwrapper import StructWrapper
 
 
-class AVector():
+class AVector(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
@@ -24,11 +25,11 @@ class AVector():
 
     # ***** Properties *****
 
-    def dim(self):
+    def _getter_dim(self):
         return self._as_parameter_.contents.dim
 
-    def values(self):
-        return self._as_parameter_.contents.v[:self.dim()]
+    def _getter_v(self):
+        return self._as_parameter_.contents.v[:self.dim]
 
     # ***** Methods ******
 
