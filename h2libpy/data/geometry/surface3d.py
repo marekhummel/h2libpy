@@ -1,4 +1,5 @@
 from ctypes import POINTER
+from typing import List, Tuple
 
 import h2libpy.lib.macrosurface3d as libmacrosurface3d
 import h2libpy.lib.surface3d as libsurface3d
@@ -37,23 +38,23 @@ class Surface3d(StructWrapper):
     def __getter_triangles(self) -> int:
         return self.cobj().triangles
 
-    def __getter_x(self):
+    def __getter_x(self) -> List[Tuple[float, float, float]]:
         vs = cptr_to_list(self.cobj().x, self.vertices)
         return [carray_to_tuple(v) for v in vs]
 
-    def __getter_e(self):
+    def __getter_e(self) -> List[Tuple[int, int]]:
         vs = cptr_to_list(self.cobj().e, self.edges)
         return [carray_to_tuple(v) for v in vs]
 
-    def __getter_t(self):
+    def __getter_t(self) -> List[Tuple[int, int, int]]:
         vs = cptr_to_list(self.cobj().t, self.triangles)
         return [carray_to_tuple(v) for v in vs]
 
-    def __getter_s(self):
+    def __getter_s(self) -> List[Tuple[int, int, int]]:
         vs = cptr_to_list(self.cobj().s, self.triangles)
         return [carray_to_tuple(v) for v in vs]
 
-    def __getter_n(self):
+    def __getter_n(self) -> List[Tuple[float, float, float]]:
         vs = cptr_to_list(self.cobj().n, self.triangles)
         return [carray_to_tuple(v) for v in vs]
 

@@ -2,7 +2,6 @@ from ctypes import CFUNCTYPE
 from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
 from ctypes import c_bool, c_uint, c_void_p
-from enum import IntEnum
 
 from h2libpy.lib.util.helper import get_func
 from h2libpy.lib.amatrix import LibAMatrix

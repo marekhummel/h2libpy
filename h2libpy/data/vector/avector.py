@@ -1,8 +1,9 @@
 from ctypes import POINTER, c_double
+from typing import Tuple
 
 import h2libpy.lib.avector as libavector
+from h2libpy.base.cutil import cptr_to_list
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.base.cutil import deref, cptr_to_list
 
 
 class AVector(StructWrapper):
@@ -27,11 +28,11 @@ class AVector(StructWrapper):
 
     # ***** Properties *****
 
-    def __getter_dim(self):
+    def __getter_dim(self) -> int:
         return self.cobj().dim
 
-    def __getter_v(self):
-        return cptr_to_list(self.cobj().v, self.dim)
+    def __getter_v(self) -> Tuple[float, ...]:
+        return tuple(cptr_to_list(self.cobj().v, self.dim))
 
     # ***** Methods ******
 
