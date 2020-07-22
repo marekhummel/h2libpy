@@ -6,11 +6,8 @@ class StructWrapper:
         ''' To make struct fields available in classes if an getter method
             is provided in subclass
         '''
-        fields = self._as_parameter_.contents._fields_
-        members = [name for (name, ctype) in fields]
-
         # C struct doesnt have this field
-        if name not in members:
+        if name not in self.avail_fields():
             raise AttributeError(f'\'{self.__class__.__name__}\' '
                                  f'has no attribute \'{name}\'')
 
@@ -25,3 +22,8 @@ class StructWrapper:
     def cobj(self, no_ptr: bool = False):
         return deref(self._as_parameter_) if not no_ptr \
                                           else self._as_parameter_
+    
+    def avail_fields(self):
+        fields = self._as_parameter_.contents._fields_
+        members = [name for (name, ctype) in fields]
+        return members
