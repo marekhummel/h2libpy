@@ -10,7 +10,7 @@ class AVector(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert(isinstance(cobj, POINTER(libavector.CStructAVector)))
+        assert isinstance(cobj, POINTER(libavector.CStructAVector))
         self._as_parameter_ = cobj
 
     def __del__(self):
@@ -21,7 +21,8 @@ class AVector(StructWrapper):
         return cls(libavector.new_avector(dim))
 
     @classmethod
-    def from_subvector(cls, src: 'libavector.CStructAVector', dim: int, off: int):
+    def from_subvector(cls, src: 'libavector.CStructAVector', dim: int,
+                       off: int):
         v = libavector.new_avector(dim)
         libavector.init_sub_avector(v, src, dim, off)
         return cls(v)

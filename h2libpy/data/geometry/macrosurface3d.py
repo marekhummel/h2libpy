@@ -1,4 +1,4 @@
-from ctypes import POINTER
+from ctypes import POINTER as PTR
 from typing import List, Tuple
 
 import h2libpy.lib.macrosurface3d as libmacrosurface3d
@@ -10,19 +10,20 @@ class MacroSurface3d(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert(isinstance(cobj, POINTER(libmacrosurface3d.CStructMacroSurface3d)))
+        assert isinstance(cobj, PTR(libmacrosurface3d.CStructMacroSurface3d))
         self._as_parameter_ = cobj
 
     def __del__(self):
         libmacrosurface3d.del_macrosurface3d(self)
 
     @classmethod
-    def new(cls, vertices: int, edges: int, triangles: int):
+    def new(cls, vertices: int, edges: int, triangles: int) \
+            -> 'MacroSurface3d':
         obj = libmacrosurface3d.new_macrosurface3d(vertices, edges, triangles)
         return cls(obj)
 
     @classmethod
-    def new_sphere(cls):
+    def new_sphere(cls) -> 'MacroSurface3d':
         return cls(libmacrosurface3d.new_sphere_macrosurface3d())
 
     # ***** Properties *****
@@ -51,7 +52,5 @@ class MacroSurface3d(StructWrapper):
     def __getter_s(self) -> List[Tuple[int, int, int]]:
         vs = cptr_to_list(self.cobj().s, self.triangles)
         return [carray_to_tuple(v) for v in vs]
-
-
 
     # ***** Methods ******

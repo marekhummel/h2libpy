@@ -1,6 +1,6 @@
 from h2libpy.data.geometry.macrosurface3d import MacroSurface3d
 from h2libpy.data.geometry.surface3d import Surface3d
-from h2libpy.data.vector.avector import AVector
+# from h2libpy.data.vector.avector import AVector
 
 
 mg = MacroSurface3d.new_sphere()

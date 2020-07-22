@@ -12,18 +12,19 @@ class Surface3d(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert(isinstance(cobj, POINTER(libsurface3d.CStructSurface3d)))
+        assert isinstance(cobj, POINTER(libsurface3d.CStructSurface3d))
         self._as_parameter_ = cobj
 
     def __del__(self):
         libsurface3d.del_surface3d(self)
 
     @classmethod
-    def new(cls, vertices: int, edges: int, triangles: int):
+    def new(cls, vertices: int, edges: int, triangles: int) -> 'Surface3d':
         return cls(libsurface3d.new_surface3d(vertices, edges, triangles))
 
     @classmethod
-    def from_macrosurface3d(cls, mg: 'MacroSurface3d', split: int):
+    def from_macrosurface3d(cls, mg: 'MacroSurface3d', split: int) \
+            -> 'Surface3d':
         obj = libmacrosurface3d.build_from_macrosurface3d_surface3d(mg, split)
         return cls(obj)
 

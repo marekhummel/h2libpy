@@ -1,4 +1,4 @@
-code = """
+code = r"""
  /** @brief Number of vertices */
   uint vertices;
 
