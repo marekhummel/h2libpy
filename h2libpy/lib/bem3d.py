@@ -228,6 +228,7 @@ CStructCompData._fields_ = [
 # ------------------------------------
 
 
+new_bem3d = get_func('new_bem3d', PTR(CStructBem3d), [PTR(CStructSurface3d), CEnumBasisFunctionBem3d, CEnumBasisFunctionBem3d])
 assemble_bem3d_amatrix = get_func('assemble_bem3d_amatrix', None, [PTR(CStructBem3d), PTR(CStructAMatrix)])
 projectL2_bem3d_c_avector = get_func('projectL2_bem3d_c_avector', None, [PTR(CStructBem3d), PTR(CFuncBoundaryFunc3d), PTR(CStructAVector), c_void_p])
 normL2diff_c_bem3d = get_func('normL2diff_c_bem3d', real, [PTR(CStructBem3d), PTR(CStructAVector), CFuncBoundaryFunc3d, c_void_p])
