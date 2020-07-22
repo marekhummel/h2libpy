@@ -16,7 +16,8 @@ class Surface3d(StructWrapper):
         self._as_parameter_ = cobj
 
     def __del__(self):
-        libsurface3d.del_surface3d(self)
+        pass
+        # libsurface3d.del_surface3d(self)
 
     @classmethod
     def new(cls, vertices: int, edges: int, triangles: int) -> 'Surface3d':

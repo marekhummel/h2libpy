@@ -14,7 +14,8 @@ class MacroSurface3d(StructWrapper):
         self._as_parameter_ = cobj
 
     def __del__(self):
-        libmacrosurface3d.del_macrosurface3d(self)
+        pass
+        # libmacrosurface3d.del_macrosurface3d(self)
 
     @classmethod
     def new(cls, vertices: int, edges: int, triangles: int) \

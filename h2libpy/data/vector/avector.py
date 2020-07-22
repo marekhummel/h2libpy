@@ -14,7 +14,8 @@ class AVector(StructWrapper):
         self._as_parameter_ = cobj
 
     def __del__(self):
-        libavector.del_avector(self)
+        pass 
+        # libavector.del_avector(self)
 
     @classmethod
     def new(cls, dim: int):
