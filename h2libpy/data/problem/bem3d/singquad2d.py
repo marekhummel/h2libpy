@@ -48,6 +48,9 @@ class SingQuad2d(StructWrapper):
 
     def __getter_q(self) -> int:
         return self.cobj().q
+    
+    def __getter_q2(self) -> int:
+        return self.cobj().q2
 
     def __getter_nmax(self) -> int:
         return self.cobj().nmax

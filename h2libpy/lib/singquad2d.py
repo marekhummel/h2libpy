@@ -36,5 +36,6 @@ class CStructSingquad2d(Struct):
         # ('tri_y', PTR(real)),
         # ('tri_z', PTR(real)),
         ('q', c_uint),
+        ('q2', c_uint),
         ('nmax', c_uint)
     ]
