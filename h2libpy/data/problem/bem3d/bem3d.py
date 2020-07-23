@@ -1,15 +1,15 @@
-from ctypes import POINTER, c_double
-from typing import Tuple
+from ctypes import POINTER, cast, c_void_p
 
 import h2libpy.lib.bem3d as libbem3d
 import h2libpy.lib.laplacebem3d as liblaplacebem3d
-from h2libpy.base.cutil import cptr_to_list, deref
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.geometry.surface3d import Surface3d
+from h2libpy.data.matrix.amatrix import AMatrix
 from h2libpy.data.problem.bem3d.aprxbem3d import AprxBem3d
 from h2libpy.data.problem.bem3d.kernelbem3d import KernelBem3d
 from h2libpy.data.problem.bem3d.parbem3d import ParBem3d
 from h2libpy.data.problem.bem3d.singquad2d import SingQuad2d
+from h2libpy.data.vector.avector import AVector
 
 
 class Bem3d(StructWrapper):
@@ -80,3 +80,21 @@ class Bem3d(StructWrapper):
         return self.try_wrap(self.cobj().kernels, KernelBem3d)
 
     # ***** Methods ******
+
+    def assemble_amatrix(self, g: 'AMatrix'):
+        libbem3d.assemble_bem3d_amatrix(self, g)
+
+    def project_l2_c(self, f, w: 'AVector', data):
+        cf = libbem3d.CFuncBoundaryFunc3d(f)
+        cdata = cast(data, c_void_p)
+        libbem3d.projectL2_bem3d_c_avector(self, cf, w, cdata)
+
+    def norm_l2_diff_c(self, x: 'AVector', rhs, data) -> float:
+        crhs = libbem3d.CFuncBoundaryFunc3d(rhs)
+        cdata = cast(data, c_void_p)
+        return libbem3d.normL2diff_c_bem3d(self, crhs, x, cdata)
+
+    def norm_l2(self, rhs, data) -> float:
+        crhs = libbem3d.CFuncBoundaryFunc3d(rhs)
+        cdata = cast(data, c_void_p)
+        return libbem3d.normL2_bem3d(self, crhs, cdata)

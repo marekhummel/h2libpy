@@ -2,8 +2,10 @@ from ctypes import POINTER, c_double
 from typing import Tuple
 
 import h2libpy.lib.avector as libavector
+import h2libpy.lib.amatrix as libamatrix
 from h2libpy.base.cutil import cptr_to_list
 from h2libpy.base.structwrapper import StructWrapper
+from h2libpy.data.matrix.amatrix import AMatrix
 
 
 class AVector(StructWrapper):
@@ -44,5 +46,14 @@ class AVector(StructWrapper):
     def rand(self):
         libavector.random_avector(self)
 
-    def norm(self):
+    def norm(self) -> float:
         return libavector.norm2_avector(self)
+
+    def size(self) -> int:
+        return libavector.getsize_avector(self)
+
+    def clear(self):
+        libavector.clear_avector(self)
+
+    def addeval_matrix(self, alpha: float, a: 'AMatrix', src: 'AVector'):
+        libamatrix.addeval_amatrix_avector(alpha, a, src, self)
