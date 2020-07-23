@@ -20,6 +20,6 @@ class ListNode(StructWrapper):
         return self.cobj().data
 
     def __getter_next(self) -> 'ListNode':
-        return ListNode(self.cobj().next)
+        return self.try_wrap(self.cobj().next, ListNode)
 
     # ***** Methods ******

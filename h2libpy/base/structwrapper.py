@@ -24,6 +24,11 @@ class StructWrapper:
                                           else self._as_parameter_
 
     def avail_fields(self):
+        ''' Lists all available fields in c struct '''
         fields = self._as_parameter_.contents._fields_
         members = [name for (name, ctype) in fields]
         return members
+
+    def try_wrap(self, obj, wrapperclass):
+        ''' Trys to wrap c object in corresponding wrapper class '''
+        return wrapperclass(obj) if obj else None

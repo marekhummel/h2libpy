@@ -20,6 +20,6 @@ class VertList(StructWrapper):
         return self.cobj().v
 
     def __getter_next(self) -> 'VertList':
-        return VertList(self.cobj().next)
+        return self.try_wrap(self.cobj().next, VertList)
 
     # ***** Methods ******

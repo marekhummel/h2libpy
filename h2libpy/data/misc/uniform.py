@@ -19,25 +19,25 @@ class Uniform(StructWrapper):
 
     def __getter_rb(self) -> 'ClusterBasis':
         from h2libpy.data.basis.clusterbasis import ClusterBasis
-        return ClusterBasis(self.cobj().rb)
+        return self.try_wrap(self.cobj().rb, ClusterBasis)
 
     def __getter_cb(self) -> 'ClusterBasis':
         from h2libpy.data.basis.clusterbasis import ClusterBasis
-        return ClusterBasis(self.cobj().cb)
+        return self.try_wrap(self.cobj().cb, ClusterBasis)
 
     def __getter_S(self) -> 'AMatrix':
-        return AMatrix(self.cobj().S)
+        return self.try_wrap(self.cobj().S, AMatrix)
 
     def __getter_rnext(self) -> 'Uniform':
-        return Uniform(self.cobj().rnext)
+        return self.try_wrap(self.cobj().rnext, Uniform)
 
     def __getter_rprev(self) -> 'Uniform':
-        return Uniform(self.cobj().rprev)
+        return self.try_wrap(self.cobj().rprev, Uniform)
 
     def __getter_cnext(self) -> 'Uniform':
-        return Uniform(self.cobj().cnext)
+        return self.try_wrap(self.cobj().cnext, Uniform)
 
     def __getter_cprev(self) -> 'Uniform':
-        return Uniform(self.cobj().cprev)
+        return self.try_wrap(self.cobj().cprev, Uniform)
 
     # ***** Methods ******

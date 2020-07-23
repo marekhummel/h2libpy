@@ -18,7 +18,7 @@ class CompData(StructWrapper):
     # ***** Properties *****
 
     def __getter_bem(self) -> 'Bem3d':
-        return Bem3d(self.cobj().bem)
+        return self.try_wrap(self.cobj().bem, Bem3d)
 
     def __getter_rows(self) -> bool:
         return self.cobj().rows

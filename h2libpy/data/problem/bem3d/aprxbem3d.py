@@ -41,16 +41,16 @@ class AprxBem3d(StructWrapper):
         return self.cobj().delta_green
 
     def __getter_grc_green(self) -> 'GreenCluster3d':
-        return GreenCluster3d(self.cobj().grc_green)
+        return self.try_wrap(self.cobj().grc_green, GreenCluster3d)
 
     def __getter_gcc_green(self) -> 'GreenCluster3d':
-        return GreenCluster3d(self.cobj().gcc_green)
+        return self.try_wrap(self.cobj().gcc_green, GreenCluster3d)
 
     def __getter_grb_green(self) -> 'GreenClusterBasis3d':
-        return GreenClusterBasis3d(self.cobj().grb_green)
+        return self.try_wrap(self.cobj().grb_green, GreenClusterBasis3d)
 
     def __getter_gcb_green(self) -> 'GreenClusterBasis3d':
-        return GreenClusterBasis3d(self.cobj().gcb_green)
+        return self.try_wrap(self.cobj().gcb_green, GreenClusterBasis3d)
 
     def __getter_accur_aca(self) -> float:
         return self.cobj().delta_green
@@ -74,6 +74,7 @@ class AprxBem3d(StructWrapper):
         return self.cobj().accur_hiercomp
 
     def __getter_tm(self) -> 'TruncMode':
-        return TruncMode(self.cobj().tm)
+        return self.try_wrap(self.cobj().tm, TruncMode)
+
 
     # ***** Methods ******

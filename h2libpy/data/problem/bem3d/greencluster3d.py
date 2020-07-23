@@ -19,10 +19,10 @@ class GreenCluster3d(StructWrapper):
     # ***** Properties *****
 
     def __getter_V(self) -> 'AMatrix':
-        return AMatrix(self.cobj().V)
+        return self.try_wrap(self.cobj().V, AMatrix)
 
     def __getter_t(self) -> 'Cluster':
-        return Cluster(self.cobj().t)
+        return self.try_wrap(self.cobj().t, Cluster)
 
     def __getter_sons(self) -> int:
         return self.cobj().sons

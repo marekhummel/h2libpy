@@ -19,10 +19,10 @@ class GreenClusterBasis3d(StructWrapper):
     # ***** Properties *****
 
     def __getter_Qinv(self) -> AMatrix:
-        return AMatrix(self.cobj().Qinv)
+        return self.try_wrap(self.cobj().Qinv, AMatrix)
 
     def __getter_cb(self) -> 'ClusterBasis':
-        return ClusterBasis(self.cobj().cb)
+        return self.try_wrap(self.cobj().cb, ClusterBasis)
 
     def __getter_sons(self) -> int:
         return self.cobj().sons

@@ -47,10 +47,10 @@ class Bem3d(StructWrapper):
     # ***** Properties *****
 
     def __getter_gr(self) -> Surface3d:
-        return Surface3d(self.cobj().gr)
+        return self.try_wrap(self.cobj().gr, Surface3d)
 
     def __getter_sq(self) -> SingQuad2d:
-        return SingQuad2d(self.cobj().sq)
+        return self.try_wrap(self.cobj().sq, SingQuad2d)
 
     def __getter_row_basis(self) -> int:
         return self.cobj().row_basis
@@ -71,12 +71,12 @@ class Bem3d(StructWrapper):
         return self.cobj().kernel_const
 
     def __getter_aprx(self) -> AprxBem3d:
-        return AprxBem3d(self.cobj().aprx)
+        return self.try_wrap(self.cobj().aprx, AprxBem3d)
 
     def __getter_par(self) -> ParBem3d:
-        return ParBem3d(self.cobj().par)
+        return self.try_wrap(self.cobj().par, ParBem3d)
 
-    def __getter_kernel(self) -> KernelBem3d:
-        return KernelBem3d(self.cobj().kernels)
+    def __getter_kernels(self) -> KernelBem3d:
+        return self.try_wrap(self.cobj().kernels, KernelBem3d)
 
     # ***** Methods ******

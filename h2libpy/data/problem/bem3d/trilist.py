@@ -21,9 +21,9 @@ class TriList(StructWrapper):
         return self.cobj().t
 
     def __getter_vt(self) -> 'VertList':
-        return VertList(self.cobj().vl)
+        return self.try_wrap(self.cobj().vl, VertList)
 
     def __getter_next(self) -> 'TriList':
-        return TriList(self.cobj().next)
+        return self.try_wrap(self.cobj().next, TriList)
 
     # ***** Methods ******

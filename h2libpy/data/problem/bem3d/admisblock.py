@@ -30,11 +30,11 @@ class AdmisBlock(StructWrapper):
 
     def __getter_son(self) -> int:
         return self.cobj().son
-    
+
     def __getter_length(self) -> int:
         return self.cobj().length
 
     def __getter_next(self) -> 'AdmisBlock':
-        return AdmisBlock(self.cobj().next)
+        return self.try_wrap(self.cobj().next, AdmisBlock)
 
     # ***** Methods ******

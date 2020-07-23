@@ -19,7 +19,7 @@ class ClusterBasis(StructWrapper):
     # ***** Properties *****
 
     def __getter_t(self) -> 'Cluster':
-        return Cluster(self.cobj().t)
+        return self.try_wrap(self.cobj().t, Cluster)
 
     def __getter_k(self) -> int:
         return self.cobj().t
@@ -31,26 +31,26 @@ class ClusterBasis(StructWrapper):
         return self.cobj().kbranch
 
     def __getter_V(self) -> 'AMatrix':
-        return AMatrix(pointer(self.cobj().V))
+        return self.try_wrap(pointer(self.cobj().V), AMatrix)
 
     def __getter_E(self) -> 'AMatrix':
-        return AMatrix(pointer(self.cobj().E))
+        return self.try_wrap(pointer(self.cobj().E), AMatrix)
 
     def __getter_sons(self) -> int:
         return self.cobj().sons
 
     def __getter_Z(self) -> 'AMatrix':
-        return AMatrix(self.cobj().Z)
+        return self.try_wrap(self.cobj().Z, AMatrix)
 
     def __getter_refs(self) -> int:
         return self.cobj().refs
 
     def __getter_rlist(self) -> 'Uniform':
         from h2libpy.data.misc.uniform import Uniform
-        return Uniform(self.cobj().rlist)
+        return self.try_wrap(self.cobj().rlist, Uniform)
 
     def __getter_rclist(self) -> 'Uniform':
         from h2libpy.data.misc.uniform import Uniform
-        return Uniform(self.cobj().clist)
+        return self.try_wrap(self.cobj().clist, Uniform)
 
     # ***** Methods ******
