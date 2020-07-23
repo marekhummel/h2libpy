@@ -92,7 +92,7 @@ class Bem3d(StructWrapper):
     def norm_l2_diff_c(self, x: 'AVector', rhs, data) -> float:
         crhs = libbem3d.CFuncBoundaryFunc3d(rhs)
         cdata = cast(data, c_void_p)
-        return libbem3d.normL2diff_c_bem3d(self, crhs, x, cdata)
+        return libbem3d.normL2diff_c_bem3d(self, x, crhs, cdata)
 
     def norm_l2(self, rhs, data) -> float:
         crhs = libbem3d.CFuncBoundaryFunc3d(rhs)
