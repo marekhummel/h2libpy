@@ -16,4 +16,10 @@ class VertList(StructWrapper):
 
     # ***** Properties *****
 
+    def __getter_v(self) -> int:
+        return self.cobj().v
+
+    def __getter_next(self) -> 'VertList':
+        return VertList(self.cobj().next)
+
     # ***** Methods ******

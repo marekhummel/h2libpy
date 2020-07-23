@@ -16,4 +16,10 @@ class ListNode(StructWrapper):
 
     # ***** Properties *****
 
+    def __getter_data(self) -> int:
+        return self.cobj().data
+
+    def __getter_next(self) -> 'ListNode':
+        return ListNode(self.cobj().next)
+
     # ***** Methods ******

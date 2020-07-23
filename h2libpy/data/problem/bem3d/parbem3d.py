@@ -16,4 +16,16 @@ class ParBem3d(StructWrapper):
 
     # ***** Properties *****
 
+    def __getter_grcnn(self) -> int:
+        return self.cobj().grcnn
+
+    def __getter_gccnn(self) -> int:
+        return self.cobj().gccnn
+
+    def __getter_grbnn(self) -> int:
+        return self.cobj().grbnn
+
+    def __getter_gcbnn(self) -> int:
+        return self.cobj().gcbnn
+
     # ***** Methods ******
