@@ -1,6 +1,6 @@
 from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
-from ctypes import c_uint, c_void_p
+from ctypes import c_uint, c_void_p, CFUNCTYPE
 
 from h2libpy.lib.util.helper import get_func
 from h2libpy.lib.settings import real
@@ -15,6 +15,12 @@ class CStructMacroSurface3d(Struct): pass
 # ------------------------
 
 
+CFuncPhi = CFUNCTYPE(None, *[c_uint, real, real, c_void_p, real*3])
+
+
+# ------------------------
+
+
 CStructMacroSurface3d._fields_ = [
     ('vertices', c_uint),
     ('edges', c_uint),
@@ -23,6 +29,7 @@ CStructMacroSurface3d._fields_ = [
     ('e', PTR(c_uint * 2)),
     ('t', PTR(c_uint * 3)),
     ('s', PTR(c_uint * 3)),
+    ('phi', CFuncPhi),
     ('phidata', c_void_p),
 ]
 
