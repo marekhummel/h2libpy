@@ -1,6 +1,5 @@
-from ctypes import POINTER
-
 import h2libpy.lib.bem3d as libbem3d
+from h2libpy.base.cutil import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 
 
@@ -8,8 +7,7 @@ class VertList(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert isinstance(cobj, POINTER(libbem3d.CStructVertList))
-        self._as_parameter_ = cobj
+        super().__init__(cobj, libbem3d.CStructVertList)
 
     def __del__(self):
         pass
@@ -20,6 +18,6 @@ class VertList(StructWrapper):
         return self.cobj().v
 
     def __getter_next(self) -> 'VertList':
-        return self.try_wrap(self.cobj().next, VertList)
+        return try_wrap(self.cobj().next, VertList)
 
     # ***** Methods ******

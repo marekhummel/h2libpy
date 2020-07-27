@@ -1,17 +1,15 @@
-from ctypes import POINTER
-
 import h2libpy.lib.bem3d as libbem3d
+from h2libpy.base.cutil import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.data.matrix.amatrix import AMatrix
 from h2libpy.data.basis.clusterbasis import ClusterBasis
+from h2libpy.data.matrix.amatrix import AMatrix
 
 
 class GreenClusterBasis3d(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert isinstance(cobj, POINTER(libbem3d.CStructGreenClusterBasis3d))
-        self._as_parameter_ = cobj
+        super().__init__(cobj, libbem3d.CStructGreenClusterBasis3d)
 
     def __del__(self):
         pass
@@ -19,10 +17,10 @@ class GreenClusterBasis3d(StructWrapper):
     # ***** Properties *****
 
     def __getter_Qinv(self) -> AMatrix:
-        return self.try_wrap(self.cobj().Qinv, AMatrix)
+        return try_wrap(self.cobj().Qinv, AMatrix)
 
     def __getter_cb(self) -> 'ClusterBasis':
-        return self.try_wrap(self.cobj().cb, ClusterBasis)
+        return try_wrap(self.cobj().cb, ClusterBasis)
 
     def __getter_sons(self) -> int:
         return self.cobj().sons

@@ -1,4 +1,4 @@
-from ctypes import POINTER, c_double
+from ctypes import c_double
 from typing import Tuple
 
 import h2libpy.lib.avector as libavector
@@ -12,11 +12,10 @@ class AVector(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert isinstance(cobj, POINTER(libavector.CStructAVector))
-        self._as_parameter_ = cobj
+        super().__init__(cobj, libavector.CStructAVector)
 
     def __del__(self):
-        pass 
+        pass
         # libavector.del_avector(self)
 
     @classmethod
@@ -57,3 +56,6 @@ class AVector(StructWrapper):
 
     def addeval_matrix(self, alpha: float, a: 'AMatrix', src: 'AVector'):
         libamatrix.addeval_amatrix_avector(alpha, a, src, self)
+
+    def print(self):
+        libavector.print_avector(self)

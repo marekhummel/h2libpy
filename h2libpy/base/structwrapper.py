@@ -1,7 +1,12 @@
 from h2libpy.base.cutil import deref
+from ctypes import POINTER
 
 
 class StructWrapper:
+    def __init__(self, cobj, cstruct):
+        assert isinstance(cobj, POINTER(cstruct))
+        self._as_parameter_ = cobj
+
     def __getattr__(self, name):
         ''' To make struct fields available in classes if an getter method
             is provided in subclass
@@ -17,6 +22,7 @@ class StructWrapper:
             raise AttributeError(f'\'{self.__class__.__name__}\' '
                                  f'has no getter for attribute \'{name}\'')
 
+        # Return value
         return getattr(self, getter)()
 
     def cobj(self, no_ptr: bool = False):
@@ -28,7 +34,3 @@ class StructWrapper:
         fields = self._as_parameter_.contents._fields_
         members = [name for (name, ctype) in fields]
         return members
-
-    def try_wrap(self, obj, wrapperclass):
-        ''' Trys to wrap c object in corresponding wrapper class '''
-        return wrapperclass(obj) if obj else None

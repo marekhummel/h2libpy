@@ -1,4 +1,3 @@
-from ctypes import POINTER
 from typing import List
 
 import h2libpy.lib.amatrix as libamatrix
@@ -10,8 +9,7 @@ class AMatrix(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert isinstance(cobj, POINTER(libamatrix.CStructAMatrix))
-        self._as_parameter_ = cobj
+        super().__init__(cobj, libamatrix.CStructAMatrix)
 
     def __del__(self):
         pass
@@ -38,3 +36,9 @@ class AMatrix(StructWrapper):
 
     def size(self):
         return libamatrix.getsize_amatrix(self)
+
+    def norm(self):
+        return libamatrix.norm2_amatrix(self)
+
+    def print(self):
+        libamatrix.print_amatrix(self)

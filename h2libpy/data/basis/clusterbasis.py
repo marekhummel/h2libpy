@@ -1,6 +1,7 @@
-from ctypes import POINTER, pointer
+from ctypes import pointer
 
 import h2libpy.lib.clusterbasis as libclusterbasis
+from h2libpy.base.cutil import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.matrix.amatrix import AMatrix
 from h2libpy.data.tree.cluster import Cluster
@@ -10,8 +11,7 @@ class ClusterBasis(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert isinstance(cobj, POINTER(libclusterbasis.CStructClusterBasis))
-        self._as_parameter_ = cobj
+        super().__init__(cobj, libclusterbasis.CStructClusterBasis)
 
     def __del__(self):
         pass
@@ -19,7 +19,7 @@ class ClusterBasis(StructWrapper):
     # ***** Properties *****
 
     def __getter_t(self) -> 'Cluster':
-        return self.try_wrap(self.cobj().t, Cluster)
+        return try_wrap(self.cobj().t, Cluster)
 
     def __getter_k(self) -> int:
         return self.cobj().t
@@ -31,26 +31,26 @@ class ClusterBasis(StructWrapper):
         return self.cobj().kbranch
 
     def __getter_V(self) -> 'AMatrix':
-        return self.try_wrap(pointer(self.cobj().V), AMatrix)
+        return try_wrap(pointer(self.cobj().V), AMatrix)
 
     def __getter_E(self) -> 'AMatrix':
-        return self.try_wrap(pointer(self.cobj().E), AMatrix)
+        return try_wrap(pointer(self.cobj().E), AMatrix)
 
     def __getter_sons(self) -> int:
         return self.cobj().sons
 
     def __getter_Z(self) -> 'AMatrix':
-        return self.try_wrap(self.cobj().Z, AMatrix)
+        return try_wrap(self.cobj().Z, AMatrix)
 
     def __getter_refs(self) -> int:
         return self.cobj().refs
 
     def __getter_rlist(self) -> 'Uniform':
         from h2libpy.data.misc.uniform import Uniform
-        return self.try_wrap(self.cobj().rlist, Uniform)
+        return try_wrap(self.cobj().rlist, Uniform)
 
     def __getter_rclist(self) -> 'Uniform':
         from h2libpy.data.misc.uniform import Uniform
-        return self.try_wrap(self.cobj().clist, Uniform)
+        return try_wrap(self.cobj().clist, Uniform)
 
     # ***** Methods ******

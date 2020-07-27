@@ -15,7 +15,7 @@ class CStructAVector(Struct): pass
 
 
 CStructAVector._fields_ = [
-    ('v', PTR(real)),
+    ('v', PTR(field)),
     ('dim', c_uint),
     ('owner', c_void_p)
 ]
@@ -32,3 +32,4 @@ random_avector = get_func('random_avector', None, [PTR(CStructAVector)])
 norm2_avector = get_func('norm2_avector', real, [PTR(CStructAVector)])
 getsize_avector = get_func('getsize_avector', c_size_t, [PTR(CStructAVector)])
 clear_avector = get_func('clear_avector', None, [PTR(CStructAVector)])
+print_avector = get_func('print_avector', None, [PTR(CStructAVector)])

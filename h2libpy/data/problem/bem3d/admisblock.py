@@ -1,6 +1,5 @@
-from ctypes import POINTER
-
 import h2libpy.lib.bem3d as libbem3d
+from h2libpy.base.cutil import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 
 
@@ -8,8 +7,7 @@ class AdmisBlock(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert isinstance(cobj, POINTER(libbem3d.CStructAdmisBlock))
-        self._as_parameter_ = cobj
+        super().__init__(cobj, libbem3d.CStructAdmisBlock)
 
     def __del__(self):
         pass
@@ -35,6 +33,6 @@ class AdmisBlock(StructWrapper):
         return self.cobj().length
 
     def __getter_next(self) -> 'AdmisBlock':
-        return self.try_wrap(self.cobj().next, AdmisBlock)
+        return try_wrap(self.cobj().next, AdmisBlock)
 
     # ***** Methods ******

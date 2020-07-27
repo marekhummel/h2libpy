@@ -3,3 +3,5 @@ per-file-ignores =
     h2libpy/lib/*.py:E302,E402,E501,E701
     example_amatrix_bem3d*.py:E303,E501
     misc/convert_struct.py:E402
+    h2libpy/data/basis/clusterbasis.py:F821
+    h2libpy/data/misc/uniform.py:F821

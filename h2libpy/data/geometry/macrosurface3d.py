@@ -1,4 +1,3 @@
-from ctypes import POINTER as PTR
 from typing import List, Tuple
 
 import h2libpy.lib.macrosurface3d as libmacrosurface3d
@@ -10,8 +9,7 @@ class MacroSurface3d(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert isinstance(cobj, PTR(libmacrosurface3d.CStructMacroSurface3d))
-        self._as_parameter_ = cobj
+        super().__init__(cobj, libmacrosurface3d.CStructMacroSurface3d)
 
     def __del__(self):
         pass

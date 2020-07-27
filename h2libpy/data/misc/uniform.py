@@ -1,6 +1,6 @@
-from ctypes import POINTER
 
 import h2libpy.lib.uniform as libuniform
+from h2libpy.base.cutil import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.matrix.amatrix import AMatrix
 
@@ -9,8 +9,7 @@ class Uniform(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert isinstance(cobj, POINTER(libuniform.CStructUniform))
-        self._as_parameter_ = cobj
+        super().__init__(cobj, libuniform.CStructUniform)
 
     def __del__(self):
         pass
@@ -19,25 +18,25 @@ class Uniform(StructWrapper):
 
     def __getter_rb(self) -> 'ClusterBasis':
         from h2libpy.data.basis.clusterbasis import ClusterBasis
-        return self.try_wrap(self.cobj().rb, ClusterBasis)
+        return try_wrap(self.cobj().rb, ClusterBasis)
 
     def __getter_cb(self) -> 'ClusterBasis':
         from h2libpy.data.basis.clusterbasis import ClusterBasis
-        return self.try_wrap(self.cobj().cb, ClusterBasis)
+        return try_wrap(self.cobj().cb, ClusterBasis)
 
     def __getter_S(self) -> 'AMatrix':
-        return self.try_wrap(self.cobj().S, AMatrix)
+        return try_wrap(self.cobj().S, AMatrix)
 
     def __getter_rnext(self) -> 'Uniform':
-        return self.try_wrap(self.cobj().rnext, Uniform)
+        return try_wrap(self.cobj().rnext, Uniform)
 
     def __getter_rprev(self) -> 'Uniform':
-        return self.try_wrap(self.cobj().rprev, Uniform)
+        return try_wrap(self.cobj().rprev, Uniform)
 
     def __getter_cnext(self) -> 'Uniform':
-        return self.try_wrap(self.cobj().cnext, Uniform)
+        return try_wrap(self.cobj().cnext, Uniform)
 
     def __getter_cprev(self) -> 'Uniform':
-        return self.try_wrap(self.cobj().cprev, Uniform)
+        return try_wrap(self.cobj().cprev, Uniform)
 
     # ***** Methods ******

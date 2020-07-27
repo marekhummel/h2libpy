@@ -1,7 +1,8 @@
-from ctypes import POINTER, cast, c_void_p
+from ctypes import c_void_p, cast
 
 import h2libpy.lib.bem3d as libbem3d
 import h2libpy.lib.laplacebem3d as liblaplacebem3d
+from h2libpy.base.cutil import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.geometry.surface3d import Surface3d
 from h2libpy.data.matrix.amatrix import AMatrix
@@ -16,8 +17,7 @@ class Bem3d(StructWrapper):
     # ***** Constructors / destructor *****
 
     def __init__(self, cobj):
-        assert isinstance(cobj, POINTER(libbem3d.CStructBem3d))
-        self._as_parameter_ = cobj
+        super().__init__(cobj, libbem3d.CStructBem3d)
 
     def __del__(self):
         pass
@@ -47,10 +47,10 @@ class Bem3d(StructWrapper):
     # ***** Properties *****
 
     def __getter_gr(self) -> Surface3d:
-        return self.try_wrap(self.cobj().gr, Surface3d)
+        return try_wrap(self.cobj().gr, Surface3d)
 
     def __getter_sq(self) -> SingQuad2d:
-        return self.try_wrap(self.cobj().sq, SingQuad2d)
+        return try_wrap(self.cobj().sq, SingQuad2d)
 
     def __getter_row_basis(self) -> int:
         return self.cobj().row_basis
@@ -71,13 +71,13 @@ class Bem3d(StructWrapper):
         return self.cobj().kernel_const
 
     def __getter_aprx(self) -> AprxBem3d:
-        return self.try_wrap(self.cobj().aprx, AprxBem3d)
+        return try_wrap(self.cobj().aprx, AprxBem3d)
 
     def __getter_par(self) -> ParBem3d:
-        return self.try_wrap(self.cobj().par, ParBem3d)
+        return try_wrap(self.cobj().par, ParBem3d)
 
     def __getter_kernels(self) -> KernelBem3d:
-        return self.try_wrap(self.cobj().kernels, KernelBem3d)
+        return try_wrap(self.cobj().kernels, KernelBem3d)
 
     # ***** Methods ******
 
