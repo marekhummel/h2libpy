@@ -24,16 +24,16 @@ from h2libpy.lib.util.helper import uninit
 def main():
     # Basic params
     tt = time.time()
-    q_reg = ctypes.c_uint(2)
-    q_sing = ctypes.c_uint(q_reg.value + 2)
+    q_reg = 2  # ctypes.c_uint(2)
+    q_sing = 4  # ctypes.c_uint(q_reg.value + 2)
     basis = CEnumBasisFunctionBem3d.BASIS_CONSTANT_BEM3D
-    eps_solve = ctypes.c_double(1.0E-10)
-    maxiter = ctypes.c_uint(500)
+    eps_solve = 1E-10  # ctypes.c_double(1.0E-10)
+    maxiter = 500  # ctypes.c_uint(500)
 
 
     # Geometry
     mg = new_sphere_macrosurface3d()
-    gr = build_from_macrosurface3d_surface3d(mg,  ctypes.c_uint(8))
+    gr = build_from_macrosurface3d_surface3d(mg, ctypes.c_uint(8))
     print(f'Created geometry with {gr.contents.vertices} vertices, {gr.contents.edges} edges and {gr.contents.triangles} triangles')
 
 

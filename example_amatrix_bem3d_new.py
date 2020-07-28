@@ -24,7 +24,7 @@ def main():
 
     # Geometry
     mg = MacroSurface3d.new_sphere()
-    gr = Surface3d.from_macrosurface3d(mg, 32)
+    gr = Surface3d.from_macrosurface3d(mg, 8)
     print(f'Created geometry with {gr.vertices} vertices, {gr.edges} edges and {gr.triangles} triangles')
 
 
@@ -63,7 +63,6 @@ def main():
     size = gd.size() / 1024 / 1024
     print(f'  {t:.2f} s')
     print(f'  {size:.3f} MB')
-    print(f'  {gd.norm()}')
 
     # Compute right-hand-side b = (0.5M + K)*gd
     b = AVector.new(gr.triangles)
