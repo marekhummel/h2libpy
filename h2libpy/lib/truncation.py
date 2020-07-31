@@ -2,7 +2,6 @@ from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
 from ctypes import c_bool, c_uint
 
-from h2libpy.lib.realavector import CStructRealAVector
 from h2libpy.lib.settings import real
 from h2libpy.lib.util.helper import get_func
 
@@ -13,6 +12,9 @@ class CStructTruncmode(Struct): pass
 
 
 # ------------------------
+
+
+from h2libpy.lib.realavector import CStructRealAVector
 
 
 CStructTruncmode._fields_ = [

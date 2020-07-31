@@ -2,8 +2,6 @@ from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
 from ctypes import c_bool, c_size_t, c_uint
 
-from h2libpy.lib.amatrix import CStructAMatrix
-from h2libpy.lib.avector import CStructAVector
 from h2libpy.lib.settings import field, real
 from h2libpy.lib.util.helper import get_func
 
@@ -14,6 +12,10 @@ class CStructRKMatrix(Struct): pass
 
 
 # ------------------------
+
+
+from h2libpy.lib.amatrix import CStructAMatrix
+from h2libpy.lib.avector import CStructAVector
 
 
 CStructRKMatrix._fields_ = [

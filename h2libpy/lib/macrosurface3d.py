@@ -4,7 +4,6 @@ from ctypes import Structure as Struct
 from ctypes import c_uint, c_void_p
 
 from h2libpy.lib.settings import real
-from h2libpy.lib.surface3d import CStructSurface3d
 from h2libpy.lib.util.helper import get_func
 
 # ------------------------
@@ -14,6 +13,8 @@ class CStructMacroSurface3d(Struct): pass
 
 
 # ------------------------
+
+from h2libpy.lib.surface3d import CStructSurface3d
 
 
 CFuncPhi = CFUNCTYPE(None, *[c_uint, real, real, c_void_p, real*3])

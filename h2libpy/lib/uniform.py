@@ -1,12 +1,9 @@
 from ctypes import POINTER as PTR
 from ctypes import Structure as Struct
-from ctypes import c_size_t, c_bool
+from ctypes import c_bool, c_size_t
 
-from h2libpy.lib.util.helper import get_func
 from h2libpy.lib.settings import field
-from h2libpy.lib.avector import CStructAVector
-from h2libpy.lib.clusteroperator import CStructClusterOperator
-from h2libpy.lib.rkmatrix import CStructRKMatrix
+from h2libpy.lib.util.helper import get_func
 
 # ------------------------
 
@@ -18,7 +15,10 @@ class CStructUniform(Struct): pass
 
 
 from h2libpy.lib.amatrix import CStructAMatrix
+from h2libpy.lib.avector import CStructAVector
 from h2libpy.lib.clusterbasis import CStructClusterBasis
+from h2libpy.lib.clusteroperator import CStructClusterOperator
+from h2libpy.lib.rkmatrix import CStructRKMatrix
 
 
 CStructUniform._fields_ = [

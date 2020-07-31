@@ -1,19 +1,20 @@
 code = r"""
- struct _sparsematrix {
-  /** @brief Number of rows. */
-  uint rows;
-  /** @brief Number of columns. */
-  uint cols;
-  /** @brief Number of non-zero entries. */
-  uint nz;
+struct _clustergeometry {
+struct _blockentry {
+  /** @brief block tree.*/
+  pcblock b;
+  /** @brief Number of the block tree.*/
+  uint bname;
+  /** @brief Number of the row cluster of <tt>b</tt>.*/
+  uint rname;
+  /** @brief Number of the column cluster of <tt>b</tt>.*/
+  uint cname;
+  /** @brief Pointer to the blockentry object of the father of <tt>b</tt>.*/
+  pcblockentry father;
+  /** @brief Pointer to the blockentry object of the sucessor of <tt>b</tt>.*/
+  pblockentry next;
+};
 
-  /** @brief Starting indices for row representations in @c col and
-   *  @c coeff. */
-  uint *row;
-  /** @brief Column indices of non-zero entries. */
-  uint *col;
-  /** @brief Coefficients of non-zero entries. */
-  pfield coeff;
 };
 """
 

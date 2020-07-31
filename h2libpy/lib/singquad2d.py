@@ -3,7 +3,7 @@ from ctypes import Structure as Struct
 from ctypes import c_uint
 
 from h2libpy.lib.settings import real
-from h2libpy.lib.surface3d import CStructSurface3d
+
 from h2libpy.lib.util.helper import get_func
 
 # ------------------------
@@ -13,6 +13,9 @@ class CStructSingquad2d(Struct): pass
 
 
 # ------------------------
+
+
+from h2libpy.lib.surface3d import CStructSurface3d
 
 
 CStructSingquad2d._fields_ = [

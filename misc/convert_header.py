@@ -1,27 +1,33 @@
 import re
 
 root = '../H2Lib/Library/'
-file = 'krylovsolvers.h'
+file = 'avector.h'
 
-rgx_sig = r'(?im)^(?!\s*\*)(HEADER_PREFIX )?(?P<restype>.*)(\n| )(?P<funcname>.*)\((?P<params>(?:.|\n)*?)\);$'
+rgx_sig = r'(?im)^(?!\s*\/?\*)(?:\s*HEADER_PREFIX )?(?P<restype>.*)(?:\n\s*| )(?P<funcname>.*)\((?P<params>(?:.|\n)*?)\);$'
+rgx_prms = r'(?im)(?:const )?(?P<type>\w+?)\s?(?P<ptr>\**)\s?(?P<var>\w+?),'
 
 
 def to_cstruct(type):
+    if len(type) < 1: return type
     if type not in ['real', 'field'] and not type.startswith('c_'):
         return f'CStruct{type[0].capitalize()}{type[1:]}'
     return type
 
 
 def replace_types(p):
-    ret = p.replace('void', 'c_void').replace('bool', 'c_bool') \
-            .replace('uint', 'c_uint').replace('size_t', 'c_size_t') \
-            .replace('char', 'c_char')
-    if (ret.startswith('pc') and not ret.startswith('pcluster') and not ret.startswith('pc_')):
-        ret = f'PTR({to_cstruct(ret[2:])})'
-    if ret.startswith('p'):
-        x = ret.count('p')
-        ret = 'PTR(' * x + to_cstruct(ret[x:]) + ')' * x
-
+    ctypes = {'void': 'c_void', 'bool': 'c_bool', 'uint': 'c_uint', 'size_t': 'c_size_t', 'char': 'c_char', 'int': 'c_int'}
+    ret = p
+    if (p.startswith('pc') and not p.startswith('pcluster') and not p.startswith('pchar')):
+        ret = p[2:]
+        ret = ctypes[ret] if ret in ctypes else to_cstruct(ret)
+        ret = f'PTR({ret})'
+    elif p.startswith('p'):
+        x = len(re.match(r'^(p*).*$', p).group(1))
+        ret = p[x:]
+        ret = ctypes[ret] if ret in ctypes else to_cstruct(ret)
+        ret = 'PTR(' * x + ret + ')' * x
+    else:
+        ret = ctypes[p] if p in ctypes else to_cstruct(p)
     ret = ret.replace('PTR(c_char)', 'c_char_p').replace('PTR(c_void)', 'c_void_p')
     return ret
 
@@ -33,16 +39,8 @@ with open(root + file, mode='r') as f:
         func = m.group('funcname')
 
         params = []
-        for p in m.group('params').split(','):
-            if p == '': break
-            param = p.strip().split(' ')
-            if param[0] == 'const': param = param[1:]
-            if len(param) != 2: params = ['ERROR']; break
-            type, name = param
-            while name.startswith('*'):
-                type = 'p' + type
-                name = name[1:]
-            params.append(type)
+        for p in re.finditer(rgx_prms, m.group('params') + ','):
+            params.append('p' * len(p.group('ptr')) + p.group('type'))
 
         res = replace_types(res).replace('c_void', 'None')
         params = [replace_types(p) for p in params]
