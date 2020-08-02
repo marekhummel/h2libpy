@@ -10,11 +10,11 @@ class Uniform(StructWrapper, cstruct=libuniform.CStructUniform):
     # ***** Properties *****
 
     def __getter_rb(self) -> 'ClusterBasis':
-        from h2libpy.data.basis.clusterbasis import ClusterBasis
+        from h2libpy.data.misc.clusterbasis import ClusterBasis
         return try_wrap(self.cobj().rb, ClusterBasis)
 
     def __getter_cb(self) -> 'ClusterBasis':
-        from h2libpy.data.basis.clusterbasis import ClusterBasis
+        from h2libpy.data.misc.clusterbasis import ClusterBasis
         return try_wrap(self.cobj().cb, ClusterBasis)
 
     def __getter_S(self) -> 'AMatrix':

@@ -2,7 +2,7 @@ import h2libpy.lib.bem3d as libbem3d
 from h2libpy.base.cutil import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.matrix.amatrix import AMatrix
-from h2libpy.data.tree.cluster import Cluster
+from h2libpy.data.misc.cluster import Cluster
 
 
 class GreenCluster3d(StructWrapper, cstruct=libbem3d.CStructGreenCluster3d):

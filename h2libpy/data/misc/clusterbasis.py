@@ -4,7 +4,7 @@ import h2libpy.lib.clusterbasis as libclusterbasis
 from h2libpy.base.cutil import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.matrix.amatrix import AMatrix
-from h2libpy.data.tree.cluster import Cluster
+from h2libpy.data.misc.cluster import Cluster
 
 
 class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
