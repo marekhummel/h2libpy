@@ -3,14 +3,7 @@ from h2libpy.base.cutil import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 
 
-class ListNode(StructWrapper):
-    # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libbem3d.CStructListNode)
-
-    def __del__(self):
-        pass
+class ListNode(StructWrapper, cstruct=libbem3d.CStructListNode):
 
     # ***** Properties *****
 

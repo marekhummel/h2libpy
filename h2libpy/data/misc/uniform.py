@@ -5,14 +5,7 @@ from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.matrix.amatrix import AMatrix
 
 
-class Uniform(StructWrapper):
-    # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libuniform.CStructUniform)
-
-    def __del__(self):
-        pass
+class Uniform(StructWrapper, cstruct=libuniform.CStructUniform):
 
     # ***** Properties *****
 

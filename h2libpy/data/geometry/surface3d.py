@@ -7,15 +7,8 @@ from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.geometry.macrosurface3d import MacroSurface3d
 
 
-class Surface3d(StructWrapper):
+class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
     # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libsurface3d.CStructSurface3d)
-
-    def __del__(self):
-        pass
-        # libsurface3d.del_surface3d(self)
 
     @classmethod
     def new(cls, vertices: int, edges: int, triangles: int) -> 'Surface3d':

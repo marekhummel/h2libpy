@@ -4,15 +4,7 @@ from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.problem.bem3d.vertlist import VertList
 
 
-class TriList(StructWrapper):
-    # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libbem3d.CStructTriList)
-
-    def __del__(self):
-        pass
-
+class TriList(StructWrapper, cstruct=libbem3d.CStructTriList):
     # ***** Properties *****
 
     def __getter_t(self) -> int:

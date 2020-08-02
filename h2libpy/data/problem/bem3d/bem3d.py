@@ -13,15 +13,8 @@ from h2libpy.data.problem.bem3d.singquad2d import SingQuad2d
 from h2libpy.data.vector.avector import AVector
 
 
-class Bem3d(StructWrapper):
+class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
     # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libbem3d.CStructBem3d)
-
-    def __del__(self):
-        pass
-        # libbem3d.del_bem3d(self)
 
     @classmethod
     def new(cls, gr: Surface3d, row_basis: int, col_basis: int) -> 'Bem3d':

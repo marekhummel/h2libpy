@@ -5,14 +5,8 @@ from h2libpy.data.basis.clusterbasis import ClusterBasis
 from h2libpy.data.matrix.amatrix import AMatrix
 
 
-class GreenClusterBasis3d(StructWrapper):
-    # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libbem3d.CStructGreenClusterBasis3d)
-
-    def __del__(self):
-        pass
+class GreenClusterBasis3d(StructWrapper,
+                          cstruct=libbem3d.CStructGreenClusterBasis3d):
 
     # ***** Properties *****
 

@@ -5,14 +5,9 @@ from h2libpy.base.cutil import cptr_to_list
 from h2libpy.base.structwrapper import StructWrapper
 
 
-class AMatrix(StructWrapper):
+class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
+    
     # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libamatrix.CStructAMatrix)
-
-    def __del__(self):
-        pass
 
     @classmethod
     def new(cls, rows: int, cols: int):

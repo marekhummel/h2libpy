@@ -2,14 +2,7 @@ import h2libpy.lib.truncation as libtruncation
 from h2libpy.base.structwrapper import StructWrapper
 
 
-class TruncMode(StructWrapper):
-    # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libtruncation.CStructTruncmode)
-
-    def __del__(self):
-        pass
+class TruncMode(StructWrapper, cstruct=libtruncation.CStructTruncmode):
 
     # ***** Properties *****
 

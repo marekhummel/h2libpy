@@ -1,5 +1,5 @@
 from ctypes import c_double
-from typing import Tuple
+from typing import Tuple, List
 
 import h2libpy.lib.avector as libavector
 import h2libpy.lib.amatrix as libamatrix
@@ -8,26 +8,28 @@ from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.matrix.amatrix import AMatrix
 
 
-class AVector(StructWrapper):
+class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     # ***** Constructors / destructor *****
 
-    def __init__(self, cobj):
-        super().__init__(cobj, libavector.CStructAVector)
-
-    def __del__(self):
-        pass
-        # libavector.del_avector(self)
+    @classmethod
+    def new(cls, dim: int, zero: bool = False) -> 'AVector':
+        obj = libavector.new_zero_avector(dim) if zero \
+                else libavector.new_avector(dim)
+        return cls(obj)
 
     @classmethod
-    def new(cls, dim: int):
-        return cls(libavector.new_avector(dim))
-
-    @classmethod
-    def from_subvector(cls, src: 'libavector.CStructAVector', dim: int,
-                       off: int):
+    def from_subvector(cls, src: 'AVector', dim: int,
+                       off: int) -> 'AVector':
         v = libavector.new_avector(dim)
         libavector.init_sub_avector(v, src, dim, off)
         return cls(v)
+
+    @classmethod
+    def from_list(cls, elems: List[float], dim: int = -1):
+        cdim = dim if dim != -1 else len(elems)
+        celems = (c_double * len(elems))(*elems)
+        obj = libavector.new_pointer_avector(celems, cdim)
+        return cls(obj, refs=[celems])
 
     # ***** Properties *****
 

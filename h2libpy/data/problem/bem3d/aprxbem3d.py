@@ -6,14 +6,7 @@ from h2libpy.data.problem.bem3d.greencluster3d import GreenCluster3d
 from h2libpy.data.problem.bem3d.greenclusterbasis3d import GreenClusterBasis3d
 
 
-class AprxBem3d(StructWrapper):
-    # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libbem3d.CStructAprxBem3d)
-
-    def __del__(self):
-        pass
+class AprxBem3d(StructWrapper, cstruct=libbem3d.CStructAprxBem3d):
 
     # ***** Properties *****
 

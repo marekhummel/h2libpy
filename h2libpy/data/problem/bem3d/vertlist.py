@@ -3,14 +3,7 @@ from h2libpy.base.cutil import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 
 
-class VertList(StructWrapper):
-    # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libbem3d.CStructVertList)
-
-    def __del__(self):
-        pass
+class VertList(StructWrapper, cstruct=libbem3d.CStructVertList):
 
     # ***** Properties *****
 

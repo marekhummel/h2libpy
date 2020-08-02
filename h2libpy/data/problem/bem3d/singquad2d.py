@@ -2,14 +2,7 @@ import h2libpy.lib.singquad2d as libsingquad2d
 from h2libpy.base.structwrapper import StructWrapper
 
 
-class SingQuad2d(StructWrapper):
-    # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libsingquad2d.CStructSingquad2d)
-
-    def __del__(self):
-        pass
+class SingQuad2d(StructWrapper, cstruct=libsingquad2d.CStructSingquad2d):
 
     # ***** Properties *****
 

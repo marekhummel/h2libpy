@@ -2,10 +2,18 @@ from h2libpy.base.cutil import deref
 from ctypes import POINTER
 
 
-class StructWrapper:
-    def __init__(self, cobj, cstruct):
-        assert isinstance(cobj, POINTER(cstruct))
-        self._as_parameter_ = cobj
+class StructWrapper():
+
+    def __init_subclass__(cls, *, cstruct):
+        ''' Sets default constructor for all struct wrappers.
+            All struct wrappers should accept an pointer to their corresponding
+            c struct in the constructor '''
+        def _new_init(self, cobj, refs=[]):
+            assert isinstance(cobj, POINTER(cstruct))
+            self._as_parameter_ = cobj
+            self._refs = refs
+        cls.__init__ = _new_init
+        return super().__init_subclass__()
 
     def __getattr__(self, name):
         ''' To make struct fields available in classes if an getter method

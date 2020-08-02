@@ -7,14 +7,7 @@ from h2libpy.data.matrix.amatrix import AMatrix
 from h2libpy.data.tree.cluster import Cluster
 
 
-class ClusterBasis(StructWrapper):
-    # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libclusterbasis.CStructClusterBasis)
-
-    def __del__(self):
-        pass
+class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
 
     # ***** Properties *****
 

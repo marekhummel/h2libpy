@@ -4,14 +4,7 @@ from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.problem.bem3d.bem3d import Bem3d
 
 
-class CompData(StructWrapper):
-    # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libbem3d.CStructCompData)
-
-    def __del__(self):
-        pass
+class CompData(StructWrapper, cstruct=libbem3d.CStructCompData):
 
     # ***** Properties *****
 

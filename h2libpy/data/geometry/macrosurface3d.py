@@ -5,15 +5,9 @@ from h2libpy.base.cutil import carray_to_tuple, cptr_to_list
 from h2libpy.base.structwrapper import StructWrapper
 
 
-class MacroSurface3d(StructWrapper):
+class MacroSurface3d(StructWrapper,
+                     cstruct=libmacrosurface3d.CStructMacroSurface3d):
     # ***** Constructors / destructor *****
-
-    def __init__(self, cobj):
-        super().__init__(cobj, libmacrosurface3d.CStructMacroSurface3d)
-
-    def __del__(self):
-        pass
-        # libmacrosurface3d.del_macrosurface3d(self)
 
     @classmethod
     def new(cls, vertices: int, edges: int, triangles: int) \
