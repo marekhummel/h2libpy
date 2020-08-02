@@ -13,3 +13,7 @@ def carray_to_tuple(carray):
 def try_wrap(obj, wrapperclass):
     ''' Trys to wrap c object in corresponding wrapper class '''
     return wrapperclass(obj) if obj else None
+
+
+def is_scalar(obj):
+    return isinstance(obj, int) or isinstance(obj, float)

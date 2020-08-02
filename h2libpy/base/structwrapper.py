@@ -1,4 +1,4 @@
-from h2libpy.base.cutil import deref
+from h2libpy.base.util import deref
 from ctypes import POINTER
 
 

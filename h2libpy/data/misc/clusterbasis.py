@@ -1,7 +1,7 @@
 from ctypes import pointer
 
 import h2libpy.lib.clusterbasis as libclusterbasis
-from h2libpy.base.cutil import try_wrap
+from h2libpy.base.util import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.matrix.amatrix import AMatrix
 from h2libpy.data.misc.cluster import Cluster

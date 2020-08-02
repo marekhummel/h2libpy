@@ -1,7 +1,7 @@
 from typing import List
 
 import h2libpy.lib.amatrix as libamatrix
-from h2libpy.base.cutil import cptr_to_list
+from h2libpy.base.util import cptr_to_list
 from h2libpy.base.structwrapper import StructWrapper
 
 

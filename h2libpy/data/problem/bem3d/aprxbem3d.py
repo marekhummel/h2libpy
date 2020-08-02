@@ -1,5 +1,5 @@
 import h2libpy.lib.bem3d as libbem3d
-from h2libpy.base.cutil import try_wrap
+from h2libpy.base.util import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.misc.truncmode import TruncMode
 from h2libpy.data.problem.bem3d.greencluster3d import GreenCluster3d

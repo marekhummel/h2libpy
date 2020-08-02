@@ -65,18 +65,16 @@ def main():
     print(f'  {size:.3f} MB')
 
     # Compute right-hand-side b = (0.5M + K)*gd
-    b = AVector.new(gr.triangles)
+    b = AVector.new(gr.triangles, zeros=True)
     print('Compute right-hand-side:')
     start = time.time()
-    b.clear()
     b.addeval_matrix(1.0, KM, gd)
     t = time.time() - start
     size = b.size() / 1024 / 1024
     print(f'  {t:.2f} s')
 
     # Solve linear system V x = b using CG-method.
-    x = AVector.new(gr.triangles)
-    x.clear()  # TBD !
+    x = AVector.new(gr.triangles, zeros=True)
     print('Solve linear system:')
     start = time.time()
     krylov.solve_cg_amatrix_avector(V, b, x, eps_solve, maxiter)

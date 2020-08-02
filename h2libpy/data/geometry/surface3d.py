@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 import h2libpy.lib.macrosurface3d as libmacrosurface3d
 import h2libpy.lib.surface3d as libsurface3d
-from h2libpy.base.cutil import carray_to_tuple, cptr_to_list, deref
+from h2libpy.base.util import carray_to_tuple, cptr_to_list, deref
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.geometry.macrosurface3d import MacroSurface3d
 

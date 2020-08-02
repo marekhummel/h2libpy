@@ -2,7 +2,7 @@ from ctypes import c_void_p, cast
 
 import h2libpy.lib.bem3d as libbem3d
 import h2libpy.lib.laplacebem3d as liblaplacebem3d
-from h2libpy.base.cutil import try_wrap
+from h2libpy.base.util import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.geometry.surface3d import Surface3d
 from h2libpy.data.matrix.amatrix import AMatrix
@@ -50,9 +50,6 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
 
     def __getter_col_basis(self) -> int:
         return self.cobj().col_basis
-
-    # def __getter_mass(self) -> int:
-    #     return deref(self.cobj().mass)
 
     def __getter_alpha(self) -> float:
         return self.cobj().alpha

@@ -1,6 +1,6 @@
 
 import h2libpy.lib.uniform as libuniform
-from h2libpy.base.cutil import try_wrap
+from h2libpy.base.util import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.data.matrix.amatrix import AMatrix
 
