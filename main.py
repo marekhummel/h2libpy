@@ -1,19 +1,11 @@
+from h2libpy.data.matrix.amatrix import AMatrix, NormType, FillType, ClearType
 from h2libpy.data.vector.avector import AVector
 
 
-v = AVector.from_list([1, 2, 3])
-print(v.v)
-
-v2 = AVector.from_list([5, 6, 7])
-v.copy(v2)
-v2.scale(3)
-print(v2.v)
-
-v3 = v - v2
-print(v3.v)
-# print(v3.v)
-# print(v3[0], v3[1], v3[2])
-v4 = -v
-print(v4.v)
-
-print(v)
+a = AMatrix.from_list([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 3)
+# print(a.a)
+# a.print()
+b = AMatrix.from_submatrix(a, 2, 3, 1, 0)
+print(b.a)
+b.print()
+# print(b.ld)
