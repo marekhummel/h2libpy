@@ -10,6 +10,10 @@ def carray_to_tuple(carray):
     return tuple(carray[:])
 
 
+def pylist_to_ptr(lst, ctype):
+    return (ctype * len(lst))(*lst)
+
+
 def try_wrap(obj, wrapperclass):
     ''' Trys to wrap c object in corresponding wrapper class '''
     return wrapperclass(obj) if obj else None

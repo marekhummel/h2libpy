@@ -1,11 +1,10 @@
-from ctypes import c_double
-from typing import Tuple, List
+from typing import List, Tuple
 
-import h2libpy.lib.avector as libavector
 import h2libpy.lib.amatrix as libamatrix
-from h2libpy.base.util import cptr_to_list, is_scalar
+import h2libpy.lib.avector as libavector
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.data.matrix.amatrix import AMatrix
+from h2libpy.base.util import cptr_to_list, is_scalar, pylist_to_ptr
+from h2libpy.lib.settings import field
 
 
 class AVector(StructWrapper, cstruct=libavector.CStructAVector):
@@ -25,9 +24,9 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
         return cls(v)
 
     @classmethod
-    def from_list(cls, elems: List[float], dim: int = -1):
+    def from_list(cls, elems: List[float], *, dim: int = -1):
         cdim = dim if dim != -1 else len(elems)
-        celems = (c_double * len(elems))(*elems)
+        celems = pylist_to_ptr(elems, field)
         obj = libavector.new_pointer_avector(celems, cdim)
         return cls(obj, refs=[celems])
 
@@ -47,11 +46,11 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     def shrink(self, dim: int):
         libavector.shrink_avector(self, dim)
 
-    def size(self) -> int:
-        return libavector.getsize_avector(self)
-
-    def heapsize(self) -> int:
-        return libavector.getsize_heap_avector(self)
+    def size(self, heaponly: bool = False) -> int:
+        if heaponly:
+            return libavector.getsize_heap_avector(self)
+        else:
+            return libavector.getsize_avector(self)
 
     def clear(self):
         libavector.clear_avector(self)
@@ -91,6 +90,12 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     def addeval_matrix(self, alpha: float, a: 'AMatrix', src: 'AVector'):
         libamatrix.addeval_amatrix_avector(alpha, a, src, self)
 
+    def addevaltrans_amatrix_avector(self):
+        pass
+
+    def mvm_amatrix_avector(self):
+        pass
+    
     # ***** Operators ******
 
     def __add__(self, rhs):
