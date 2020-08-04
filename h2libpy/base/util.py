@@ -21,3 +21,8 @@ def try_wrap(obj, wrapperclass):
 
 def is_scalar(obj):
     return isinstance(obj, int) or isinstance(obj, float)
+
+
+def verify_type(obj, types):
+    if not any(isinstance(obj, t) for t in types):
+        raise TypeError(f'Invalid type for parameter, expected any of {types}')

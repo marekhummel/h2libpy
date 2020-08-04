@@ -3,7 +3,8 @@ from typing import List
 
 import h2libpy.lib.amatrix as libamatrix
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.base.util import cptr_to_list, pylist_to_ptr, try_wrap
+from h2libpy.base.util import (cptr_to_list, pylist_to_ptr, try_wrap,
+                               verify_type)
 from h2libpy.data.matrix.enums import ClearType, FillType, NormType
 from h2libpy.lib.settings import field
 
@@ -35,7 +36,7 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     # ***** Properties *****
 
     def __getter_a(self) -> List[float]:
-        last_coeff = (self.rows-1) + (self.cols-1) * self.ld
+        last_coeff = (self.rows - 1) + (self.cols - 1) * self.ld
         coeffs = cptr_to_list(self.cobj().a, last_coeff + 1)
         return [[coeffs[i + j * self.ld] for i in range(self.rows)]
                 for j in range(self.cols)]
@@ -142,3 +143,64 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         libamatrix.bidiagmul_amatrix(alpha, trans, self, dia, lo)
 
     # ***** Operators ******
+
+    def __add__(self, rhs):
+        verify_type(rhs, [AMatrix])
+        a = self.clone()
+        a.add(rhs)
+        return a
+
+    def __sub__(self, rhs):
+        verify_type(rhs, [AMatrix])
+        a = self.clone()
+        a.add(rhs, -1)
+        return a
+
+    def __mul__(self, rhs):
+        verify_type(rhs, [int, float])
+        a = self.clone()
+        a.scale(rhs)
+        return a
+
+    def __matmul__(self, rhs):
+        verify_type(rhs, [AMatrix])
+        a = AMatrix.new(self.rows, self.cols, fill=FillType.Zeros)
+        a.addmul(1.0, self, rhs, False, False)
+        return a
+
+    def __rmul__(self, lhs):
+        return self * lhs
+
+    def __neg__(self):
+        return -1 * self
+
+    def __getitem__(self, index):
+        if index not in range(self.cols):
+            raise ValueError('Index out of range.')
+        return self.a[index]
+
+    def __eq__(self, other):
+        if self.cols != other.cols or self.rows != other.rows:
+            return False
+        return self.a == other.a
+
+    def __len__(self):
+        return self.cols * self.rows
+
+    def __iadd__(self, rhs):
+        verify_type(rhs, [AMatrix])
+        self.add(rhs)
+        return self
+
+    def __isub__(self, rhs):
+        verify_type(rhs, [AMatrix])
+        self.add(rhs, -1)
+        return self
+
+    def __imul__(self, rhs):
+        verify_type(rhs, [int, float])
+        self.scale(rhs)
+        return self
+
+    def __str__(self):
+        return str(self.a)

@@ -3,7 +3,8 @@ from typing import List, Tuple
 import h2libpy.lib.amatrix as libamatrix
 import h2libpy.lib.avector as libavector
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.base.util import cptr_to_list, is_scalar, pylist_to_ptr
+from h2libpy.base.util import (cptr_to_list, is_scalar, pylist_to_ptr,
+                               verify_type)
 from h2libpy.lib.settings import field
 
 
@@ -13,7 +14,7 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     @classmethod
     def new(cls, dim: int, *, zeros: bool = False) -> 'AVector':
         obj = libavector.new_zero_avector(dim) if zeros \
-                else libavector.new_avector(dim)
+            else libavector.new_avector(dim)
         return cls(obj)
 
     @classmethod
@@ -82,7 +83,7 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     def dot(self, other: 'AVector') -> float:
         return libavector.dotprod_avector(self, other)
 
-    def add(self, other: 'AVector', alpha: float):
+    def add(self, other: 'AVector', alpha: float = 1.0):
         libavector.add_avector(alpha, other, self)
 
     # -------
@@ -95,36 +96,31 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
 
     def mvm_amatrix_avector(self):
         pass
-    
+
     # ***** Operators ******
 
     def __add__(self, rhs):
-        if isinstance(rhs, AVector):
-            v = AVector.new(self.dim, zeros=True)
-            v.add(self, 1)
-            v.add(rhs, 1)
-            return v
-        else:
-            raise TypeError('Invalid type for second operator')
+        verify_type(rhs, [AVector])
+        v = AVector.new(self.dim, zeros=True)
+        v.add(self)
+        v.add(rhs)
+        return v
 
     def __sub__(self, rhs):
-        if isinstance(rhs, AVector):
-            v = AVector.new(self.dim, zeros=True)
-            v.add(self, 1)
-            v.add(rhs, -1)
-            return v
-        else:
-            raise TypeError('Invalid type for second operator')
+        verify_type(rhs, [AVector])
+        v = AVector.new(self.dim, zeros=True)
+        v.add(self)
+        v.add(rhs, -1)
+        return v
 
     def __mul__(self, rhs):
+        verify_type(rhs, [AVector, int, float])
         if isinstance(rhs, AVector):
             return self.dot(rhs)
         elif is_scalar(rhs):
             v = AVector.new(self.dim, zeros=True)
             v.add(self, rhs)
             return v
-        else:
-            raise TypeError('Invalid type for second operator')
 
     def __rmul__(self, lhs):
         return self * lhs
@@ -135,11 +131,32 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
         return v
 
     def __getitem__(self, index):
-        if index not in range(0, self.dim):
+        if index not in range(self.dim):
             raise ValueError('Index out of range.')
         return self.v[index]
 
     def __eq__(self, other):
         if self.dim != other.dim:
             return False
-        return all(self[i] == other[i] for i in range(self.dim))
+        return self.v == other.v
+
+    def __len__(self):
+        return self.dim
+
+    def __iadd__(self, rhs):
+        verify_type(rhs, [AVector])
+        self.add(rhs)
+        return self
+
+    def __isub__(self, rhs):
+        verify_type(rhs, [AVector])
+        self.add(rhs, -1)
+        return self
+
+    def __imul__(self, rhs):
+        verify_type(rhs, [int, float])
+        self.scale(rhs)
+        return self
+
+    def __str__(self):
+        return str(self.v)
