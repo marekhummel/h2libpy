@@ -41,7 +41,7 @@ from h2libpy.lib.dh2matrix import CStructDH2Matrix
 from h2libpy.lib.h2matrix import CStructH2Matrix
 from h2libpy.lib.hmatrix import CStructHMatrix
 from h2libpy.lib.realavector import CStructRealAVector
-from h2libpy.lib.rkmatrix import CStructRKMatrix
+from h2libpy.lib.rkmatrix import CStructRkMatrix
 from h2libpy.lib.singquad2d import CStructSingquad2d
 from h2libpy.lib.sparsematrix import CStructSparseMatrix
 from h2libpy.lib.surface3d import CStructSurface3d
@@ -53,7 +53,7 @@ CFuncBoundaryFunc3d = CFUNCTYPE(field, *[PTR(real), PTR(real), c_void_p])
 CFuncKernelFunc3d = CFUNCTYPE(field, *[PTR(real), PTR(real), PTR(real), PTR(real), c_void_p])
 CFuncKernelWaveFunc3d = CFUNCTYPE(field, *[PTR(real), PTR(real), PTR(real), PTR(real), PTR(real), c_void_p])
 CFuncNearField = CFUNCTYPE(None, *[PTR(c_uint), PTR(c_uint), PTR(CStructBem3d), c_bool, PTR(CStructAMatrix)])
-CFuncFarFieldRk = CFUNCTYPE(None, *[PTR(CStructCluster), c_uint, PTR(CStructCluster), c_uint, PTR(CStructBem3d), PTR(CStructRKMatrix)])
+CFuncFarFieldRk = CFUNCTYPE(None, *[PTR(CStructCluster), c_uint, PTR(CStructCluster), c_uint, PTR(CStructBem3d), PTR(CStructRkMatrix)])
 CFuncFarFieldU = CFUNCTYPE(None, *[c_uint, c_uint, c_uint, PTR(CStructBem3d)])
 CFuncLeafRowCol = CFUNCTYPE(None, *[c_uint, PTR(CStructBem3d)])
 CFuncTransferRowCol = CFuncLeafRowCol
@@ -341,6 +341,6 @@ projectL2_bem3d_c_avector = get_func('projectL2_bem3d_c_avector', None, [PTR(CSt
 projectL2_bem3d_l_avector = get_func('projectL2_bem3d_l_avector', None, [PTR(CStructBem3d), CFuncBoundaryFunc3d, PTR(CStructAVector), c_void_p])
 setup_vertex_to_triangle_map_bem3d = get_func('setup_vertex_to_triangle_map_bem3d', None, [PTR(CStructBem3d)])
 build_bem3d_cube_quadpoints = get_func('build_bem3d_cube_quadpoints', None, [PTR(CStructBem3d), real*3, real*3, real, PTR(PTR(real*3)), PTR(PTR(real*3))])
-build_bem3d_rkmatrix = get_func('build_bem3d_rkmatrix', PTR(CStructRKMatrix), [PTR(CStructCluster), PTR(CStructCluster), c_void_p])
+build_bem3d_rkmatrix = get_func('build_bem3d_rkmatrix', PTR(CStructRkMatrix), [PTR(CStructCluster), PTR(CStructCluster), c_void_p])
 build_bem3d_amatrix = get_func('build_bem3d_amatrix', PTR(CStructAMatrix), [PTR(CStructCluster), PTR(CStructCluster), c_void_p])
 build_bem3d_curl_sparsematrix = get_func('build_bem3d_curl_sparsematrix', None, [PTR(CStructBem3d), PTR(PTR(CStructSparseMatrix)), PTR(PTR(CStructSparseMatrix)), PTR(PTR(CStructSparseMatrix))])

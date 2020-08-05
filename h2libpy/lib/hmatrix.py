@@ -17,14 +17,14 @@ from h2libpy.lib.amatrix import CStructAMatrix
 from h2libpy.lib.avector import CStructAVector
 from h2libpy.lib.block import CStructBlock
 from h2libpy.lib.cluster import CStructCluster
-from h2libpy.lib.rkmatrix import CStructRKMatrix
+from h2libpy.lib.rkmatrix import CStructRkMatrix
 from h2libpy.lib.sparsematrix import CStructSparseMatrix
 
 
 CStructHMatrix._fields_ = [
     ('rc', PTR(CStructCluster)),
     ('cc', PTR(CStructCluster)),
-    ('r', PTR(CStructRKMatrix)),
+    ('r', PTR(CStructRkMatrix)),
     ('f', PTR(CStructAMatrix)),
     ('son', PTR(PTR(CStructHMatrix))),
     ('rsons', c_uint),

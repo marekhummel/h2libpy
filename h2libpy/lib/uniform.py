@@ -18,7 +18,7 @@ from h2libpy.lib.amatrix import CStructAMatrix
 from h2libpy.lib.avector import CStructAVector
 from h2libpy.lib.clusterbasis import CStructClusterBasis
 from h2libpy.lib.clusteroperator import CStructClusterOperator
-from h2libpy.lib.rkmatrix import CStructRKMatrix
+from h2libpy.lib.rkmatrix import CStructRkMatrix
 
 
 CStructUniform._fields_ = [
@@ -49,4 +49,4 @@ random_uniform = get_func('random_uniform', None, [PTR(CStructUniform)])
 mvm_uniform_avector = get_func('mvm_uniform_avector', None, [field, c_bool, PTR(CStructUniform), PTR(CStructAVector), PTR(CStructAVector)])
 add_projected_uniform = get_func('add_projected_uniform', None, [PTR(CStructUniform), PTR(CStructClusterOperator), PTR(CStructClusterOperator), PTR(CStructUniform)])
 project_inplace_uniform = get_func('project_inplace_uniform', None, [PTR(CStructUniform), PTR(CStructClusterBasis), PTR(CStructClusterOperator), PTR(CStructClusterBasis), PTR(CStructClusterOperator)])
-add_rkmatrix_uniform = get_func('add_rkmatrix_uniform', None, [PTR(CStructRKMatrix), PTR(CStructUniform)])
+add_rkmatrix_uniform = get_func('add_rkmatrix_uniform', None, [PTR(CStructRkMatrix), PTR(CStructUniform)])

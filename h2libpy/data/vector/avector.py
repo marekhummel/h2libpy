@@ -4,6 +4,7 @@ import h2libpy.lib.amatrix as libamatrix
 import h2libpy.lib.avector as libavector
 import h2libpy.lib.hmatrix as libhmatrix
 import h2libpy.lib.sparsematrix as libsparsematrix
+import h2libpy.lib.rkmatrix as librkmatrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import (cptr_to_list, is_scalar, pylist_to_ptr,
                                verify_type)
@@ -133,6 +134,18 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     def mvm_sparsematrix_avector(self, alpha: float, trans: bool,
                                  a: 'SparseMatrix', src: 'AVector'):
         libsparsematrix.mvm_sparsematrix_avector(alpha, trans, a, src, self)
+
+    def addeval_rkmatrix_avector(self, alpha: float, a: 'RkMatrix',
+                                 src: 'AVector'):
+        librkmatrix.addeval_rkmatrix_avector(alpha, a, src, self)
+
+    def addevaltrans_rkmatrix_avector(self, alpha: float,
+                                      a: 'RkMatrix', src: 'AVector'):
+        librkmatrix.addevaltrans_rkmatrix_avector(alpha, a, src, self)
+
+    def mvm_rkmatrix_avector(self, alpha: float, trans: bool,
+                             a: 'RkMatrix', src: 'AVector'):
+        librkmatrix.mvm_rkmatrix_avector(alpha, trans, a, src, self)
 
     # ***** Operators ******
 
