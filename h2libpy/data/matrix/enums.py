@@ -19,3 +19,9 @@ class NormType(Enum):
     Spectral = 0
     Frobenius = 1
     SquaredFrobenius = 2
+
+
+class SizePart(Enum):
+    All = 0,
+    Near = 1,
+    Far = 2

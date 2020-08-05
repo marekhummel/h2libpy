@@ -2,6 +2,7 @@ from typing import List, Tuple
 
 import h2libpy.lib.amatrix as libamatrix
 import h2libpy.lib.avector as libavector
+import h2libpy.lib.hmatrix as libhmatrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import (cptr_to_list, is_scalar, pylist_to_ptr,
                                verify_type)
@@ -88,14 +89,37 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
 
     # -------
 
-    def addeval_matrix(self, alpha: float, a: 'AMatrix', src: 'AVector'):
+    def addeval_amatrix_avector(self, alpha: float, a: 'AMatrix',
+                                src: 'AVector'):
         libamatrix.addeval_amatrix_avector(alpha, a, src, self)
 
-    def addevaltrans_amatrix_avector(self):
-        pass
+    def addevaltrans_amatrix_avector(self, alpha: float,
+                                     a: 'AMatrix', src: 'AVector'):
+        libamatrix.addevaltrans_amatrix_avector(alpha, a, src, self)
 
-    def mvm_amatrix_avector(self):
-        pass
+    def mvm_amatrix_avector(self, alpha: float, trans: bool,
+                            a: 'AMatrix', src: 'AVector'):
+        libamatrix.mvm_amatrix_avector(alpha, trans, a, src, self)
+
+    def mvm_hmatrix_avector(self, alpha: float, trans: bool,
+                            h: 'HMatrix', src: 'AVector'):
+        libhmatrix.mvm_hmatrix_avector(alpha, trans, h, src, self)
+
+    def fastaddeval_hmatrix_avector(self, alpha: float, h: 'HMatrix',
+                                    src: 'AVector'):
+        libhmatrix.fastaddeval_hmatrix_avector(alpha, h, src, self)
+
+    def addeval_hmatrix_avector(self, alpha: float, h: 'HMatrix',
+                                src: 'AVector'):
+        libhmatrix.addeval_hmatrix_avector(alpha, h, src, self)
+
+    def fastaddevaltrans_hmatrix_avector(self, alpha: float, h: 'HMatrix',
+                                         src: 'AVector'):
+        libamatrix.fastaddevaltrans_hmatrix_avector(alpha, a, src, self)
+
+    def addevaltrans_hmatrix_avector(self, alpha: float, h: 'HMatrix',
+                                     src: 'AVector'):
+        libamatrix.addevaltrans_hmatrix_avector(alpha, a, src, self)
 
     # ***** Operators ******
 
