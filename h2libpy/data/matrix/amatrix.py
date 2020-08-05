@@ -2,10 +2,12 @@ from ctypes import c_uint
 from typing import List
 
 import h2libpy.lib.amatrix as libamatrix
+import h2libpy.lib.sparsematrix as libsparsematrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import (cptr_to_list, pylist_to_ptr, try_wrap,
                                verify_type)
 from h2libpy.data.matrix.enums import ClearType, FillType, NormType
+from h2libpy.data.matrix.sparsematrix import SparseMatrix
 from h2libpy.lib.settings import field
 
 
@@ -131,8 +133,14 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     def norm2_diff(self, other: 'AMatrix') -> float:
         return libamatrix.norm2diff_amatrix(self, other)
 
-    def add(self, other: 'AMatrix', alpha: float = 1.0, trans: bool = False):
-        libamatrix.add_amatrix(alpha, trans, other, self)
+    def add(self, other: Union['AMatrix', 'SparseMatrix'],
+            alpha: float = 1.0, trans: bool = False):
+        if isinstance(other, AMatrix):
+            libamatrix.add_amatrix(alpha, trans, other, self)
+        elif isinstance(other, SparseMatrix):
+            libsparsematrix.add_sparsematrix_amatrix(alpha, trans, other, self)
+        else:
+            raise ValueError('AMatrix or SparseMatrix expected.')
 
     def addmul(self, alpha: float, a: 'AMatrix', b: 'AMatrix',
                trans_a: bool, trans_b: bool):
