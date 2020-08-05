@@ -2,12 +2,14 @@ from ctypes import c_uint
 from typing import List
 
 import h2libpy.lib.amatrix as libamatrix
+import h2libpy.lib.h2matrix as libh2matrix
 import h2libpy.lib.sparsematrix as libsparsematrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import (cptr_to_list, pylist_to_ptr, try_wrap,
                                verify_type)
 from h2libpy.data.matrix.enums import ClearType, FillType, NormType
 from h2libpy.data.matrix.sparsematrix import SparseMatrix
+from h2libpy.data.misc.clusterbasis import ClusterBasis
 from h2libpy.lib.settings import field
 
 
@@ -149,6 +151,29 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     def bidiagmul(self, alpha: float, trans: bool,
                   dia: 'AVector', lo: 'AVector'):
         libamatrix.bidiagmul_amatrix(alpha, trans, self, dia, lo)
+
+    # ---------
+
+    def fastaddmul_h2matrix_amatrix_amatrix(self, alpha: float, trans: bool,
+                                            a: 'H2Matrix', b: 'AMatrix'):
+        func = libh2matrix.fastaddmul_h2matrix_amatrix_amatrix
+        func(alpha, trans, a, b, self)
+
+    def addmul_h2matrix_amatrix_amatrix(
+            self, alpha: float, a: 'H2Matrix', b: 'AMatrix',
+            trans_a: bool, trans_b: bool):
+        func = libh2matrix.addmul_h2matrix_amatrix_amatrix
+        func(alpha, trans_a, a, trans_b, b, self)
+
+    def addmul_amatrix_h2matrix_amatrix(
+            self, alpha: float, a: 'AMatrix', b: 'H2Matrix',
+            trans_a: bool, trans_b: bool):
+        func = libh2matrix.addmul_amatrix_h2matrix_amatrix
+        func(alpha, trans_a, a, trans_b, b, self)
+
+    def collectdense(self, a: 'AMatrix', rb: 'ClusterBasis',
+                     cb: 'ClusterBasis'):
+        libh2matrix.collectdense_h2matrix(a, rb, cb, self)
 
     # ***** Operators ******
 

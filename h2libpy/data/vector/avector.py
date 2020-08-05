@@ -147,6 +147,26 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
                              a: 'RkMatrix', src: 'AVector'):
         librkmatrix.mvm_rkmatrix_avector(alpha, trans, a, src, self)
 
+    def mvm_h2matrix_avector(self, alpha: float, trans: bool,
+                             h: 'H2Matrix', src: 'AVector'):
+        libh2matrix.mvm_h2matrix_avector(alpha, trans, h, src, self)
+
+    def fastaddeval_h2matrix_avector(self, alpha: float, h: 'H2Matrix',
+                                     src: 'AVector'):
+        libh2matrix.fastaddeval_h2matrix_avector(alpha, h, src, self)
+
+    def addeval_h2matrix_avector(self, alpha: float, h: 'H2Matrix',
+                                 src: 'AVector'):
+        libh2matrix.addeval_h2matrix_avector(alpha, h, src, self)
+
+    def fastaddevaltrans_h2matrix_avector(self, alpha: float, h: 'H2Matrix',
+                                          src: 'AVector'):
+        libamatrix.fastaddevaltrans_h2matrix_avector(alpha, h, src, self)
+
+    def addevaltrans_h2matrix_avector(self, alpha: float, h: 'H2Matrix',
+                                      src: 'AVector'):
+        libamatrix.addevaltrans_h2matrix_avector(alpha, h, src, self)
+
     # ***** Operators ******
 
     def __add__(self, rhs):

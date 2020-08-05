@@ -87,12 +87,12 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
     def unref(self):
         libhmatrix.unref_hmatrix(self)
 
-    def size(self, *, part: 'SizePart' = SizePart.All):
+    def size(self, *, part: 'SizePart' = SizePart.Total):
         if part == SizePart.Near:
             return libhmatrix.getnearsize_hmatrix(self)
         elif part == SizePart.Far:
             return libhmatrix.getfarsize_hmatrix(self)
-        else:  # part == SizePart.All
+        else:  # part == SizePart.Total || part == SizePart.Object:
             return libhmatrix.getsize_hmatrix(self)
 
     def clear(self, *, clear_type: 'ClearType' = ClearType.All):
@@ -116,7 +116,8 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
 
     def enumerate(self, b: 'Block') -> List['HMatrix']:
         ptr = libhmatrix.enumerate_hmatrix(b, self)
-        return cptr_to_list(ptr, b.desc)
+        lst = cptr_to_list(ptr, b.desc)
+        return [try_wrap(cs, HMatrix) for cs in lst]
 
     def norm(self):
         return libhmatrix.norm2_hmatrix(self)

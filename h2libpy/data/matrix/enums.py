@@ -22,6 +22,14 @@ class NormType(Enum):
 
 
 class SizePart(Enum):
-    All = 0,
-    Near = 1,
+    Total = 0
+    Near = 1
     Far = 2
+    Object = 3
+
+
+class H2FillType(Enum):
+    Nothing = 0
+    Zero = 1
+    Uniform = 2
+    Full = 3

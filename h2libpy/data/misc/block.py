@@ -7,3 +7,7 @@ class Block(StructWrapper, cstruct=libblock.CStructBlock):
     @classmethod
     def from_hmatrix(cls):
         pass
+
+    @classmethod
+    def from_h2matrix(cls):
+        pass
