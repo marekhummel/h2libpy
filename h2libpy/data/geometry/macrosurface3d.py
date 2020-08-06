@@ -19,6 +19,24 @@ class MacroSurface3d(StructWrapper,
     def new_sphere(cls) -> 'MacroSurface3d':
         return cls(libmacrosurface3d.new_sphere_macrosurface3d())
 
+    @classmethod
+    def new_parabolic_mirror(cls) -> 'MacroSurface3d':
+        return cls(libmacrosurface3d.new_parabolic_mirror_macrosurface3d())
+
+    @classmethod
+    def new_cuboid(cls) -> 'MacroSurface3d':
+        return cls(libmacrosurface3d.new_cuboid_macrosurface3d())
+
+    @classmethod
+    def new_cube(cls, ax: float, bx: float, ay: float, by: float,
+                 az: float, bz: float) -> 'MacroSurface3d':
+        obj = libmacrosurface3d.new_cube_macrosurface3d(ax, bx, ay, by, az, bz)
+        return cls(obj)
+
+    @classmethod
+    def new_cylinder(cls) -> 'MacroSurface3d':
+        return cls(libmacrosurface3d.new_cylinder_macrosurface3d())
+
     # ***** Properties *****
 
     def __getter_vertices(self) -> int:
@@ -45,5 +63,3 @@ class MacroSurface3d(StructWrapper,
     def __getter_s(self) -> List[Tuple[int, int, int]]:
         vs = cptr_to_list(self.cobj().s, self.triangles)
         return [carray_to_tuple(v) for v in vs]
-
-    # ***** Methods ******
