@@ -1,37 +1,37 @@
 from ctypes import pointer
 from typing import List
 
+import h2libpy.data.matrix as mat
+import h2libpy.data.misc as misc
 import h2libpy.lib.hmatrix as libhmatrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import cptr_to_list, try_wrap
-from h2libpy.data.matrix.amatrix import AMatrix
 from h2libpy.data.matrix.enums import ClearType, SizePart
-from h2libpy.data.matrix.rkmatrix import RkMatrix
-from h2libpy.data.misc.cluster import Cluster
 
 
 class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
     # ***** Constructors / destructor *****
 
     @classmethod
-    def new(cls, rc: 'Cluster', cc: 'Cluster') -> 'HMatrix':
+    def new(cls, rc: 'misc.Cluster', cc: 'misc.Cluster') -> 'mat.HMatrix':
         return cls(libhmatrix.new_hmatrix(rc, cc))
 
     @classmethod
-    def new_rk(cls, rc: 'Cluster', cc: 'Cluster', k: int) -> 'HMatrix':
+    def new_rk(cls, rc: 'misc.Cluster', cc: 'misc.Cluster', k: int) \
+            -> 'mat.HMatrix':
         return cls(libhmatrix.new_rk_hmatrix(rc, cc, k))
 
     @classmethod
-    def new_full(cls, rc: 'Cluster', cc: 'Cluster') -> 'HMatrix':
+    def new_full(cls, rc: 'misc.Cluster', cc: 'misc.Cluster') -> 'mat.HMatrix':
         return cls(libhmatrix.new_full_hmatrix(rc, cc))
 
     @classmethod
-    def new_super(cls, rc: 'Cluster', cc: 'Cluster',
-                  rsons: int, csons: int) -> 'HMatrix':
+    def new_super(cls, rc: 'misc.Cluster', cc: 'misc.Cluster',
+                  rsons: int, csons: int) -> 'mat.HMatrix':
         return cls(libhmatrix.new_super_hmatrix(rc, cc, rsons, csons))
 
     @classmethod
-    def from_block(cls, b: 'Block', k: int) -> 'HMatrix':
+    def from_block(cls, b: 'Block', k: int) -> 'mat.HMatrix':
         return cls(libhmatrix.build_from_block_hmatrix(b, k))
 
     @classmethod
@@ -43,19 +43,19 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
 
     # ***** Properties *****
 
-    def __getter_rc(self) -> 'Cluster':
-        return try_wrap(self.cobj().rc, Cluster)
+    def __getter_rc(self) -> 'misc.Cluster':
+        return try_wrap(self.cobj().rc, misc.Cluster)
 
-    def __getter_cc(self) -> 'Cluster':
-        return try_wrap(self.cobj().cc, Cluster)
+    def __getter_cc(self) -> 'misc.Cluster':
+        return try_wrap(self.cobj().cc, misc.Cluster)
 
-    def __getter_r(self) -> 'RkMatrix':
-        return try_wrap(self.cobj().r, RkMatrix)
+    def __getter_r(self) -> 'mat.RkMatrix':
+        return try_wrap(self.cobj().r, mat.RkMatrix)
 
-    def __getter_f(self) -> 'AMatrix':
-        return try_wrap(self.cobj().f, AMatrix)
+    def __getter_f(self) -> 'mat.AMatrix':
+        return try_wrap(self.cobj().f, mat.AMatrix)
 
-    # def __getter_sons(self) -> List['HMatrix']:
+    # def __getter_sons(self) -> List['mat.HMatrix']:
     #     lst = cptr_to_list(self.cobj().son, self.rsons * self.csons??)
     #     return [try_wrap(cs, HMatrix) for cs in lst]
 
@@ -73,7 +73,7 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
 
     # ***** Methods ******
 
-    def clone(self, *, structure_only: bool = False) -> 'HMatrix':
+    def clone(self, *, structure_only: bool = False) -> 'mat.HMatrix':
         if structure_only:
             return try_wrap(libhmatrix.clonestructure_hmatrix(self), HMatrix)
         else:
@@ -82,7 +82,7 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
     def update(self):
         libhmatrix.update_hmatrix(self)
 
-    def ref(self, ptr: 'HMatrix'):
+    def ref(self, ptr: 'mat.HMatrix'):
         libhmatrix.ref_hmatrix(pointer(ptr), self)
 
     def unref(self):
@@ -106,7 +106,7 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
         else:
             raise ValueError('Clearing lower part not supported.')
 
-    def copy(self, target: 'HMatrix'):
+    def copy(self, target: 'mat.HMatrix'):
         libhmatrix.copy_hmatrix(self, target)
 
     def identity(self):
@@ -115,7 +115,7 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
     def rand(self, k: int):
         libhmatrix.random_hmatrix(self, k)
 
-    def enumerate(self, b: 'Block') -> List['HMatrix']:
+    def enumerate(self, b: 'misc.Block') -> List['mat.HMatrix']:
         ptr = libhmatrix.enumerate_hmatrix(b, self)
         lst = cptr_to_list(ptr, b.desc)
         return [try_wrap(cs, HMatrix) for cs in lst]
@@ -123,7 +123,7 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
     def norm(self):
         return libhmatrix.norm2_hmatrix(self)
 
-    def norm2_diff(self, other: 'HMatrix') -> float:
+    def norm2_diff(self, other: 'mat.HMatrix') -> float:
         return libhmatrix.norm2diff_hmatrix(self, other)
 
     def write_file(self, file: str):

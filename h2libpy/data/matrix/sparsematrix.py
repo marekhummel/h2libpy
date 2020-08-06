@@ -1,14 +1,14 @@
 from typing import List
 
+import h2libpy.data.matrix as mat
 import h2libpy.lib.hmatrix as libhmatrix
 import h2libpy.lib.sparsematrix as libsparsematrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import cptr_to_list
-from h2libpy.data.matrix.hmatrix import HMatrix
 from h2libpy.data.matrix.sparsepattern import SparsePattern
 
 
-class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparsematrix):
+class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparseMatrix):
     # ***** Constructors / destructor *****
 
     @classmethod
@@ -74,5 +74,5 @@ class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparsematrix):
 
     # -------
 
-    def copy_sparsematrix_hmatrix(self, target: 'HMatrix'):
+    def copy_sparsematrix_hmatrix(self, target: 'mat.HMatrix'):
         libhmatrix.copy_sparsematrix_hmatrix(self, target)

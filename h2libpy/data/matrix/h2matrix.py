@@ -1,21 +1,19 @@
 from ctypes import c_void_p, cast, pointer
 from typing import List, Union
 
+import h2libpy.data.matrix as mat
+import h2libpy.data.misc as misc
 import h2libpy.lib.h2matrix as libh2matrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import cptr_to_list, try_wrap, verify_type
-from h2libpy.data.matrix.amatrix import AMatrix
 from h2libpy.data.matrix.enums import H2FillType, SizePart
-from h2libpy.data.matrix.hmatrix import HMatrix
-from h2libpy.data.misc.clusterbasis import ClusterBasis
-from h2libpy.data.misc.uniform import Uniform
 
 
 class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
     # ***** Constructors / destructor *****
 
     @classmethod
-    def new(cls, rb: 'ClusterBasis', cb: 'ClusterBasis',
+    def new(cls, rb: 'misc.ClusterBasis', cb: 'misc.ClusterBasis',
             fill: 'H2FillType' = H2FillType.Nothing) -> 'H2Matrix':
         if fill == H2FillType.Uniform:
             return cls(libh2matrix.new_uniform_h2matrix(rb, cb))
@@ -27,28 +25,28 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
             return cls(libh2matrix.new_h2matrix(rb, cb))
 
     @classmethod
-    def new_super(cls, rb: 'ClusterBasis', cb: 'ClusterBasis',
+    def new_super(cls, rb: 'misc.ClusterBasis', cb: 'misc.ClusterBasis',
                   rsons: int, csons: int) -> 'H2Matrix':
         return cls(libh2matrix.new_super_h2matrix(rb, cb, rsons, csons))
 
     @classmethod
-    def from_block(cls, b: 'Block', rb: 'ClusterBasis',
-                   cb: 'ClusterBasis') -> 'H2Matrix':
+    def from_block(cls, b: 'misc.Block', rb: 'misc.ClusterBasis',
+                   cb: 'misc.ClusterBasis') -> 'H2Matrix':
         return cls(libh2matrix.build_from_block_hmatrix(b, rb, cb))
 
     # ***** Properties *****
 
-    def __getter_rb(self) -> 'ClusterBasis':
-        return try_wrap(self.cobj().rb, ClusterBasis)
+    def __getter_rb(self) -> 'misc.ClusterBasis':
+        return try_wrap(self.cobj().rb, misc.ClusterBasis)
 
-    def __getter_cb(self) -> 'ClusterBasis':
-        return try_wrap(self.cobj().cb, ClusterBasis)
+    def __getter_cb(self) -> 'misc.ClusterBasis':
+        return try_wrap(self.cobj().cb, misc.ClusterBasis)
 
-    def __getter_u(self) -> 'Uniform':
-        return try_wrap(self.cobj().u, Uniform)
+    def __getter_u(self) -> 'misc.Uniform':
+        return try_wrap(self.cobj().u, misc.Uniform)
 
-    def __getter_f(self) -> 'Uniform':
-        return try_wrap(self.cobj().f, Uniform)
+    def __getter_f(self) -> 'misc.Uniform':
+        return try_wrap(self.cobj().f, misc.Uniform)
 
     # def __getter_son(self) -> List['H2Matrix']:
     #     pass
@@ -67,7 +65,7 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
 
     # ***** Methods ******
 
-    def clone(self, rb: 'ClusterBasis', cb: 'ClusterBasis', *,
+    def clone(self, rb: 'misc.ClusterBasis', cb: 'misc.ClusterBasis', *,
               structure_only: bool = False) -> 'H2Matrix':
         if structure_only:
             clone = libh2matrix.clonestructure_h2matrix(self, rb, cb)
@@ -116,11 +114,11 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
         libh2matrix.iterate_h2matrix(self, mname, rname, cname, pardepth,
                                      cpre, cpost, cdata)
 
-    def project(self, src: Union['AMatrix', 'HMatrix']):
-        verify_type(src, [AMatrix, HMatrix])
-        if isinstance(src, AMatrix):
+    def project(self, src: Union['mat.AMatrix', 'mat.HMatrix']):
+        verify_type(src, [mat.AMatrix, mat.HMatrix])
+        if isinstance(src, mat.AMatrix):
             libh2matrix.project_amatrix_h2matrix(self, src)
-        elif isinstance(src, HMatrix):
+        elif isinstance(src, mat.HMatrix):
             libh2matrix.project_hmatrix_h2matrix(self, src)
 
     def norm(self):

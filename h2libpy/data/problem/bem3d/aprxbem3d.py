@@ -1,9 +1,8 @@
+import h2libpy.data.misc as misc
+import h2libpy.data.problem.bem3d as pbem3d
 import h2libpy.lib.bem3d as libbem3d
-from h2libpy.base.util import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.data.misc.truncmode import TruncMode
-from h2libpy.data.problem.bem3d.greencluster3d import GreenCluster3d
-from h2libpy.data.problem.bem3d.greenclusterbasis3d import GreenClusterBasis3d
+from h2libpy.base.util import try_wrap
 
 
 class AprxBem3d(StructWrapper, cstruct=libbem3d.CStructAprxBem3d):
@@ -31,17 +30,17 @@ class AprxBem3d(StructWrapper, cstruct=libbem3d.CStructAprxBem3d):
     def __getter_delta_green(self) -> float:
         return self.cobj().delta_green
 
-    def __getter_grc_green(self) -> 'GreenCluster3d':
-        return try_wrap(self.cobj().grc_green, GreenCluster3d)
+    def __getter_grc_green(self) -> 'pbem3d.GreenCluster3d':
+        return try_wrap(self.cobj().grc_green, pbem3d.GreenCluster3d)
 
-    def __getter_gcc_green(self) -> 'GreenCluster3d':
-        return try_wrap(self.cobj().gcc_green, GreenCluster3d)
+    def __getter_gcc_green(self) -> 'pbem3d.GreenCluster3d':
+        return try_wrap(self.cobj().gcc_green, pbem3d.GreenCluster3d)
 
-    def __getter_grb_green(self) -> 'GreenClusterBasis3d':
-        return try_wrap(self.cobj().grb_green, GreenClusterBasis3d)
+    def __getter_grb_green(self) -> 'pbem3d.GreenClusterBasis3d':
+        return try_wrap(self.cobj().grb_green, pbem3d.GreenClusterBasis3d)
 
-    def __getter_gcb_green(self) -> 'GreenClusterBasis3d':
-        return try_wrap(self.cobj().gcb_green, GreenClusterBasis3d)
+    def __getter_gcb_green(self) -> 'pbem3d.GreenClusterBasis3d':
+        return try_wrap(self.cobj().gcb_green, pbem3d.GreenClusterBasis3d)
 
     def __getter_accur_aca(self) -> float:
         return self.cobj().delta_green
@@ -64,7 +63,7 @@ class AprxBem3d(StructWrapper, cstruct=libbem3d.CStructAprxBem3d):
     def __getter_accur_hiercomp(self) -> float:
         return self.cobj().accur_hiercomp
 
-    def __getter_tm(self) -> 'TruncMode':
-        return try_wrap(self.cobj().tm, TruncMode)
+    def __getter_tm(self) -> 'misc.TruncMode':
+        return try_wrap(self.cobj().tm, misc.TruncMode)
 
     # ***** Methods ******

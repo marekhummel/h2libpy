@@ -1,9 +1,9 @@
 from ctypes import pointer
 
+import h2libpy.data.matrix as mat
 import h2libpy.lib.rkmatrix as librkmatrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import try_wrap
-from h2libpy.data.matrix.amatrix import AMatrix
 
 
 class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
@@ -20,11 +20,11 @@ class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
 
     # ***** Properties *****
 
-    def __getter_a(self) -> 'AMatrix':
-        try_wrap(pointer(self.cobj().a), AMatrix)
+    def __getter_a(self) -> 'mat.AMatrix':
+        try_wrap(pointer(self.cobj().a), mat.AMatrix)
 
-    def __getter_b(self) -> 'AMatrix':
-        try_wrap(pointer(self.cobj().b), AMatrix)
+    def __getter_b(self) -> 'mat.AMatrix':
+        try_wrap(pointer(self.cobj().b), mat.AMatrix)
 
     def __getter_k(self) -> int:
         return self.cobj().k

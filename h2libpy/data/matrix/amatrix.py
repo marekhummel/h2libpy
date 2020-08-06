@@ -1,16 +1,17 @@
 from ctypes import c_uint
 from typing import List, Union
 
+import h2libpy.data.matrix as mat
+import h2libpy.data.misc as misc
+import h2libpy.data.vector as vec
 import h2libpy.lib.amatrix as libamatrix
+import h2libpy.lib.clusterbasis as libclusterbasis
 import h2libpy.lib.h2matrix as libh2matrix
 import h2libpy.lib.sparsematrix as libsparsematrix
-import h2libpy.lib.clusterbasis as libclusterbasis
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import (cptr_to_list, pylist_to_ptr, try_wrap,
                                verify_type)
 from h2libpy.data.matrix.enums import ClearType, FillType, NormType
-from h2libpy.data.matrix.sparsematrix import SparseMatrix
-from h2libpy.data.misc.clusterbasis import ClusterBasis
 from h2libpy.lib.settings import field
 
 
@@ -136,11 +137,11 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     def norm2_diff(self, other: 'AMatrix') -> float:
         return libamatrix.norm2diff_amatrix(self, other)
 
-    def add(self, other: Union['AMatrix', 'SparseMatrix'],
+    def add(self, other: Union['AMatrix', 'mat.SparseMatrix'],
             alpha: float = 1.0, trans: bool = False):
         if isinstance(other, AMatrix):
             libamatrix.add_amatrix(alpha, trans, other, self)
-        elif isinstance(other, SparseMatrix):
+        elif isinstance(other, mat.SparseMatrix):
             libsparsematrix.add_sparsematrix_amatrix(alpha, trans, other, self)
         else:
             raise ValueError('AMatrix or SparseMatrix expected.')
@@ -150,55 +151,57 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         libamatrix.addmul_amatrix(alpha, trans_a, a, trans_b, b, self)
 
     def bidiagmul(self, alpha: float, trans: bool,
-                  dia: 'AVector', lo: 'AVector'):
+                  dia: 'vec.AVector', lo: 'vec.AVector'):
         libamatrix.bidiagmul_amatrix(alpha, trans, self, dia, lo)
 
     # ---------
 
     def fastaddmul_h2matrix_amatrix_amatrix(self, alpha: float, trans: bool,
-                                            a: 'H2Matrix', b: 'AMatrix'):
+                                            a: 'mat.H2Matrix',
+                                            b: 'mat.AMatrix'):
         func = libh2matrix.fastaddmul_h2matrix_amatrix_amatrix
         func(alpha, trans, a, b, self)
 
-    def addmul_h2matrix_amatrix_amatrix(
-            self, alpha: float, a: 'H2Matrix', b: 'AMatrix',
-            trans_a: bool, trans_b: bool):
+    def addmul_h2matrix_amatrix_amatrix(self, alpha: float,
+                                        a: 'mat.H2Matrix', b: 'mat.AMatrix',
+                                        trans_a: bool, trans_b: bool):
         func = libh2matrix.addmul_h2matrix_amatrix_amatrix
         func(alpha, trans_a, a, trans_b, b, self)
 
     def addmul_amatrix_h2matrix_amatrix(
-            self, alpha: float, a: 'AMatrix', b: 'H2Matrix',
+            self, alpha: float, a: 'AMatrix', b: 'mat.H2Matrix',
             trans_a: bool, trans_b: bool):
         func = libh2matrix.addmul_amatrix_h2matrix_amatrix
         func(alpha, trans_a, a, trans_b, b, self)
 
-    def collectdense(self, a: 'AMatrix', rb: 'ClusterBasis',
-                     cb: 'ClusterBasis'):
+    def collectdense(self, a: 'AMatrix', rb: 'misc.ClusterBasis',
+                     cb: 'misc.ClusterBasis'):
         libh2matrix.collectdense_h2matrix(a, rb, cb, self)
 
     # -------
 
-    def compress_clusterbasis_amatrix(self, cb: 'ClusterBasis',
+    def compress_clusterbasis_amatrix(self, cb: 'misc.ClusterBasis',
                                       src: 'AMatrix'):
         libclusterbasis.compress_clusterbasis_amatrix(cb, src, self)
 
-    def compress_parallel_clusterbasis_amatrix(self, cb: 'ClusterBasis',
+    def compress_parallel_clusterbasis_amatrix(self, cb: 'misc.ClusterBasis',
                                                src: 'AMatrix', pardepth: int):
         func = libclusterbasis.compress_parallel_clusterbasis_amatrix
         func(cb, src, self, pardepth)
 
-    def forward_clusterbasis_amatrix(self, cb: 'ClusterBasis', src: 'AMatrix'):
+    def forward_clusterbasis_amatrix(self, cb: 'misc.ClusterBasis',
+                                     src: 'AMatrix'):
         libclusterbasis.forward_clusterbasis_amatrix(cb, src, self)
 
-    def forward_clusterbasis_trans_amatrix(self, cb: 'ClusterBasis',
+    def forward_clusterbasis_trans_amatrix(self, cb: 'misc.ClusterBasis',
                                            src: 'AMatrix'):
         libclusterbasis.forward_clusterbasis_trans_amatrix(cb, src, self)
 
-    def backward_clusterbasis_amatrix(self, cb: 'ClusterBasis',
+    def backward_clusterbasis_amatrix(self, cb: 'misc.ClusterBasis',
                                       src: 'AMatrix'):
         libclusterbasis.backward_clusterbasis_amatrix(cb, src, self)
 
-    def backward_clusterbasis_trans_amatrix(self, cb: 'ClusterBasis',
+    def backward_clusterbasis_trans_amatrix(self, cb: 'misc.ClusterBasis',
                                             src: 'AMatrix'):
         libclusterbasis.backward_clusterbasis_trans_amatrix(cb, src, self)
 

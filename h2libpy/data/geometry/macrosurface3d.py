@@ -1,8 +1,8 @@
 from typing import List, Tuple
 
 import h2libpy.lib.macrosurface3d as libmacrosurface3d
-from h2libpy.base.util import carray_to_tuple, cptr_to_list
 from h2libpy.base.structwrapper import StructWrapper
+from h2libpy.base.util import carray_to_tuple, cptr_to_list
 
 
 class MacroSurface3d(StructWrapper,

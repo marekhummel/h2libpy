@@ -1,27 +1,24 @@
 from ctypes import c_void_p, cast
 
+import h2libpy.data.geometry.surface3d as geo
+import h2libpy.data.matrix as mat
+import h2libpy.data.problem.bem3d as pbem3d
+import h2libpy.data.vector as vec
 import h2libpy.lib.bem3d as libbem3d
 import h2libpy.lib.laplacebem3d as liblaplacebem3d
-from h2libpy.base.util import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.data.geometry.surface3d import Surface3d
-from h2libpy.data.matrix.amatrix import AMatrix
-from h2libpy.data.problem.bem3d.aprxbem3d import AprxBem3d
-from h2libpy.data.problem.bem3d.kernelbem3d import KernelBem3d
-from h2libpy.data.problem.bem3d.parbem3d import ParBem3d
-from h2libpy.data.problem.bem3d.singquad2d import SingQuad2d
-from h2libpy.data.vector.avector import AVector
+from h2libpy.base.util import try_wrap
 
 
 class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
     # ***** Constructors / destructor *****
 
     @classmethod
-    def new(cls, gr: Surface3d, row_basis: int, col_basis: int) -> 'Bem3d':
+    def new(cls, gr: geo.Surface3d, row_basis: int, col_basis: int) -> 'Bem3d':
         return cls(liblaplacebem3d.new_bem3d(gr, row_basis, col_basis))
 
     @classmethod
-    def new_slp_laplace(cls, gr: Surface3d,
+    def new_slp_laplace(cls, gr: 'geo.Surface3d',
                         q_regular: int, q_singular: int,
                         row_basis: int, col_basis: int) -> 'Bem3d':
         func = liblaplacebem3d.new_slp_laplace_bem3d
@@ -29,7 +26,7 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         return cls(instance)
 
     @classmethod
-    def new_dlp_laplace(cls, gr: Surface3d,
+    def new_dlp_laplace(cls, gr: 'geo.Surface3d',
                         q_regular: int, q_singular: int,
                         row_basis: int, col_basis: int,
                         alpha: float) -> 'Bem3d':
@@ -39,11 +36,11 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
 
     # ***** Properties *****
 
-    def __getter_gr(self) -> Surface3d:
-        return try_wrap(self.cobj().gr, Surface3d)
+    def __getter_gr(self) -> 'geo.Surface3d':
+        return try_wrap(self.cobj().gr, geo.Surface3d)
 
-    def __getter_sq(self) -> SingQuad2d:
-        return try_wrap(self.cobj().sq, SingQuad2d)
+    def __getter_sq(self) -> 'pbem3d.SingQuad2d':
+        return try_wrap(self.cobj().sq, pbem3d.SingQuad2d)
 
     def __getter_row_basis(self) -> int:
         return self.cobj().row_basis
@@ -60,26 +57,26 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
     def __getter_kernel_const(self) -> float:
         return self.cobj().kernel_const
 
-    def __getter_aprx(self) -> AprxBem3d:
-        return try_wrap(self.cobj().aprx, AprxBem3d)
+    def __getter_aprx(self) -> 'pbem3d.AprxBem3d':
+        return try_wrap(self.cobj().aprx, pbem3d.AprxBem3d)
 
-    def __getter_par(self) -> ParBem3d:
-        return try_wrap(self.cobj().par, ParBem3d)
+    def __getter_par(self) -> 'pbem3d.ParBem3d':
+        return try_wrap(self.cobj().par, pbem3d.ParBem3d)
 
-    def __getter_kernels(self) -> KernelBem3d:
-        return try_wrap(self.cobj().kernels, KernelBem3d)
+    def __getter_kernels(self) -> 'pbem3d.KernelBem3d':
+        return try_wrap(self.cobj().kernels, pbem3d.KernelBem3d)
 
     # ***** Methods ******
 
-    def assemble_amatrix(self, g: 'AMatrix'):
+    def assemble_amatrix(self, g: 'mat.AMatrix'):
         libbem3d.assemble_bem3d_amatrix(self, g)
 
-    def project_l2_c(self, f, w: 'AVector', data):
+    def project_l2_c(self, f, w: 'vec.AVector', data):
         cf = libbem3d.CFuncBoundaryFunc3d(f)
         cdata = cast(data, c_void_p)
         libbem3d.projectL2_bem3d_c_avector(self, cf, w, cdata)
 
-    def norm_l2_diff_c(self, x: 'AVector', rhs, data) -> float:
+    def norm_l2_diff_c(self, x: 'vec.AVector', rhs, data) -> float:
         crhs = libbem3d.CFuncBoundaryFunc3d(rhs)
         cdata = cast(data, c_void_p)
         return libbem3d.normL2diff_c_bem3d(self, x, crhs, cdata)

@@ -1,24 +1,25 @@
 from ctypes import c_void_p, cast
 from typing import List
 
+import h2libpy.data.matrix as mat
+import h2libpy.data.misc as misc
 import h2libpy.lib.block as libblock
 import h2libpy.lib.h2matrix as libh2matrix
 import h2libpy.lib.hmatrix as libhmatrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import cptr_to_list, try_wrap
-from h2libpy.data.misc.cluster import Cluster
 
 
 class Block(StructWrapper, cstruct=libblock.CStructBlock):
     # ***** Constructors / destructor *****
 
     @classmethod
-    def new(cls, rc: 'Cluster', cc: 'Cluster', a: bool,
+    def new(cls, rc: 'misc.Cluster', cc: 'misc.Cluster', a: bool,
             rsons: int, csons: int) -> 'Block':
         return cls(libblock.new_block(rc, cc, a, rsons, csons))
 
     @classmethod
-    def build(cls, rc: 'Cluster', cc: 'Cluster', data, admis, *,
+    def build(cls, rc: 'misc.Cluster', cc: 'misc.Cluster', data, admis, *,
               strict: bool, lower: bool) -> 'Block':
         cdata = cast(data, c_void_p)
         cadm = libblock.CFuncAdmissible(admis)
@@ -33,20 +34,20 @@ class Block(StructWrapper, cstruct=libblock.CStructBlock):
             return cls(libblock.build_nonstrict_block(rc, cc, cdata, cadm))
 
     @classmethod
-    def from_hmatrix(cls, h: 'HMatrix'):
+    def from_hmatrix(cls, h: 'mat.HMatrix'):
         return cls(libhmatrix.build_from_hmatrix_block(h))
 
     @classmethod
-    def from_h2matrix(cls, h: 'H2Matrix'):
+    def from_h2matrix(cls, h: 'mat.H2Matrix'):
         return cls(libh2matrix.build_from_h2matrix_block(h))
 
     # ***** Properties *****
 
-    def __gettter_rc(self) -> 'Cluster':
-        return try_wrap(self.cobj().rc, Cluster)
+    def __gettter_rc(self) -> 'misc.Cluster':
+        return try_wrap(self.cobj().rc, misc.Cluster)
 
-    def __gettter_cc(self) -> 'Cluster':
-        return try_wrap(self.cobj().cc, Cluster)
+    def __gettter_cc(self) -> 'misc.Cluster':
+        return try_wrap(self.cobj().cc, misc.Cluster)
 
     def __getter_a(self) -> bool:
         return self.cobj().a

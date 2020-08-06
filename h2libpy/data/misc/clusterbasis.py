@@ -1,32 +1,31 @@
-from ctypes import pointer, cast, c_void_p
+from ctypes import c_void_p, cast, pointer
 from typing import List
 
+import h2libpy.data.matrix as mat
+import h2libpy.data.misc as misc
+import h2libpy.data.vector as vec
 import h2libpy.lib.clusterbasis as libclusterbasis
-from h2libpy.base.util import try_wrap, cptr_to_list
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.data.matrix.amatrix import AMatrix
-from h2libpy.data.vector.avector import AVector
-from h2libpy.data.misc.cluster import Cluster
-from h2libpy.data.misc.clusteroperator import ClusterOperator
+from h2libpy.base.util import cptr_to_list, try_wrap
 
 
 class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
 
     @classmethod
-    def new(cls, t: 'Cluster', *, leaf: bool) -> 'ClusterBasis':
+    def new(cls, t: 'misc.Cluster', *, leaf: bool) -> 'ClusterBasis':
         if leaf:
             return cls(libclusterbasis.new_leaf_clusterbasis(t))
         else:
             return cls(libclusterbasis.new_clusterbasis(t))
 
     @classmethod
-    def from_cluster(cls, t: 'Cluster') -> 'ClusterBasis':
+    def from_cluster(cls, t: 'misc.Cluster') -> 'ClusterBasis':
         return cls(libclusterbasis.build_from_cluster_clusterbasis(t))
 
     # ***** Properties *****
 
-    def __getter_t(self) -> 'Cluster':
-        return try_wrap(self.cobj().t, Cluster)
+    def __getter_t(self) -> 'misc.Cluster':
+        return try_wrap(self.cobj().t, misc.Cluster)
 
     def __getter_k(self) -> int:
         return self.cobj().t
@@ -37,11 +36,11 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
     def __getter_kbranch(self) -> int:
         return self.cobj().kbranch
 
-    def __getter_V(self) -> 'AMatrix':
-        return try_wrap(pointer(self.cobj().V), AMatrix)
+    def __getter_V(self) -> 'mat.AMatrix':
+        return try_wrap(pointer(self.cobj().V), mat.AMatrix)
 
-    def __getter_E(self) -> 'AMatrix':
-        return try_wrap(pointer(self.cobj().E), AMatrix)
+    def __getter_E(self) -> 'mat.AMatrix':
+        return try_wrap(pointer(self.cobj().E), mat.AMatrix)
 
     def __getter_sons(self) -> int:
         return self.cobj().sons
@@ -49,19 +48,17 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
     # def __getter_son(self) -> List['ClusterBasis']:
     #     pass
 
-    def __getter_Z(self) -> 'AMatrix':
-        return try_wrap(self.cobj().Z, AMatrix)
+    def __getter_Z(self) -> 'mat.AMatrix':
+        return try_wrap(self.cobj().Z, mat.AMatrix)
 
     def __getter_refs(self) -> int:
         return self.cobj().refs
 
-    def __getter_rlist(self) -> 'Uniform':
-        from h2libpy.data.misc.uniform import Uniform
-        return try_wrap(self.cobj().rlist, Uniform)
+    def __getter_rlist(self) -> 'misc.Uniform':
+        return try_wrap(self.cobj().rlist, misc.Uniform)
 
-    def __getter_rclist(self) -> 'Uniform':
-        from h2libpy.data.misc.uniform import Uniform
-        return try_wrap(self.cobj().clist, Uniform)
+    def __getter_rclist(self) -> 'misc.Uniform':
+        return try_wrap(self.cobj().clist, misc.Uniform)
 
     # ***** Methods ******
 
@@ -110,25 +107,25 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
         libclusterbasis.iterate_parallel_clusterbasis(self, cbname, pardepth,
                                                       cpre, cpost, cdata)
 
-    def enumerate(self, t: 'Cluster') -> List['ClusterBasis']:
+    def enumerate(self, t: 'misc.Cluster') -> List['ClusterBasis']:
         ptr = libclusterbasis.enumerate_cluster(t, self)
         lst = cptr_to_list(ptr, t.desc)
         return [try_wrap(c, ClusterBasis) for c in lst]
 
-    def new_coeffs(self) -> 'AVector':
+    def new_coeffs(self) -> 'vec.AVector':
         obj = libclusterbasis.new_coeffs_clusterbasis_avector(self)
-        return try_wrap(obj, AVector)
+        return try_wrap(obj, vec.AVector)
 
-    def ortho(self, co: 'ClusterOperator'):
+    def ortho(self, co: 'misc.ClusterOperator'):
         libclusterbasis.ortho_clusterbasis(self, co)
 
     def check_ortho(self) -> float:
         return libclusterbasis.check_ortho_clusterbasis(self)
 
-    def weight(self, co: 'ClusterOperator') -> 'ClusterOperator':
+    def weight(self, co: 'misc.ClusterOperator') -> 'misc.ClusterOperator':
         obj = libclusterbasis.weight_clusterbasis_clusteroperator(self, co)
-        return try_wrap(obj, ClusterOperator)
+        return try_wrap(obj, misc.ClusterOperator)
 
-    def weight_enum(self) -> 'AMatrix':
+    def weight_enum(self) -> 'mat.AMatrix':
         obj = libclusterbasis.weight_enum_clusterbasis_clusteroperator(self)
-        return try_wrap(obj, AMatrix)
+        return try_wrap(obj, mat.AMatrix)

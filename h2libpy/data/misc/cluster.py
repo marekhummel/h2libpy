@@ -1,6 +1,7 @@
 from ctypes import c_uint, c_void_p, cast
 from typing import List
 
+import h2libpy.data.misc as misc
 import h2libpy.lib.cluster as libcluster
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import cptr_to_list, pylist_to_ptr, try_wrap
@@ -15,32 +16,32 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
         return cls(libcluster.new_cluster(size, cidx, sons, dim))
 
     @classmethod
-    def build_adaptive(cls, cf: 'ClusterGeometry', size: int, idx: List[int],
-                       clf: int) -> 'Cluster':
+    def build_adaptive(cls, cf: 'misc.ClusterGeometry', size: int,
+                       idx: List[int], clf: int) -> 'Cluster':
         cidx = pylist_to_ptr(idx, c_uint)
         return cls(libcluster.build_adaptive_cluster(cf, size, cidx, clf))
 
     @classmethod
-    def build_regular(cls, cf: 'ClusterGeometry', size: int, idx: List[int],
-                      clf: int, direction: int) -> 'Cluster':
+    def build_regular(cls, cf: 'misc.ClusterGeometry', size: int,
+                      idx: List[int], clf: int, direction: int) -> 'Cluster':
         cidx = pylist_to_ptr(idx, c_uint)
         obj = libcluster.build_regular_cluster(cf, size, cidx, clf, direction)
         return cls(obj)
 
     @classmethod
-    def build_simsub(cls, cf: 'ClusterGeometry', size: int, idx: List[int],
-                     clf: int) -> 'Cluster':
+    def build_simsub(cls, cf: 'misc.ClusterGeometry', size: int,
+                     idx: List[int], clf: int) -> 'Cluster':
         cidx = pylist_to_ptr(idx, c_uint)
         return cls(libcluster.build_simsub_cluster(cf, size, cidx, clf))
 
     @classmethod
-    def build_pca(cls, cf: 'ClusterGeometry', size: int, idx: List[int],
+    def build_pca(cls, cf: 'misc.ClusterGeometry', size: int, idx: List[int],
                   clf: int) -> 'Cluster':
         cidx = pylist_to_ptr(idx, c_uint)
         return cls(libcluster.build_pca_cluster(cf, size, cidx, clf))
 
     @classmethod
-    def build(cls, cf: 'ClusterGeometry', size: int, idx: List[int],
+    def build(cls, cf: 'misc.ClusterGeometry', size: int, idx: List[int],
               clf: int, mode: int) -> 'Cluster':
         cidx = pylist_to_ptr(idx, c_uint)
         return cls(libcluster.build_pca_cluster(cf, size, cidx, clf, mode))

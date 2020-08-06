@@ -1,8 +1,8 @@
+import h2libpy.data.matrix as mat
+import h2libpy.data.misc as misc
 import h2libpy.lib.bem3d as libbem3d
-from h2libpy.base.util import try_wrap
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.data.misc.clusterbasis import ClusterBasis
-from h2libpy.data.matrix.amatrix import AMatrix
+from h2libpy.base.util import try_wrap
 
 
 class GreenClusterBasis3d(StructWrapper,
@@ -10,11 +10,11 @@ class GreenClusterBasis3d(StructWrapper,
 
     # ***** Properties *****
 
-    def __getter_Qinv(self) -> AMatrix:
-        return try_wrap(self.cobj().Qinv, AMatrix)
+    def __getter_Qinv(self) -> 'mat.AMatrix':
+        return try_wrap(self.cobj().Qinv, mat.AMatrix)
 
-    def __getter_cb(self) -> 'ClusterBasis':
-        return try_wrap(self.cobj().cb, ClusterBasis)
+    def __getter_cb(self) -> 'misc.ClusterBasis':
+        return try_wrap(self.cobj().cb, misc.ClusterBasis)
 
     def __getter_sons(self) -> int:
         return self.cobj().sons

@@ -1,12 +1,14 @@
 from typing import List, Tuple
 
+import h2libpy.data.matrix as mat
+import h2libpy.data.misc as misc
 import h2libpy.lib.amatrix as libamatrix
 import h2libpy.lib.avector as libavector
-import h2libpy.lib.hmatrix as libhmatrix
-import h2libpy.lib.h2matrix as libh2matrix
-import h2libpy.lib.sparsematrix as libsparsematrix
-import h2libpy.lib.rkmatrix as librkmatrix
 import h2libpy.lib.clusterbasis as libclusterbasis
+import h2libpy.lib.h2matrix as libh2matrix
+import h2libpy.lib.hmatrix as libhmatrix
+import h2libpy.lib.rkmatrix as librkmatrix
+import h2libpy.lib.sparsematrix as libsparsematrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import (cptr_to_list, is_scalar, pylist_to_ptr,
                                verify_type)
@@ -93,130 +95,136 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
 
     # -------
 
-    def addeval_amatrix_avector(self, alpha: float, a: 'AMatrix',
+    def addeval_amatrix_avector(self, alpha: float, a: 'mat.AMatrix',
                                 src: 'AVector'):
         libamatrix.addeval_amatrix_avector(alpha, a, src, self)
 
     def addevaltrans_amatrix_avector(self, alpha: float,
-                                     a: 'AMatrix', src: 'AVector'):
+                                     a: 'mat.AMatrix', src: 'AVector'):
         libamatrix.addevaltrans_amatrix_avector(alpha, a, src, self)
 
     def mvm_amatrix_avector(self, alpha: float, trans: bool,
-                            a: 'AMatrix', src: 'AVector'):
+                            a: 'mat.AMatrix', src: 'AVector'):
         libamatrix.mvm_amatrix_avector(alpha, trans, a, src, self)
 
     def mvm_hmatrix_avector(self, alpha: float, trans: bool,
-                            h: 'HMatrix', src: 'AVector'):
+                            h: 'mat.HMatrix', src: 'AVector'):
         libhmatrix.mvm_hmatrix_avector(alpha, trans, h, src, self)
 
-    def fastaddeval_hmatrix_avector(self, alpha: float, h: 'HMatrix',
+    def fastaddeval_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
                                     src: 'AVector'):
         libhmatrix.fastaddeval_hmatrix_avector(alpha, h, src, self)
 
-    def addeval_hmatrix_avector(self, alpha: float, h: 'HMatrix',
+    def addeval_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
                                 src: 'AVector'):
         libhmatrix.addeval_hmatrix_avector(alpha, h, src, self)
 
-    def fastaddevaltrans_hmatrix_avector(self, alpha: float, h: 'HMatrix',
+    def fastaddevaltrans_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
                                          src: 'AVector'):
         libamatrix.fastaddevaltrans_hmatrix_avector(alpha, h, src, self)
 
-    def addevaltrans_hmatrix_avector(self, alpha: float, h: 'HMatrix',
+    def addevaltrans_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
                                      src: 'AVector'):
         libamatrix.addevaltrans_hmatrix_avector(alpha, h, src, self)
 
-    def addeval_sparsematrix_avector(self, alpha: float, a: 'SparseMatrix',
+    def addeval_sparsematrix_avector(self, alpha: float, a: 'mat.SparseMatrix',
                                      src: 'AVector'):
         libsparsematrix.addeval_sparsematrix_avector(alpha, a, src, self)
 
     def addevaltrans_sparsematrix_avector(self, alpha: float,
-                                          a: 'SparseMatrix', src: 'AVector'):
+                                          a: 'mat.SparseMatrix',
+                                          src: 'AVector'):
         libsparsematrix.addevaltrans_sparsematrix_avector(alpha, a, src, self)
 
     def mvm_sparsematrix_avector(self, alpha: float, trans: bool,
-                                 a: 'SparseMatrix', src: 'AVector'):
+                                 a: 'mat.SparseMatrix', src: 'AVector'):
         libsparsematrix.mvm_sparsematrix_avector(alpha, trans, a, src, self)
 
-    def addeval_rkmatrix_avector(self, alpha: float, a: 'RkMatrix',
+    def addeval_rkmatrix_avector(self, alpha: float, a: 'mat.RkMatrix',
                                  src: 'AVector'):
         librkmatrix.addeval_rkmatrix_avector(alpha, a, src, self)
 
     def addevaltrans_rkmatrix_avector(self, alpha: float,
-                                      a: 'RkMatrix', src: 'AVector'):
+                                      a: 'mat.RkMatrix', src: 'AVector'):
         librkmatrix.addevaltrans_rkmatrix_avector(alpha, a, src, self)
 
     def mvm_rkmatrix_avector(self, alpha: float, trans: bool,
-                             a: 'RkMatrix', src: 'AVector'):
+                             a: 'mat.RkMatrix', src: 'AVector'):
         librkmatrix.mvm_rkmatrix_avector(alpha, trans, a, src, self)
 
     def mvm_h2matrix_avector(self, alpha: float, trans: bool,
-                             h: 'H2Matrix', src: 'AVector'):
+                             h: 'mat.H2Matrix', src: 'AVector'):
         libh2matrix.mvm_h2matrix_avector(alpha, trans, h, src, self)
 
-    def fastaddeval_h2matrix_avector(self, alpha: float, h: 'H2Matrix',
+    def fastaddeval_h2matrix_avector(self, alpha: float, h: 'mat.H2Matrix',
                                      src: 'AVector'):
         libh2matrix.fastaddeval_h2matrix_avector(alpha, h, src, self)
 
-    def addeval_h2matrix_avector(self, alpha: float, h: 'H2Matrix',
+    def addeval_h2matrix_avector(self, alpha: float, h: 'mat.H2Matrix',
                                  src: 'AVector'):
         libh2matrix.addeval_h2matrix_avector(alpha, h, src, self)
 
-    def fastaddevaltrans_h2matrix_avector(self, alpha: float, h: 'H2Matrix',
-                                          src: 'AVector'):
+    def fastaddevaltrans_h2matrix_avector(self, alpha: float,
+                                          h: 'mat.H2Matrix', src: 'AVector'):
         libh2matrix.fastaddevaltrans_h2matrix_avector(alpha, h, src, self)
 
-    def addevaltrans_h2matrix_avector(self, alpha: float, h: 'H2Matrix',
+    def addevaltrans_h2matrix_avector(self, alpha: float, h: 'mat.H2Matrix',
                                       src: 'AVector'):
         libh2matrix.addevaltrans_h2matrix_avector(alpha, h, src, self)
 
-    def forward_clusterbasis_avector(self, cb: 'ClusterBasis', src: 'AVector'):
+    def forward_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
+                                     src: 'AVector'):
         libclusterbasis.forward_clusterbasis_avector(cb, src, self)
 
-    def forward_parallel_clusterbasis_avector(self, cb: 'ClusterBasis',
+    def forward_parallel_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
                                               src: 'AVector', pardepth: int):
         func = libclusterbasis.forward_parallel_clusterbasis_avector
         func(cb, src, self, pardepth)
 
-    def forward_nopermutaion_clusterbasis_avector(self, cb: 'ClusterBasis',
+    def forward_nopermutaion_clusterbasis_avector(self,
+                                                  cb: 'misc.ClusterBasis',
                                                   src: 'AVector'):
         func = libclusterbasis.forward_nopermutaion_clusterbasis_avector
         func(cb, src, self)
 
-    def forward_notransfer_clusterbasis_avector(self, cb: 'ClusterBasis',
+    def forward_notransfer_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
                                                 src: 'AVector'):
         libclusterbasis.forward_notransfer_clusterbasis_avector(cb, src, self)
 
-    def backward_clusterbasis_avector(self, cb: 'ClusterBasis',
+    def backward_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
                                       src: 'AVector'):
         libclusterbasis.backward_clusterbasis_avector(cb, src, self)
 
-    def backward_parallel_clusterbasis_avector(self, cb: 'ClusterBasis',
+    def backward_parallel_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
                                                src: 'AVector', pardepth: int):
         func = libclusterbasis.backward_parallel_clusterbasis_avector
         func(cb, src, self, pardepth)
 
-    def backward_nopermutaion_clusterbasis_avector(self, cb: 'ClusterBasis',
+    def backward_nopermutaion_clusterbasis_avector(self,
+                                                   cb: 'misc.ClusterBasis',
                                                    src: 'AVector'):
         func = libclusterbasis.backward_nopermutaion_clusterbasis_avector
         func(cb, src, self)
 
-    def backward_notransfer_clusterbasis_avector(self, cb: 'ClusterBasis',
+    def backward_notransfer_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
                                                  src: 'AVector'):
         libclusterbasis.backward_notransfer_clusterbasis_avector(cb, src, self)
 
-    def compress_clusterbasis_avector(self, cb: 'ClusterBasis',
+    def compress_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
                                       src: 'AVector'):
         libclusterbasis.compress_clusterbasis_avector(cb, src, self)
 
-    def expand_clusterbasis_avector(self, cb: 'ClusterBasis', src: 'AVector'):
+    def expand_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
+                                    src: 'AVector'):
         libclusterbasis.expand_clusterbasis_avector(cb, self, src)
 
-    def addeval_clusterbasis_avector(self, alpha: float, cb: 'ClusterBasis',
-                                     src: 'AVector'):
+    def addeval_clusterbasis_avector(self, alpha: float,
+                                     cb: 'misc.ClusterBasis', src: 'AVector'):
         libclusterbasis.addeval_clusterbasis_avector(alpha, cb, src, self)
 
     def addevaltrans_clusterbasis_avector(self, alpha: float,
-                                          cb: 'ClusterBasis', src: 'AVector'):
+                                          cb: 'misc.ClusterBasis',
+                                          src: 'AVector'):
         libclusterbasis.addevaltrans_clusterbasis_avector(alpha, cb, src, self)
 
     # ***** Operators ******
