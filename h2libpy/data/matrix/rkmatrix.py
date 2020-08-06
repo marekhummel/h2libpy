@@ -14,7 +14,7 @@ class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
         return cls(librkmatrix.new_rkmatrix(rows, cols, k))
 
     @classmethod
-    def from_submatrix(cls, src: 'rkmatrix', rows: int, cols: int,
+    def from_submatrix(cls, src: 'RkMatrix', rows: int, cols: int,
                        roff: int, coff: int):
         return cls(librkmatrix.new_sub_rkmatrix(src, rows, roff, cols, coff))
 
@@ -46,7 +46,7 @@ class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
     def clone(self) -> 'RkMatrix':
         return try_wrap(librkmatrix.clone_rkmatrix(self), RkMatrix)
 
-    def copy(self, target: 'rkmatrix', trans: bool = False):
+    def copy(self, target: 'RkMatrix', trans: bool = False):
         librkmatrix.copy_rkmatrix(trans, self, target)
 
     def scale(self, alpha: float):
@@ -58,5 +58,5 @@ class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
     def norm(self):
         return librkmatrix.norm2_rkmatrix(self)
 
-    def norm2_diff(self, other: 'rkmatrix') -> float:
+    def norm2_diff(self, other: 'RkMatrix') -> float:
         return librkmatrix.norm2diff_rkmatrix(self, other)

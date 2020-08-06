@@ -6,6 +6,7 @@ from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import cptr_to_list, try_wrap
 from h2libpy.data.matrix.amatrix import AMatrix
 from h2libpy.data.matrix.enums import ClearType, SizePart
+from h2libpy.data.matrix.rkmatrix import RkMatrix
 from h2libpy.data.misc.cluster import Cluster
 
 

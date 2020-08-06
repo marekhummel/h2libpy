@@ -1,11 +1,12 @@
-from ctypes import pointer
-from typing import List
+from ctypes import c_void_p, cast, pointer
+from typing import List, Union
 
 import h2libpy.lib.h2matrix as libh2matrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import cptr_to_list, try_wrap, verify_type
 from h2libpy.data.matrix.amatrix import AMatrix
 from h2libpy.data.matrix.enums import H2FillType, SizePart
+from h2libpy.data.matrix.hmatrix import HMatrix
 from h2libpy.data.misc.clusterbasis import ClusterBasis
 from h2libpy.data.misc.uniform import Uniform
 
@@ -17,13 +18,13 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
     def new(cls, rb: 'ClusterBasis', cb: 'ClusterBasis',
             fill: 'H2FillType' = H2FillType.Nothing) -> 'H2Matrix':
         if fill == H2FillType.Uniform:
-            return cls(libh2matrix.new_uniform_h2matrix(rc, cc))
+            return cls(libh2matrix.new_uniform_h2matrix(rb, cb))
         elif fill == H2FillType.Full:
-            return cls(libh2matrix.new_full_h2matrix(rc, cc))
+            return cls(libh2matrix.new_full_h2matrix(rb, cb))
         elif fill == H2FillType.Zero:
-            return cls(libh2matrix.new_zero_h2matrix(rc, cc))
+            return cls(libh2matrix.new_zero_h2matrix(rb, cb))
         else:  # fill == H2FillType.Nothing:
-            return cls(libh2matrix.new_h2matrix(rc, cc))
+            return cls(libh2matrix.new_h2matrix(rb, cb))
 
     @classmethod
     def new_super(cls, rb: 'ClusterBasis', cb: 'ClusterBasis',
@@ -32,8 +33,8 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
 
     @classmethod
     def from_block(cls, b: 'Block', rb: 'ClusterBasis',
-                   cb: 'ClusterBasis') -> 'HMatrix':
-        return cls(libhmatrix.build_from_block_hmatrix(b, rb, cb))
+                   cb: 'ClusterBasis') -> 'H2Matrix':
+        return cls(libh2matrix.build_from_block_hmatrix(b, rb, cb))
 
     # ***** Properties *****
 
@@ -89,9 +90,9 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
         elif part == SizePart.Far:
             return libh2matrix.getfarsize_h2matrix(self)
         elif part == SizePart.Object:
-            return libhmatrix.getsize_h2matrix(self)
+            return libh2matrix.getsize_h2matrix(self)
         elif part == SizePart.Total:
-            return libhmatrix.gettotalsize_h2matrix(self)
+            return libh2matrix.gettotalsize_h2matrix(self)
 
     def clear(self):
         libh2matrix.clear_h2matrix(self)
@@ -117,9 +118,9 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
 
     def project(self, src: Union['AMatrix', 'HMatrix']):
         verify_type(src, [AMatrix, HMatrix])
-        if isinstance(other, AMatrix):
+        if isinstance(src, AMatrix):
             libh2matrix.project_amatrix_h2matrix(self, src)
-        elif isinstance(other, HMatrix):
+        elif isinstance(src, HMatrix):
             libh2matrix.project_hmatrix_h2matrix(self, src)
 
     def norm(self):
