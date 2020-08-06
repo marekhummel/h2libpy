@@ -20,7 +20,7 @@ from h2libpy.lib.util.structs import (CEnumBasisFunctionBem3d,
                                       CStructParBem3d, CStructRealAVector,
                                       CStructRkMatrix, CStructSingQuad2d,
                                       CStructSparseMatrix, CStructSurface3d,
-                                      CStructTriList, CStructTruncmode,
+                                      CStructTriList, CStructTruncMode,
                                       CStructVertList)
 
 # ------------------------------------
@@ -142,7 +142,7 @@ CStructAprxBem3d._fields_ = [
     ('accur_coarsen', real),
     ('hiercomp', c_bool),
     ('accur_hiercomp', real),
-    ('tm', PTR(CStructTruncmode))
+    ('tm', PTR(CStructTruncMode))
 ]
 
 CStructParBem3d._fields_ = [
@@ -276,7 +276,7 @@ setup_h2matrix_aprx_greenhybrid_bem3d = get_func('setup_h2matrix_aprx_greenhybri
 setup_h2matrix_aprx_greenhybrid_ortho_bem3d = get_func('setup_h2matrix_aprx_greenhybrid_ortho_bem3d', None, [PTR(CStructBem3d), PTR(CStructClusterBasis), PTR(CStructClusterBasis), PTR(CStructBlock), c_uint, c_uint, real, real, CFuncQuadPoints3d])
 setup_dh2matrix_aprx_inter_bem3d = get_func('setup_dh2matrix_aprx_inter_bem3d', None, [PTR(CStructBem3d), PTR(CStructDClusterBasis), PTR(CStructDClusterBasis), PTR(CStructDBlock), c_uint])
 setup_dh2matrix_aprx_inter_ortho_bem3d = get_func('setup_dh2matrix_aprx_inter_ortho_bem3d', None, [PTR(CStructBem3d), PTR(CStructDClusterBasis), PTR(CStructDClusterBasis), PTR(CStructDBlock), c_uint])
-setup_dh2matrix_aprx_inter_recomp_bem3d = get_func('setup_dh2matrix_aprx_inter_recomp_bem3d', None, [PTR(CStructBem3d), PTR(CStructDClusterBasis), PTR(CStructDClusterBasis), PTR(CStructDBlock), c_uint, PTR(CStructTruncmode), real])
+setup_dh2matrix_aprx_inter_recomp_bem3d = get_func('setup_dh2matrix_aprx_inter_recomp_bem3d', None, [PTR(CStructBem3d), PTR(CStructDClusterBasis), PTR(CStructDClusterBasis), PTR(CStructDBlock), c_uint, PTR(CStructTruncMode), real])
 
 assemble_bem3d_amatrix = get_func('assemble_bem3d_amatrix', None, [PTR(CStructBem3d), PTR(CStructAMatrix)])
 assemble_bem3d_hmatrix = get_func('assemble_bem3d_hmatrix', None, [PTR(CStructBem3d), PTR(CStructBlock), PTR(CStructHMatrix)])

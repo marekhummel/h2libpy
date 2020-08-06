@@ -49,5 +49,5 @@ class CStructSparsePattern(Struct): pass
 class CStructPatEntry(Struct): pass
 
 class CStructSurface3d(Struct): pass
-class CStructTruncmode(Struct): pass
+class CStructTruncMode(Struct): pass
 class CStructUniform(Struct): pass

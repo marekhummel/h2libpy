@@ -8,7 +8,7 @@ from h2libpy.lib.util.structs import (CStructAMatrix, CStructAVector,
                                       CStructBlock, CStructDClusterBasis,
                                       CStructDClusterOperator,
                                       CStructDH2Matrix, CStructDUniform,
-                                      CStructTruncmode)
+                                      CStructTruncMode)
 
 # ------------------------
 
@@ -64,5 +64,5 @@ norm2diff_dh2matrix = get_func('norm2diff_dh2matrix', real, [PTR(CStructDH2Matri
 # draw_cairo_dh2matrix
 resize_coupling_dh2matrix = get_func('resize_coupling_dh2matrix', None, [PTR(CStructDH2Matrix), PTR(CStructDClusterOperator), PTR(CStructDClusterOperator)])
 build_projected_dh2matrix = get_func('build_projected_dh2matrix', PTR(CStructDH2Matrix), [PTR(CStructDH2Matrix), PTR(CStructDClusterBasis), PTR(CStructDClusterBasis), PTR(CStructDClusterOperator), PTR(CStructDClusterOperator)])
-compress_dh2matrix_dh2matrix = get_func('compress_dh2matrix_dh2matrix', PTR(CStructDH2Matrix), [PTR(CStructDH2Matrix), c_bool, c_bool, PTR(CStructTruncmode), real])
-truncate_dclusterbasis = get_func('truncate_dclusterbasis', None, [PTR(CStructDClusterBasis), PTR(CStructDClusterBasis), PTR(CStructDClusterOperator), PTR(CStructDClusterOperator), PTR(CStructTruncmode), real])
+compress_dh2matrix_dh2matrix = get_func('compress_dh2matrix_dh2matrix', PTR(CStructDH2Matrix), [PTR(CStructDH2Matrix), c_bool, c_bool, PTR(CStructTruncMode), real])
+truncate_dclusterbasis = get_func('truncate_dclusterbasis', None, [PTR(CStructDClusterBasis), PTR(CStructDClusterBasis), PTR(CStructDClusterOperator), PTR(CStructDClusterOperator), PTR(CStructTruncMode), real])
