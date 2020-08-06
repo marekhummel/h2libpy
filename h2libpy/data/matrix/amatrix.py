@@ -1,9 +1,10 @@
 from ctypes import c_uint
-from typing import List
+from typing import List, Union
 
 import h2libpy.lib.amatrix as libamatrix
 import h2libpy.lib.h2matrix as libh2matrix
 import h2libpy.lib.sparsematrix as libsparsematrix
+import h2libpy.lib.clusterbasis as libclusterbasis
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import (cptr_to_list, pylist_to_ptr, try_wrap,
                                verify_type)
@@ -174,6 +175,32 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     def collectdense(self, a: 'AMatrix', rb: 'ClusterBasis',
                      cb: 'ClusterBasis'):
         libh2matrix.collectdense_h2matrix(a, rb, cb, self)
+
+    # -------
+
+    def compress_clusterbasis_amatrix(self, cb: 'ClusterBasis',
+                                      src: 'AMatrix'):
+        libclusterbasis.compress_clusterbasis_amatrix(cb, src, self)
+
+    def compress_parallel_clusterbasis_amatrix(self, cb: 'ClusterBasis',
+                                               src: 'AMatrix', pardepth: int):
+        func = libclusterbasis.compress_parallel_clusterbasis_amatrix
+        func(cb, src, self, pardepth)
+
+    def forward_clusterbasis_amatrix(self, cb: 'ClusterBasis', src: 'AMatrix'):
+        libclusterbasis.forward_clusterbasis_amatrix(cb, src, self)
+
+    def forward_clusterbasis_trans_amatrix(self, cb: 'ClusterBasis',
+                                           src: 'AMatrix'):
+        libclusterbasis.forward_clusterbasis_trans_amatrix(cb, src, self)
+
+    def backward_clusterbasis_amatrix(self, cb: 'ClusterBasis',
+                                      src: 'AMatrix'):
+        libclusterbasis.backward_clusterbasis_amatrix(cb, src, self)
+
+    def backward_clusterbasis_trans_amatrix(self, cb: 'ClusterBasis',
+                                            src: 'AMatrix'):
+        libclusterbasis.backward_clusterbasis_trans_amatrix(cb, src, self)
 
     # ***** Operators ******
 
