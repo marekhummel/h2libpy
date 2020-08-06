@@ -36,10 +36,11 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
 
     @classmethod
     def from_file(cls, file: str, is_symmetric: bool):
+        cfile = file.encode()
         if is_symmetric:
-            return cls(libhmatrix.read_hlibsymm_hmatrix(file))
+            return cls(libhmatrix.read_hlibsymm_hmatrix(cfile))
         else:
-            return cls(libhmatrix.read_hlib_hmatrix(file))
+            return cls(libhmatrix.read_hlib_hmatrix(cfile))
 
     # ***** Properties *****
 
@@ -127,4 +128,4 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
         return libhmatrix.norm2diff_hmatrix(self, other)
 
     def write_file(self, file: str):
-        libhmatrix.write_hlib_hmatrix(self, file)
+        libhmatrix.write_hlib_hmatrix(self, file.encode())

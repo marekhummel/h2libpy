@@ -64,7 +64,7 @@ class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparseMatrix):
         libsparsematrix.print_sparsematrix(self)
 
     def print_eps(self, file: str, offset: int):
-        libsparsematrix.print_eps_sparsematrix(self, file, offset)
+        libsparsematrix.print_eps_sparsematrix(self, file.encode(), offset)
 
     def norm(self) -> float:
         return libsparsematrix.norm2_sparsematrix(self)
