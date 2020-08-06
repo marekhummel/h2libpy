@@ -9,6 +9,7 @@ import h2libpy.lib.h2matrix as libh2matrix
 import h2libpy.lib.hmatrix as libhmatrix
 import h2libpy.lib.rkmatrix as librkmatrix
 import h2libpy.lib.sparsematrix as libsparsematrix
+import h2libpy.lib.uniform as libuniform
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import (cptr_to_list, is_scalar, pylist_to_ptr,
                                verify_type)
@@ -226,6 +227,10 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
                                           cb: 'misc.ClusterBasis',
                                           src: 'AVector'):
         libclusterbasis.addevaltrans_clusterbasis_avector(alpha, cb, src, self)
+
+    def mvm_uniform_avector(self, alpha: float, trans: bool, u: 'misc.Uniform',
+                            src: 'AVector'):
+        libuniform.mvm_uniform_avector(alpha, trans, u, src, self)
 
     # ***** Operators ******
 

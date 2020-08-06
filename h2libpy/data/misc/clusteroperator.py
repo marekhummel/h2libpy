@@ -1,11 +1,12 @@
 
-import h2libpy.lib.clusteroperator as libclusteroperator
-from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.base.util import try_wrap, cptr_to_list
+from ctypes import pointer
+from typing import List
+
 import h2libpy.data.matrix as mat
 import h2libpy.data.misc as misc
-from typing import List
-from ctypes import pointer
+import h2libpy.lib.clusteroperator as libclusteroperator
+from h2libpy.base.structwrapper import StructWrapper
+from h2libpy.base.util import cptr_to_list, try_wrap
 
 
 class ClusterOperator(StructWrapper,
