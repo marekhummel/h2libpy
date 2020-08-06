@@ -4,20 +4,11 @@ from ctypes import c_size_t, c_uint
 
 from h2libpy.lib.settings import field, real
 from h2libpy.lib.util.helper import get_func
+from h2libpy.lib.util.structs import (CStructAMatrix, CStructAVector,
+                                      CStructDClusterBasis,
+                                      CStructDClusterOperator, CStructDUniform)
 
 # ------------------------
-
-
-class CStructDUniform(Struct): pass
-
-
-# ------------------------
-
-
-from h2libpy.lib.amatrix import CStructAMatrix
-from h2libpy.lib.avector import CStructAVector
-from h2libpy.lib.dclusterbasis import CStructDClusterBasis
-from h2libpy.lib.dclusteroperator import CStructDClusterOperator
 
 
 CStructDUniform._fields_ = [

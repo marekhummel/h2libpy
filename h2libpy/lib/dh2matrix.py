@@ -1,27 +1,16 @@
 from ctypes import CFUNCTYPE
 from ctypes import POINTER as PTR
-from ctypes import Structure as Struct
 from ctypes import c_bool, c_size_t, c_uint, c_void_p
 
 from h2libpy.lib.settings import field, real
 from h2libpy.lib.util.helper import get_func
+from h2libpy.lib.util.structs import (CStructAMatrix, CStructAVector,
+                                      CStructBlock, CStructDClusterBasis,
+                                      CStructDClusterOperator,
+                                      CStructDH2Matrix, CStructDUniform,
+                                      CStructTruncmode)
 
 # ------------------------
-
-
-class CStructDH2Matrix(Struct): pass
-
-
-# ------------------------
-
-
-from h2libpy.lib.amatrix import CStructAMatrix
-from h2libpy.lib.avector import CStructAVector
-from h2libpy.lib.block import CStructBlock
-from h2libpy.lib.dclusterbasis import CStructDClusterBasis
-from h2libpy.lib.dclusteroperator import CStructDClusterOperator
-from h2libpy.lib.duniform import CStructDUniform
-from h2libpy.lib.truncation import CStructTruncmode
 
 
 CFuncDH2MatrixCallbackT = CFUNCTYPE(None, *[PTR(CStructDH2Matrix), c_uint, c_uint, c_uint, c_uint, c_void_p])

@@ -1,51 +1,29 @@
 from ctypes import CFUNCTYPE
 from ctypes import POINTER as PTR
-from ctypes import Structure as Struct
 from ctypes import c_bool, c_uint, c_void_p
 
 from h2libpy.lib.settings import field, real
 from h2libpy.lib.util.helper import get_func
+from h2libpy.lib.util.structs import (CEnumBasisFunctionBem3d,
+                                      CStructAdmisBlock, CStructAMatrix,
+                                      CStructAprxBem3d, CStructAVector,
+                                      CStructBem3d, CStructBlock,
+                                      CStructCluster, CStructClusterBasis,
+                                      CStructClusterGeometry,
+                                      CStructClusterOperator, CStructCompData,
+                                      CStructDBlock, CStructDClusterBasis,
+                                      CStructDClusterOperator,
+                                      CStructDH2Matrix, CStructGreenCluster3d,
+                                      CStructGreenClusterBasis3d,
+                                      CStructH2Matrix, CStructHMatrix,
+                                      CStructKernelBem3d, CStructListNode,
+                                      CStructParBem3d, CStructRealAVector,
+                                      CStructRkMatrix, CStructSingQuad2d,
+                                      CStructSparseMatrix, CStructSurface3d,
+                                      CStructTriList, CStructTruncmode,
+                                      CStructVertList)
 
 # ------------------------------------
-
-
-class CStructBem3d(Struct): pass
-class CStructKernelBem3d(Struct): pass
-class CStructVertList(Struct): pass
-class CStructListNode(Struct): pass
-class CStructTriList(Struct): pass
-class CStructAprxBem3d(Struct): pass
-class CStructParBem3d(Struct): pass
-class CStructGreenCluster3d(Struct): pass
-class CStructGreenClusterBasis3d(Struct): pass
-class CStructAdmisBlock(Struct): pass
-class CStructCompData(Struct): pass
-
-class CEnumBasisFunctionBem3d(c_uint): pass
-
-
-# ------------------------------------
-
-
-from h2libpy.lib.amatrix import CStructAMatrix
-from h2libpy.lib.avector import CStructAVector
-from h2libpy.lib.block import CStructBlock
-from h2libpy.lib.cluster import CStructCluster
-from h2libpy.lib.clusterbasis import CStructClusterBasis
-from h2libpy.lib.clustergeometry import CStructClusterGeometry
-from h2libpy.lib.clusteroperator import CStructClusterOperator
-from h2libpy.lib.dblock import CStructDBlock
-from h2libpy.lib.dclusterbasis import CStructDClusterBasis
-from h2libpy.lib.dclusteroperator import CStructDClusterOperator
-from h2libpy.lib.dh2matrix import CStructDH2Matrix
-from h2libpy.lib.h2matrix import CStructH2Matrix
-from h2libpy.lib.hmatrix import CStructHMatrix
-from h2libpy.lib.realavector import CStructRealAVector
-from h2libpy.lib.rkmatrix import CStructRkMatrix
-from h2libpy.lib.singquad2d import CStructSingquad2d
-from h2libpy.lib.sparsematrix import CStructSparseMatrix
-from h2libpy.lib.surface3d import CStructSurface3d
-from h2libpy.lib.truncation import CStructTruncmode
 
 
 CFuncQuadPoints3d = CFUNCTYPE(None, *[PTR(CStructBem3d), real*3, real*3, real, PTR(PTR(real))*3, PTR(PTR(real))*3])
@@ -78,7 +56,7 @@ CEnumBasisFunctionBem3d.BASIS_LINEAR_BEM3D = CEnumBasisFunctionBem3d(ord('l'))
 
 CStructBem3d._fields_ = [
     ('gr', PTR(CStructSurface3d)),
-    ('sq', PTR(CStructSingquad2d)),
+    ('sq', PTR(CStructSingQuad2d)),
     ('row_basis', CEnumBasisFunctionBem3d),
     ('col_basis', CEnumBasisFunctionBem3d),
     ('mass', PTR(real)),

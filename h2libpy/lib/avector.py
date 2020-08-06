@@ -1,19 +1,11 @@
 from ctypes import POINTER as PTR
-from ctypes import Structure as Struct
 from ctypes import c_uint, c_void_p, c_size_t
 
 from h2libpy.lib.settings import real, field
 from h2libpy.lib.util.helper import get_func
+from h2libpy.lib.util.structs import CStructAVector, CStructAMatrix
 
 # ------------------------
-
-
-class CStructAVector(Struct): pass
-
-
-# ------------------------
-
-from h2libpy.lib.amatrix import CStructAMatrix
 
 
 CStructAVector._fields_ = [

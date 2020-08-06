@@ -1,15 +1,9 @@
 from ctypes import POINTER as PTR
-from ctypes import Structure as Struct
 from ctypes import c_bool, c_char_p, c_uint
 
 from h2libpy.lib.settings import real
 from h2libpy.lib.util.helper import get_func
-
-# ------------------------
-
-
-class CStructSurface3d(Struct): pass
-
+from h2libpy.lib.util.structs import CStructSurface3d
 
 # ------------------------
 

@@ -4,18 +4,10 @@ from ctypes import c_bool, c_size_t, c_uint
 
 from h2libpy.lib.settings import field, real
 from h2libpy.lib.util.helper import get_func
+from h2libpy.lib.util.structs import (CStructAMatrix, CStructAVector,
+                                      CStructRkMatrix)
 
 # ------------------------
-
-
-class CStructRkMatrix(Struct): pass
-
-
-# ------------------------
-
-
-from h2libpy.lib.amatrix import CStructAMatrix
-from h2libpy.lib.avector import CStructAVector
 
 
 CStructRkMatrix._fields_ = [

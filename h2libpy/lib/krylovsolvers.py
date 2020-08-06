@@ -1,16 +1,12 @@
 from ctypes import POINTER as PTR
 from ctypes import c_uint, c_void_p
 
-from h2libpy.lib.amatrix import CStructAMatrix
-from h2libpy.lib.avector import CStructAVector
-from h2libpy.lib.dh2matrix import CStructDH2Matrix
-from h2libpy.lib.h2matrix import CStructH2Matrix
-from h2libpy.lib.hmatrix import CStructHMatrix
 from h2libpy.lib.krylov import CFuncAddevalT, CFuncPrcdT
 from h2libpy.lib.settings import real
-from h2libpy.lib.sparsematrix import CStructSparseMatrix
 from h2libpy.lib.util.helper import get_func
-
+from h2libpy.lib.util.structs import (CStructAMatrix, CStructAVector,
+                                      CStructDH2Matrix, CStructH2Matrix,
+                                      CStructHMatrix, CStructSparseMatrix)
 
 # ------------------------
 

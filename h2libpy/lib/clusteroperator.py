@@ -1,21 +1,13 @@
 from ctypes import POINTER as PTR
-from ctypes import Structure as Struct
 from ctypes import c_size_t, c_uint
 
 from h2libpy.lib.settings import real
 from h2libpy.lib.util.helper import get_func
+from h2libpy.lib.util.structs import (CStructAMatrix, CStructCluster,
+                                      CStructClusterBasis,
+                                      CStructClusterOperator)
 
 # ------------------------
-
-
-class CStructClusterOperator(Struct): pass
-
-
-# ------------------------
-
-from h2libpy.lib.amatrix import CStructAMatrix
-from h2libpy.lib.cluster import CStructCluster
-from h2libpy.lib.clusterbasis import CStructClusterBasis
 
 
 CStructClusterOperator._fields_ = [

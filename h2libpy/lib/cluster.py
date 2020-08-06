@@ -1,23 +1,13 @@
 from ctypes import CFUNCTYPE
 from ctypes import POINTER as PTR
-from ctypes import Structure as Struct
-from ctypes import c_char_p, c_int, c_uint, c_void_p
+from ctypes import c_uint, c_void_p
 
 from h2libpy.lib.settings import real
 from h2libpy.lib.util.helper import get_func
+from h2libpy.lib.util.structs import (CEnumClusterMode, CStructCluster,
+                                      CStructClusterGeometry)
 
 # ------------------------
-
-
-class CStructCluster(Struct): pass
-
-class CEnumClusterMode(c_uint): pass
-
-
-# ------------------------
-
-
-from h2libpy.lib.clustergeometry import CStructClusterGeometry
 
 
 CFuncClusterCallbackT = CFUNCTYPE(None, *[PTR(CStructCluster), c_uint, c_void_p])

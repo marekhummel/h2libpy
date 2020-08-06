@@ -1,10 +1,10 @@
 from ctypes import POINTER as PTR
 from ctypes import c_uint, c_void_p
 
-from h2libpy.lib.util.helper import get_func
-from h2libpy.lib.bem3d import CEnumBasisFunctionBem3d, CStructBem3d
+from h2libpy.lib.bem3d import CEnumBasisFunctionBem3d
 from h2libpy.lib.settings import field, real
-from h2libpy.lib.surface3d import CStructSurface3d
+from h2libpy.lib.util.helper import get_func
+from h2libpy.lib.util.structs import CStructBem3d, CStructSurface3d
 
 # ------------------------
 

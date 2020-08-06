@@ -1,22 +1,13 @@
 
 from ctypes import POINTER as PTR
-from ctypes import Structure as Struct
 from ctypes import c_size_t, c_uint
 
 from h2libpy.lib.settings import real
 from h2libpy.lib.util.helper import get_func
+from h2libpy.lib.util.structs import (CStructCluster, CStructDCluster,
+                                      CStructLevelDir)
 
 # ------------------------
-
-
-class CStructDCluster(Struct): pass
-class CStructLevelDir(Struct): pass
-
-
-# ------------------------
-
-
-from h2libpy.lib.cluster import CStructCluster
 
 
 CStructDCluster._fields_ = [

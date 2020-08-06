@@ -1,24 +1,14 @@
 from ctypes import POINTER as PTR
-from ctypes import Structure as Struct
-from ctypes import c_bool, c_char_p, c_int, c_size_t, c_uint
+from ctypes import c_bool, c_char_p, c_size_t, c_uint
 
 from h2libpy.lib.settings import field, real
 from h2libpy.lib.util.helper import get_func
+from h2libpy.lib.util.structs import (CStructAMatrix, CStructAVector,
+                                      CStructBlock, CStructCluster,
+                                      CStructHMatrix, CStructRkMatrix,
+                                      CStructSparseMatrix)
 
 # ------------------------
-
-
-class CStructHMatrix(Struct): pass
-
-
-# ------------------------
-
-from h2libpy.lib.amatrix import CStructAMatrix
-from h2libpy.lib.avector import CStructAVector
-from h2libpy.lib.block import CStructBlock
-from h2libpy.lib.cluster import CStructCluster
-from h2libpy.lib.rkmatrix import CStructRkMatrix
-from h2libpy.lib.sparsematrix import CStructSparseMatrix
 
 
 CStructHMatrix._fields_ = [

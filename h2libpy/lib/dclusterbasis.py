@@ -1,16 +1,13 @@
 from ctypes import CFUNCTYPE
 from ctypes import POINTER as PTR
-from ctypes import Structure as Struct
 from ctypes import c_size_t, c_uint, c_void_p
 
 from h2libpy.lib.settings import field, real
 from h2libpy.lib.util.helper import get_func
-
-# ------------------------
-
-
-class CStructDClusterBasis(Struct): pass
-
+from h2libpy.lib.util.structs import (CStructAMatrix, CStructAVector,
+                                      CStructDBlock, CStructDCluster,
+                                      CStructDClusterBasis,
+                                      CStructDClusterOperator)
 
 # ------------------------
 
@@ -19,13 +16,6 @@ CFuncDClusterBasisCallbackT = CFUNCTYPE(None, *[PTR(CStructDClusterBasis), c_uin
 
 
 # ------------------------
-
-
-from h2libpy.lib.amatrix import CStructAMatrix
-from h2libpy.lib.avector import CStructAVector
-from h2libpy.lib.dblock import CStructDBlock
-from h2libpy.lib.dcluster import CStructDCluster
-from h2libpy.lib.dclusteroperator import CStructDClusterOperator
 
 
 CStructDClusterBasis._fields_ = [
