@@ -1,11 +1,12 @@
+from ctypes import c_void_p, cast
+from typing import List
+
 import h2libpy.lib.block as libblock
 import h2libpy.lib.h2matrix as libh2matrix
 import h2libpy.lib.hmatrix as libhmatrix
 from h2libpy.base.structwrapper import StructWrapper
+from h2libpy.base.util import cptr_to_list, try_wrap
 from h2libpy.data.misc.cluster import Cluster
-from h2libpy.base.util import try_wrap, cptr_to_list
-from typing import List
-from ctypes import cast, c_void_p
 
 
 class Block(StructWrapper, cstruct=libblock.CStructBlock):
