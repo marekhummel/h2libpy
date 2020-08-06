@@ -1,14 +1,13 @@
 import time
 
-from h2libpy.lib.bem3d import CEnumBasisFunctionBem3d
-from h2libpy.lib.laplacebem3d import eval_dirichlet_fundamental_laplacebem3d, eval_neumann_fundamental_laplacebem3d
-from h2libpy.data.geometry.macrosurface3d import MacroSurface3d
-from h2libpy.data.geometry.surface3d import Surface3d
-from h2libpy.data.problem.bem3d.bem3d import Bem3d
-from h2libpy.data.matrix.amatrix import AMatrix
-from h2libpy.data.vector.avector import AVector
 import h2libpy.solver.krylov as krylov
-
+from h2libpy.data.geometry import MacroSurface3d, Surface3d
+from h2libpy.data.matrix import AMatrix
+from h2libpy.data.problem.bem3d import Bem3d
+from h2libpy.data.vector import AVector
+from h2libpy.lib.bem3d import CEnumBasisFunctionBem3d
+from h2libpy.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
+                                      eval_neumann_fundamental_laplacebem3d)
 from h2libpy.lib.util.helper import uninit
 
 
