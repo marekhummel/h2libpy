@@ -23,7 +23,7 @@ def main():
 
     # Geometry
     mg = MacroSurface3d.new_sphere()
-    gr = Surface3d.from_macrosurface3d(mg, 8)
+    gr = Surface3d.from_macrosurface3d(mg, 16)
     print(f'Created geometry with {gr.vertices} vertices, {gr.edges} edges and {gr.triangles} triangles')
 
 

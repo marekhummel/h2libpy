@@ -1,5 +1,4 @@
 from ctypes import POINTER as PTR
-from ctypes import Structure as Struct
 from ctypes import c_size_t, c_uint
 
 from h2libpy.lib.settings import field, real

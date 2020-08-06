@@ -31,7 +31,7 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
         return cls(libhmatrix.new_super_hmatrix(rc, cc, rsons, csons))
 
     @classmethod
-    def from_block(cls, b: 'Block', k: int) -> 'mat.HMatrix':
+    def from_block(cls, b: 'misc.Block', k: int) -> 'mat.HMatrix':
         return cls(libhmatrix.build_from_block_hmatrix(b, k))
 
     @classmethod
