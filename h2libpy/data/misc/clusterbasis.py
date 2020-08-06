@@ -10,6 +10,7 @@ from h2libpy.base.util import cptr_to_list, try_wrap
 
 
 class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
+    # ***** Constructors / destructor *****
 
     @classmethod
     def new(cls, t: 'misc.Cluster', *, leaf: bool) -> 'ClusterBasis':

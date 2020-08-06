@@ -3,6 +3,7 @@ from typing import List
 
 import h2libpy.data.misc as misc
 import h2libpy.lib.cluster as libcluster
+import h2libpy.lib.clustergeometry as libclustergeometry
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import cptr_to_list, pylist_to_ptr, try_wrap
 
@@ -130,3 +131,8 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
         ptr = libcluster.enumerate_cluster(self)
         lst = cptr_to_list(ptr, self.desc)
         return [try_wrap(c, Cluster) for c in lst]
+
+    # -------
+
+    def update_bbox(self):
+        libclustergeometry.update_bbox_cluster(self)
