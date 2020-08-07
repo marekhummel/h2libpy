@@ -9,7 +9,8 @@ from ctypes import cast, c_void_p
 
 matrix_types = [mat.AMatrix, mat.SparseMatrix, mat.HMatrix, mat.H2Matrix,
                 mat.DH2Matrix]
-matrix_union = Union[matrix_types]
+matrix_union = Union['mat.AMatrix', 'mat.SparseMatrix', 'mat.HMatrix',
+                     'mat.H2Matrix', 'mat.DH2Matrix']
 
 
 def solve_cg_avector(a, addeval, b: 'vec.AVector', x: 'vec.AVector',

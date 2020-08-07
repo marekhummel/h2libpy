@@ -23,7 +23,7 @@ def main():
 
     # Geometry
     mg = MacroSurface3d.new_sphere()
-    gr = Surface3d.from_macrosurface3d(mg, 16)
+    gr = Surface3d.from_macrosurface3d(mg, 8)
     print(f'Created geometry with {gr.vertices} vertices, {gr.edges} edges and {gr.triangles} triangles')
 
 
@@ -76,7 +76,7 @@ def main():
     x = AVector.new(gr.triangles, zeros=True)
     print('Solve linear system:')
     start = time.time()
-    krylovsolvers.solve_cg_amatrix_avector(V, b, x, eps_solve, maxiter)
+    krylovsolvers.solve_cg(V, b, x, eps_solve, maxiter)
     t = time.time() - start
     size = x.size() / 1024 / 1024
     print(f'  {t:.2f} s')
