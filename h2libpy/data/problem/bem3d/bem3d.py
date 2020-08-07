@@ -1,4 +1,4 @@
-from ctypes import c_void_p, cast
+from ctypes import c_void_p, cast, c_uint
 from typing import List
 
 import h2libpy.data.geometry.surface3d as geo
@@ -90,7 +90,7 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         cidx = pylist_to_ptr(csubs, c_uint)
         obj = libbem3d.build_bem3d_clustergeometry(self, cidx, basis)
         return try_wrap(obj, misc.ClusterGeometry)
-    
+
     def build_cluster(self, clf: int, basis: int) \
             -> 'misc.Cluster':
         obj = libbem3d.build_bem3d_cluster(self, clf, basis)

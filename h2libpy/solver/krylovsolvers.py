@@ -7,12 +7,12 @@ from typing import Union
 from ctypes import cast, c_void_p
 
 
-matrix_types = [mat.AMatrix, mat.SparseMatrix, mat.HMatrix, mat.H2Matrix, 
+matrix_types = [mat.AMatrix, mat.SparseMatrix, mat.HMatrix, mat.H2Matrix,
                 mat.DH2Matrix]
-matrix_union = Union[*matrix_types]
+matrix_union = Union[matrix_types]
 
 
-def solve_cg_avector(a, addeval, b: 'vec.AVector', x: 'vec.AVector', 
+def solve_cg_avector(a, addeval, b: 'vec.AVector', x: 'vec.AVector',
                      eps: float, maxiter: int) -> int:
     ca = cast(a, c_void_p)
     caddeval = libkrylov.CFuncAddevalT(addeval)
@@ -36,13 +36,13 @@ def solve_cg(a: matrix_union, b: 'vec.AVector', x: 'vec.AVector',
     return solve_func(a, b, x, eps, maxiter)
 
 
-def solve_pcg_avector(a, addeval, prcd, pdata, b: 'vec.AVector', 
+def solve_pcg_avector(a, addeval, prcd, pdata, b: 'vec.AVector',
                       x: 'vec.AVector', eps: float, maxiter: int) -> int:
     ca = cast(a, c_void_p)
     caddeval = libkrylov.CFuncAddevalT(addeval)
     cprcd = libkrylov.CFuncPrcdT(prcd)
     cpdata = cast(pdata, c_void_p)
-    libkrylovsolvers.solve_pcg_avector(ca, caddeval, cprcd, cpdata, b, x, eps, 
+    libkrylovsolvers.solve_pcg_avector(ca, caddeval, cprcd, cpdata, b, x, eps,
                                        maxiter)
 
 
@@ -65,16 +65,16 @@ def solve_pcg(a: matrix_union, prcd, pdata, b: 'vec.AVector', x: 'vec.AVector',
     return solve_func(a, cprcd, cpdata, b, x, eps, maxiter)
 
 
-def solve_gmres_avector(a, addeval, b: 'vec.AVector', x: 'vec.AVector', 
-                     eps: float, maxiter: int, kmax: int) -> int:
+def solve_gmres_avector(a, addeval, b: 'vec.AVector', x: 'vec.AVector',
+                        eps: float, maxiter: int, kmax: int) -> int:
     ca = cast(a, c_void_p)
     caddeval = libkrylov.CFuncAddevalT(addeval)
-    libkrylovsolvers.solve_gmres_avector(ca, caddeval, b, x, eps, maxiter, 
+    libkrylovsolvers.solve_gmres_avector(ca, caddeval, b, x, eps, maxiter,
                                          kmax)
 
 
 def solve_gmres(a: matrix_union, b: 'vec.AVector', x: 'vec.AVector',
-               eps: float, maxiter: int, kmax: int) -> int:
+                eps: float, maxiter: int, kmax: int) -> int:
     verify_type(a, matrix_types)
 
     if isinstance(a, mat.AMatrix):
@@ -90,18 +90,18 @@ def solve_gmres(a: matrix_union, b: 'vec.AVector', x: 'vec.AVector',
     return solve_func(a, b, x, eps, maxiter, kmax)
 
 
-def solve_pcg_avector(a, addeval, prcd, pdata, b: 'vec.AVector', 
-                      x: 'vec.AVector', eps: float, maxiter: int,
-                      kmax: int) -> int:
+def solve_pgmres_avector(a, addeval, prcd, pdata, b: 'vec.AVector',
+                         x: 'vec.AVector', eps: float, maxiter: int,
+                         kmax: int) -> int:
     ca = cast(a, c_void_p)
     caddeval = libkrylov.CFuncAddevalT(addeval)
     cprcd = libkrylov.CFuncPrcdT(prcd)
     cpdata = cast(pdata, c_void_p)
-    libkrylovsolvers.solve_pgmres_avector(ca, caddeval, cprcd, cpdata, b, x, 
+    libkrylovsolvers.solve_pgmres_avector(ca, caddeval, cprcd, cpdata, b, x,
                                           eps, maxiter, kmax)
 
 
-def solve_pgmres(a: matrix_union, prcd, pdata, b: 'vec.AVector', 
+def solve_pgmres(a: matrix_union, prcd, pdata, b: 'vec.AVector',
                  x: 'vec.AVector', eps: float, maxiter: int, kmax: int) -> int:
     verify_type(a, matrix_types)
     cprcd = libkrylov.CFuncPrcdT(prcd)

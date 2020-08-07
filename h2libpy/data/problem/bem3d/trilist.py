@@ -10,7 +10,7 @@ class TriList(StructWrapper, cstruct=libbem3d.CStructTriList):
     @classmethod
     def new(cls, nxt: 'TriList'):
         return cls(libbem3d.new_tri_list(nxt))
-    
+
     # ***** Properties *****
 
     def __getter_t(self) -> int:

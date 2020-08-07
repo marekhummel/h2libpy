@@ -4,7 +4,7 @@ from h2libpy.base.util import try_wrap
 
 
 class PatEntry(StructWrapper, cstruct=libsparsepattern.CStructPatEntry):
-    
+
     # ***** Properties *****
 
     def __getter_row(self) -> int:
