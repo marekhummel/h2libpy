@@ -1,7 +1,7 @@
-import h2libpy.lib.sparsematrix as libsparsematrix
+import h2libpy.lib.sparsepattern as libsparsepattern
 from h2libpy.base.structwrapper import StructWrapper
 
 
 class SparsePattern(StructWrapper,
-                    cstruct=libsparsematrix.CStructSparsePattern):
+                    cstruct=libsparsepattern.CStructSparsePattern):
     pass

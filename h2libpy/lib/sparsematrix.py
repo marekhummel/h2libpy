@@ -4,7 +4,7 @@ from ctypes import c_bool, c_char_p, c_size_t, c_uint
 from h2libpy.lib.settings import field, real
 from h2libpy.lib.util.helper import get_func
 from h2libpy.lib.util.structs import (CStructAMatrix, CStructAVector,
-                                      CStructPatEntry, CStructSparseMatrix,
+                                      CStructSparseMatrix,
                                       CStructSparsePattern)
 
 # ------------------------
@@ -17,18 +17,6 @@ CStructSparseMatrix._fields_ = [
     ('row', PTR(c_uint)),
     ('col', PTR(c_uint)),
     ('coeff', PTR(field))
-]
-
-CStructSparsePattern._fields_ = [
-    ('rows', c_uint),
-    ('cols', c_uint),
-    ('row', PTR(PTR(CStructPatEntry))),
-]
-
-CStructPatEntry._fields_ = [
-    ('row', c_uint),
-    ('col', c_uint),
-    ('next', PTR(CStructPatEntry))
 ]
 
 
