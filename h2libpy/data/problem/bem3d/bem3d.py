@@ -1,5 +1,5 @@
-from ctypes import c_void_p, cast, c_uint
-from typing import List
+from ctypes import c_uint, c_void_p, cast, pointer
+from typing import List, Tuple
 
 import h2libpy.data.geometry.surface3d as geo
 import h2libpy.data.matrix as mat
@@ -10,6 +10,12 @@ import h2libpy.lib.bem3d as libbem3d
 import h2libpy.lib.laplacebem3d as liblaplacebem3d
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import pylist_to_ptr, try_wrap
+from h2libpy.data.problem.bem3d.enums import (IntegralType,
+                                              InterpolationDirection,
+                                              QuadratureType)
+from h2libpy.lib.settings import real
+
+VectorListType = List[Tuple[float, float, float]]
 
 
 class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
@@ -95,6 +101,177 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
             -> 'misc.Cluster':
         obj = libbem3d.build_bem3d_cluster(self, clf, basis)
         return try_wrap(obj, misc.Cluster)
+
+    def assemble_quad(self, quadtype: 'QuadratureType', ridx: List[int],
+                      cidx: List[int], ntrans: bool, N: 'mat.AMatrix', kernel):
+        if quadtype == QuadratureType.CCNear:
+            func = libbem3d.assemble_cc_near_bem3d
+        elif quadtype == QuadratureType.CCFar:
+            func = libbem3d.assemble_cc_far_bem3d
+        elif quadtype == QuadratureType.CLNear:
+            func = libbem3d.assemble_cl_near_bem3d
+        elif quadtype == QuadratureType.CLFar:
+            func = libbem3d.assemble_cl_far_bem3d
+        elif quadtype == QuadratureType.LCNear:
+            func = libbem3d.assemble_lc_near_bem3d
+        elif quadtype == QuadratureType.LCFar:
+            func = libbem3d.assemble_lc_far_bem3d
+        elif quadtype == QuadratureType.LLNear:
+            func = libbem3d.assemble_ll_near_bem3d
+        elif quadtype == QuadratureType.LLFar:
+            func = libbem3d.assemble_ll_far_bem3d
+
+        cridx = pylist_to_ptr(ridx, c_uint)
+        ccidx = pylist_to_ptr(cidx, c_uint)
+        ckernel = libbem3d.CFuncKernelFunc3d(kernel)
+        func(cridx, ccidx, self, ntrans, N, ckernel)
+
+    def fill(self, x: VectorListType, y: VectorListType, nx: VectorListType,
+             ny: VectorListType, v: 'mat.AMatrix', kernel):
+        cx = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in x], real)
+        cy = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in y], real)
+        cnx = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in nx], real)
+        cny = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in ny], real)
+        ckernel = libbem3d.CFuncKernelFunc3d(kernel)
+        libbem3d.fill_bem3d(self, cx, cy, cnx, cny, v, ckernel)
+
+    def fill_wave(self, x: VectorListType, y: VectorListType,
+                  nx: VectorListType, ny: VectorListType, v: 'mat.AMatrix',
+                  direc: float, kernel):
+        cx = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in x], real)
+        cy = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in y], real)
+        cnx = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in nx], real)
+        cny = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in ny], real)
+        cdirec = pointer(direc)
+        ckernel = libbem3d.CFuncKernelWaveFunc3d(kernel)
+        libbem3d.fill_wave_bem3d(self, cx, cy, cnx, cny, v, cdirec, ckernel)
+
+    def fill_integral(self, integral_type: 'IntegralType', idx: List[int],
+                      z: VectorListType, v: 'mat.AMatrix', kernel):
+        if integral_type == IntegralType.RowC:
+            func = libbem3d.fill_row_c_bem3d
+        elif integral_type == IntegralType.ColC:
+            func = libbem3d.fill_col_c_bem3d
+        elif integral_type == IntegralType.RowL:
+            func = libbem3d.fill_row_l_bem3d
+        elif integral_type == IntegralType.ColL:
+            func = libbem3d.fill_col_l_bem3d
+
+        cidx = pylist_to_ptr(idx, c_uint)
+        cz = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in z], real)
+        ckernel = libbem3d.CFuncKernelFunc3d(kernel)
+        func(cidx, cz, self, v, ckernel)
+
+    def fill_dnz_integral(self, integral_type: 'IntegralType', idx: List[int],
+                          z: VectorListType, n: VectorListType,
+                          v: 'mat.AMatrix', kernel):
+        if integral_type == IntegralType.RowC:
+            func = libbem3d.fill_dnz_row_c_bem3d
+        elif integral_type == IntegralType.ColC:
+            func = libbem3d.fill_dnz_col_c_bem3d
+        elif integral_type == IntegralType.RowL:
+            func = libbem3d.fill_dnz_row_l_bem3d
+        elif integral_type == IntegralType.ColL:
+            func = libbem3d.fill_dnz_col_l_bem3d
+
+        cidx = pylist_to_ptr(idx, c_uint)
+        cz = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in z], real)
+        cn = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in n], real)
+        ckernel = libbem3d.CFuncKernelFunc3d(kernel)
+        func(cidx, cz, cn, self, v, ckernel)
+
+    def setup_hmatrix_recomp(self, recomb: bool, accur_recomp: float,
+                             coarsen: bool, accur_coarsen: float):
+        libbem3d.setup_hmatrix_recomp_bem3d(self, recomb, accur_recomp,
+                                            coarsen, accur_coarsen)
+
+    def setup_hmatrix_aprx_inter(self, direc: 'InterpolationDirection',
+                                 rc: 'misc.Cluster', cc: 'misc.Cluster',
+                                 tree: 'misc.Block', m: int):
+        if direc == InterpolationDirection.Row:
+            func = libbem3d.setup_hmatrix_aprx_inter_row_bem3d
+        elif direc == InterpolationDirection.Col:
+            func = libbem3d.setup_hmatrix_aprx_inter_col_bem3d
+        elif direc == InterpolationDirection.Mixed:
+            func = libbem3d.setup_hmatrix_aprx_inter_mixed_bem3d
+        func(self, rc, cc, tree, m)
+
+    def setup_hmatrix_aprx_green(self, direc: 'InterpolationDirection',
+                                 rc: 'misc.Cluster', cc: 'misc.Cluster',
+                                 tree: 'misc.Block', m: int, l: int,
+                                 delta: float, quadpoints):
+        if direc == InterpolationDirection.Row:
+            func = libbem3d.setup_hmatrix_aprx_green_row_bem3d
+        elif direc == InterpolationDirection.Col:
+            func = libbem3d.setup_hmatrix_aprx_green_col_bem3d
+        elif direc == InterpolationDirection.Mixed:
+            func = libbem3d.setup_hmatrix_aprx_green_mixed_bem3d
+
+        cquadpoints = libbem3d.CFuncQuadPoints3d(quadpoints)
+        func(self, rc, cc, tree, m, l, delta, cquadpoints)
+
+    def setup_hmatrix_aprx_greenhybrid(self, direc: 'InterpolationDirection',
+                                       rc: 'misc.Cluster', cc: 'misc.Cluster',
+                                       tree: 'misc.Block', m: int, l: int,
+                                       delta: float, accur: float, quadpoints):
+        if direc == InterpolationDirection.Row:
+            func = libbem3d.setup_hmatrix_aprx_greenhybrid_row_bem3d
+        elif direc == InterpolationDirection.Col:
+            func = libbem3d.setup_hmatrix_aprx_greenhybrid_col_bem3d
+        elif direc == InterpolationDirection.Mixed:
+            func = libbem3d.setup_hmatrix_aprx_greenhybrid_mixed_bem3d
+
+        cquadpoints = libbem3d.CFuncQuadPoints3d(quadpoints)
+        func(self, rc, cc, tree, m, l, delta, accur, cquadpoints)
+
+    def setup_hmatrix_aprx_aca(self, rc: 'misc.Cluster', cc: 'misc.Cluster',
+                               tree: 'misc.Block', accur: float,
+                               *, partial: bool = False):
+        if partial:
+            libbem3d.setup_hmatrix_aprx_paca_bem3d(self, rc, cc, tree, accur)
+        else:
+            libbem3d.setup_hmatrix_aprx_aca_bem3d(self, rc, cc, tree, accur)
+
+    def setup_hmatrix_aprx_hca(self, rc: 'misc.Cluster', cc: 'misc.Cluster',
+                               tree: 'misc.Block', m: int, accur: float):
+        libbem3d.setup_hmatrix_aprx_hca_bem3d(self, rc, cc, tree, m, accur)
+
+    def setup_h2matrix_recomp(self, hiercomp: bool, accur_hiercomp: float):
+        libbem3d.setup_h2matrix_recomp_bem3d(self, hiercomp, accur_hiercomp)
+
+    def setup_h2matrix_aprx_inter(self, rb: 'misc.ClusterBasis',
+                                  cb: 'misc.ClusterBasis', tree: 'misc.Block',
+                                  m: int):
+        libbem3d.setup_h2matrix_aprx_inter_bem3d(self, rb, cb, tree, m)
+
+    def setup_h2matrix_aprx_greenhybrid(self, rb: 'misc.ClusterBasis',
+                                        cb: 'misc.ClusterBasis',
+                                        tree: 'misc.Block', m: int, l: int,
+                                        delta: float, accur: float,
+                                        quadpoints, *, ortho: bool = False):
+        cquadpoints = libbem3d.CFuncQuadPoints3d(quadpoints)
+        if ortho:
+            func = libbem3d.setup_h2matrix_aprx_greenhybrid_ortho_bem3d
+        else:
+            func = libbem3d.setup_h2matrix_aprx_greenhybrid_bem3d
+        func(self, rb, cb, tree, m, l, delta, accur, cquadpoints)
+
+    def setup_dh2matrix_aprx_inter(self, rb: 'misc.DClusterBasis',
+                                   cb: 'misc.DClusterBasis',
+                                   tree: 'misc.DBlock', m: int,
+                                   *, ortho: bool = False):
+        if ortho:
+            func = libbem3d.setup_dh2matrix_aprx_inter_ortho_bem3d
+            func(self, rb, cb, tree, m)
+        else:
+            libbem3d.setup_dh2matrix_aprx_inter_bem3d(self, rb, cb, tree, m)
+
+    def setup_dh2matrix_aprx_inter_recomp(self, rb: 'misc.DClusterBasis',
+                                          cb: 'misc.DClusterBasis',
+                                          tree: 'misc.DBlock', m: int,
+                                          tm: 'misc.TruncMode', eps: float):
+        func = libbem3d.setup_dh2matrix_aprx_inter_recomp_bem3d
+        func(self, rb, cb, tree, m, tm, eps)
 
     def assemble_amatrix(self, g: 'mat.AMatrix'):
         libbem3d.assemble_bem3d_amatrix(self, g)
