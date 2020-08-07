@@ -1,13 +1,15 @@
 from ctypes import c_void_p, cast
+from typing import List
 
 import h2libpy.data.geometry.surface3d as geo
 import h2libpy.data.matrix as mat
+import h2libpy.data.misc as misc
 import h2libpy.data.problem.bem3d as pbem3d
 import h2libpy.data.vector as vec
 import h2libpy.lib.bem3d as libbem3d
 import h2libpy.lib.laplacebem3d as liblaplacebem3d
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.base.util import try_wrap
+from h2libpy.base.util import pylist_to_ptr, try_wrap
 
 
 class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
@@ -67,6 +69,32 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         return try_wrap(self.cobj().kernels, pbem3d.KernelBem3d)
 
     # ***** Methods ******
+
+    def build_const_clustergeometry(self, idx: List[List[int]]) \
+            -> 'misc.ClusterGeometry':
+        csubs = [pylist_to_ptr(sub, c_uint) for sub in idx]
+        cidx = pylist_to_ptr(csubs, c_uint)
+        obj = libbem3d.build_bem3d_const_clustergeometry(self, cidx)
+        return try_wrap(obj, misc.ClusterGeometry)
+
+    def build_linear_clustergeometry(self, idx: List[List[int]]) \
+            -> 'misc.ClusterGeometry':
+        csubs = [pylist_to_ptr(sub, c_uint) for sub in idx]
+        cidx = pylist_to_ptr(csubs, c_uint)
+        obj = libbem3d.build_bem3d_linear_clustergeometry(self, cidx)
+        return try_wrap(obj, misc.ClusterGeometry)
+
+    def build_clustergeometry(self, idx: List[List[int]], basis: int) \
+            -> 'misc.ClusterGeometry':
+        csubs = [pylist_to_ptr(sub, c_uint) for sub in idx]
+        cidx = pylist_to_ptr(csubs, c_uint)
+        obj = libbem3d.build_bem3d_clustergeometry(self, cidx, basis)
+        return try_wrap(obj, misc.ClusterGeometry)
+    
+    def build_cluster(self, clf: int, basis: int) \
+            -> 'misc.Cluster':
+        obj = libbem3d.build_bem3d_cluster(self, clf, basis)
+        return try_wrap(obj, misc.Cluster)
 
     def assemble_amatrix(self, g: 'mat.AMatrix'):
         libbem3d.assemble_bem3d_amatrix(self, g)

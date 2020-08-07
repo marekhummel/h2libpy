@@ -6,12 +6,6 @@ from h2libpy.base.structwrapper import StructWrapper
 class AdmisBlock(StructWrapper, cstruct=libbem3d.CStructAdmisBlock):
     # ***** Constructors / destructor *****
 
-    def __init__(self, cobj):
-        super().__init__(cobj, )
-
-    def __del__(self):
-        pass
-
     # ***** Properties *****
 
     def __getter_name(self) -> int:

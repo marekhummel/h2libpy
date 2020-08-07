@@ -1,7 +1,7 @@
 import re
 
 root = '../H2Lib/Library/'
-file = 'sparsepattern.h'
+file = 'bem3d.h'
 
 rgx_sig = r'(?im)^(?!\s*\/?\*)(?:\s*HEADER_PREFIX )?(?P<restype>.*)(?:\n\s*| )(?P<funcname>.*)\((?P<params>(?:.|\n)*?)\);$'
 rgx_prms = r'(?im)(?:const )?(?P<type>\w+?)\s?(?P<ptr>\**)\s?(?P<var>\w+?),'
