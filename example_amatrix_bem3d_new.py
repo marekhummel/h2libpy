@@ -1,6 +1,6 @@
 import time
 
-import h2libpy.solver.krylov as krylov
+import h2libpy.solver.krylovsolvers as krylovsolvers
 from h2libpy.data.geometry import MacroSurface3d, Surface3d
 from h2libpy.data.matrix import AMatrix
 from h2libpy.data.problem.bem3d import Bem3d
@@ -76,7 +76,7 @@ def main():
     x = AVector.new(gr.triangles, zeros=True)
     print('Solve linear system:')
     start = time.time()
-    krylov.solve_cg_amatrix_avector(V, b, x, eps_solve, maxiter)
+    krylovsolvers.solve_cg_amatrix_avector(V, b, x, eps_solve, maxiter)
     t = time.time() - start
     size = x.size() / 1024 / 1024
     print(f'  {t:.2f} s')
