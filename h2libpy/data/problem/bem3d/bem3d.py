@@ -12,7 +12,7 @@ from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import pylist_to_ptr, try_wrap
 from h2libpy.data.problem.bem3d.enums import (IntegralType,
                                               InterpolationDirection,
-                                              QuadratureType)
+                                              LagrangeType, QuadratureType)
 from h2libpy.lib.settings import real
 
 VectorListType = List[Tuple[float, float, float]]
@@ -103,7 +103,7 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         return try_wrap(obj, misc.Cluster)
 
     def assemble_quad(self, quadtype: 'QuadratureType', ridx: List[int],
-                      cidx: List[int], ntrans: bool, N: 'mat.AMatrix', kernel):
+                      cidx: List[int], ntrans: bool, n: 'mat.AMatrix', kernel):
         if quadtype == QuadratureType.CCNear:
             func = libbem3d.assemble_cc_near_bem3d
         elif quadtype == QuadratureType.CCFar:
@@ -124,7 +124,7 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         cridx = pylist_to_ptr(ridx, c_uint)
         ccidx = pylist_to_ptr(cidx, c_uint)
         ckernel = libbem3d.CFuncKernelFunc3d(kernel)
-        func(cridx, ccidx, self, ntrans, N, ckernel)
+        func(cridx, ccidx, self, ntrans, n, ckernel)
 
     def fill(self, x: VectorListType, y: VectorListType, nx: VectorListType,
              ny: VectorListType, v: 'mat.AMatrix', kernel):
@@ -275,6 +275,111 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
 
     def assemble_amatrix(self, g: 'mat.AMatrix'):
         libbem3d.assemble_bem3d_amatrix(self, g)
+
+    def assemble_hmatrix(self, b: 'misc.Block', g: 'mat.HMatrix', *,
+                         coarsen: bool = False):
+        if coarsen:
+            libbem3d.assemblecoarsen_bem3d_hmatrix(self, b, g)
+        else:
+            libbem3d.assemble_bem3d_hmatrix(self, b, g)
+
+    def assemble_hmatrix_near(self, b: 'misc.Block', g: 'mat.HMatrix'):
+        libbem3d.assemble_bem3d_nearfield_hmatrix(self, b, g)
+
+    def assemble_hmatrix_far(self, b: 'misc.Block', g: 'mat.HMatrix'):
+        libbem3d.assemble_bem3d_farfield_hmatrix(self, b, g)
+
+    def assemble_h2matrix_row(self, rb: 'misc.ClusterBasis'):
+        libbem3d.assemble_bem3d_h2matrix_row_clusterbasis(self, rb)
+
+    def assemble_h2matrix_col(self, cb: 'misc.ClusterBasis'):
+        libbem3d.assemble_bem3d_h2matrix_col_clusterbasis(self, cb)
+
+    def assemble_h2matrix(self, g: 'mat.H2Matrix'):
+        libbem3d.assemble_bem3d_h2matrix(self, g)
+
+    def assemble_h2matrix_near(self, g: 'mat.H2Matrix'):
+        libbem3d.assemble_bem3d_nearfield_h2matrix(self, g)
+
+    def assemble_h2matrix_far(self, g: 'mat.H2Matrix'):
+        libbem3d.assemble_bem3d_farfield_h2matrix(self, g)
+
+    def assemble_hiercomp_h2matrix(self, b: 'misc.Block', g: 'mat.H2Matrix'):
+        libbem3d.assemblehiercomp_bem3d_h2matrix(self, b, g)
+
+    def assemble_dh2matrix_row(self, rb: 'misc.DClusterBasis'):
+        libbem3d.assemble_bem3d_dh2matrix_row_dclusterbasis(self, rb)
+
+    def assemble_dh2matrix_col(self, cb: 'misc.DClusterBasis'):
+        libbem3d.assemble_bem3d_h2matrix_col_dclusterbasis(self, cb)
+
+    def assemble_dh2matrix_row_ortho(self, rb: 'misc.DClusterBasis',
+                                     ro: 'misc.DClusterOperator'):
+        libbem3d.assemble_bem3d_dh2matrix_ortho_row_dclusterbasis(self, rb, ro)
+
+    def assemble_dh2matrix_col_ortho(self, cb: 'misc.DClusterBasis',
+                                     co: 'misc.DClusterOperator'):
+        libbem3d.assemble_bem3d_dh2matrix_ortho_row_dclusterbasis(self, cb, co)
+
+    def assemble_dh2matrix_recomp_both(self, rb: 'misc.DClusterBasis',
+                                       ro: 'misc.DClusterOperator',
+                                       cb: 'misc.DClusterBasis',
+                                       co: 'misc.DClusterOperator',
+                                       root: 'misc.DBlock'):
+        func = libbem3d.assemble_bem3d_dh2matrix_recomp_both_dclusterbasis
+        func(self, rb, ro, cb, co, root)
+
+    def assemble_dh2matrix(self, g: 'mat.DH2Matrix'):
+        libbem3d.assemble_bem3d_dh2matrix(self, g)
+
+    def assemble_dh2matrix_near(self, g: 'mat.DH2Matrix'):
+        libbem3d.assemble_bem3d_nearfield_dh2matrix(self, g)
+
+    def assemble_dh2matrix_far(self, g: 'mat.DH2Matrix'):
+        libbem3d.assemble_bem3d_farfield_dh2matrix(self, g)
+
+    def assemble_lagrange(self, ltype: 'LagrangeType', idx: List[int],
+                          px: 'vec.AVector', py: 'vec.AVector',
+                          pz: 'vec.AVector', v: 'mat.AMatrix'):
+        if ltype == LagrangeType.Const:
+            func = libbem3d.assemble_bem3d_lagrange_c_amatrix
+        elif ltype == LagrangeType.Linear:
+            func = libbem3d.assemble_bem3d_lagrange_l_amatrix
+        elif ltype == LagrangeType.DnConst:
+            func = libbem3d.assemble_bem3d_dn_lagrange_c_amatrix
+        elif ltype == LagrangeType.DnLinear:
+            func = libbem3d.assemble_bem3d_dn_lagrange_l_amatrix
+
+        cidx = pylist_to_ptr(idx, c_uint)
+        func(cidx, px, py, pz, self, v)
+
+    def assemble_lagrange_wave(self, ltype: 'LagrangeType', idx: List[int],
+                               px: 'vec.AVector', py: 'vec.AVector',
+                               pz: 'vec.AVector', direc: float,
+                               v: 'mat.AMatrix'):
+        if ltype == LagrangeType.Const:
+            func = libbem3d.assemble_bem3d_dn_lagrange_wave_c_amatrix
+        elif ltype == LagrangeType.Linear:
+            func = libbem3d.assemble_bem3d_dn_lagrange_wave_l_amatrix
+        elif ltype == LagrangeType.DnConst:
+            func = libbem3d.assemble_bem3d_dn_lagrange_wave_c_amatrix
+        elif ltype == LagrangeType.DnLinear:
+            func = libbem3d.assemble_bem3d_dn_lagrange_wave_l_amatrix
+
+        cidx = pylist_to_ptr(idx, c_uint)
+        func(cidx, px, py, pz, direc, self, v)
+
+    def eval_lagrange(self, x: Tuple[float, float, float], px: 'vec.AVector',
+                      py: 'vec.AVector', pz: 'vec.AVector', v: 'mat.AMatrix'):
+        cx = pylist_to_ptr(list(x), real)
+        libbem3d.assemble_bem3d_lagrange_amatrix(cx, px, py, pz, self, v)
+
+    def eval_lagrange_wave(self, x: Tuple[float, float, float],
+                           px: 'vec.AVector', py: 'vec.AVector',
+                           pz: 'vec.AVector', direc: float, v: 'mat.AMatrix'):
+        cx = pylist_to_ptr(list(x), real)
+        func = libbem3d.assemble_bem3d_lagrange_wave_amatrix
+        func(cx, px, py, pz, direc, self, v)
 
     def project_l2_c(self, f, w: 'vec.AVector', data):
         cf = libbem3d.CFuncBoundaryFunc3d(f)

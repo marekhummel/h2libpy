@@ -23,3 +23,10 @@ class InterpolationDirection(Enum):
     Row = 0
     Col = 1
     Mixed = 2
+
+
+class LagrangeType(Enum):
+    Const = 0,
+    Linear = 1,
+    DnConst = 2,
+    DnLinear = 3
