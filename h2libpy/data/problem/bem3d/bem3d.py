@@ -97,8 +97,7 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         obj = libbem3d.build_bem3d_clustergeometry(self, cidx, basis)
         return try_wrap(obj, misc.ClusterGeometry)
 
-    def build_cluster(self, clf: int, basis: int) \
-            -> 'misc.Cluster':
+    def build_cluster(self, clf: int, basis: int) -> 'misc.Cluster':
         obj = libbem3d.build_bem3d_cluster(self, clf, basis)
         return try_wrap(obj, misc.Cluster)
 
