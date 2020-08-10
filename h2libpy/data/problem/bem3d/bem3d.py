@@ -381,17 +381,64 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         func = libbem3d.assemble_bem3d_lagrange_wave_amatrix
         func(cx, px, py, pz, direc, self, v)
 
+    def norm_l2(self, f, data) -> float:
+        cf = libbem3d.CFuncBoundaryFunc3d(f)
+        cdata = cast(data, c_void_p)
+        return libbem3d.normL2_bem3d(self, cf, cdata)
+
+    def norm_l2_c(self, x: 'vec.AVector') -> float:
+        return libbem3d.normL2_c_bem3d(self, x)
+
+    def norm_l2_diff_c(self, x: 'vec.AVector', f, data) -> float:
+        cf = libbem3d.CFuncBoundaryFunc3d(f)
+        cdata = cast(data, c_void_p)
+        return libbem3d.normL2diff_c_bem3d(self, x, cf, cdata)
+
+    def norm_l2_l(self, x: 'vec.AVector') -> float:
+        return libbem3d.normL2_l_bem3d(self, x)
+
+    def norm_l2_diff_l(self, x: 'vec.AVector', f, data) -> float:
+        cf = libbem3d.CFuncBoundaryFunc3d(f)
+        cdata = cast(data, c_void_p)
+        return libbem3d.normL2diff_l_bem3d(self, x, cf, cdata)
+
+    def integrate_c(self, f, w: 'vec.AVector', data):
+        cf = libbem3d.CFuncBoundaryFunc3d(f)
+        cdata = cast(data, c_void_p)
+        libbem3d.integrate_bem3d_c_avector(self, cf, w, cdata)
+
+    def integrate_l(self, f, w: 'vec.AVector', data):
+        cf = libbem3d.CFuncBoundaryFunc3d(f)
+        cdata = cast(data, c_void_p)
+        libbem3d.integrate_bem3d_l_avector(self, cf, w, cdata)
+
     def project_l2_c(self, f, w: 'vec.AVector', data):
         cf = libbem3d.CFuncBoundaryFunc3d(f)
         cdata = cast(data, c_void_p)
         libbem3d.projectL2_bem3d_c_avector(self, cf, w, cdata)
 
-    def norm_l2_diff_c(self, x: 'vec.AVector', rhs, data) -> float:
-        crhs = libbem3d.CFuncBoundaryFunc3d(rhs)
+    def project_l2_l(self, f, w: 'vec.AVector', data):
+        cf = libbem3d.CFuncBoundaryFunc3d(f)
         cdata = cast(data, c_void_p)
-        return libbem3d.normL2diff_c_bem3d(self, x, crhs, cdata)
+        libbem3d.projectL2_bem3d_l_avector(self, cf, w, cdata)
 
-    def norm_l2(self, rhs, data) -> float:
-        crhs = libbem3d.CFuncBoundaryFunc3d(rhs)
-        cdata = cast(data, c_void_p)
-        return libbem3d.normL2_bem3d(self, crhs, cdata)
+    def setup_vertex_to_triangle_map(self):
+        libbem3d.setup_vertex_to_triangle_map(self)
+
+    # def build_cube_quadpoints(self):
+    #     pass
+
+    def build_rkmatrix(self, row: 'misc.Cluster', col: 'misc.Cluster') \
+            -> 'mat.RkMatrix':
+        cdata = cast(self, c_void_p)
+        obj = libbem3d.build_bem3d_rkmatrix(row, col, cdata)
+        return try_wrap(obj, mat.RkMatrix)
+
+    def build_amatrix(self, row: 'misc.Cluster', col: 'misc.Cluster') \
+            -> 'mat.AMatrix':
+        cdata = cast(self, c_void_p)
+        obj = libbem3d.build_bem3d_amatrix(row, col, cdata)
+        return try_wrap(obj, mat.AMatrix)
+
+    # def build_curl_sparsematrix(self):
+    #     pass
