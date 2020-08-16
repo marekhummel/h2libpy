@@ -13,9 +13,11 @@ from h2libpy.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
                                       eval_neumann_fundamental_laplacebem3d)
 from h2libpy.lib.util.helper import uninit
 
+
 # def eval_dirichlet_fundamental(xs, ns, data):
 #     from math import sqrt
-#     d = [xi - 1.2 for xi in xs[:3]]
+#     from h2libpy.base.util import cptr_to_list
+#     d = [xi - 1.2 for xi in cptr_to_list(xs, 3)]
 #     kernel = sum(di * di for di in d)
 #     return 1 / sqrt(kernel)
 
