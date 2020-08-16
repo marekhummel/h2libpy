@@ -113,9 +113,7 @@ class RealAVector(StructWrapper, cstruct=librealavector.CStructRealAVector):
         return v
 
     def __getitem__(self, index):
-        if index not in range(self.dim):
-            raise ValueError('Index out of range.')
-        return self.v[index]
+        return list(self.v)[index]
 
     def __eq__(self, other):
         if self.dim != other.dim:
