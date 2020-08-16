@@ -33,6 +33,15 @@ class StructWrapper():
         # Return value
         return getattr(self, getter)()
 
+    def __setattr__(self, name, value):
+        ''' Prohibits from setting a class varible with the same name like
+            a field of the struct
+        '''
+        if name not in ['_as_parameter_', '_refs']:
+            if name in self.avail_fields():
+                raise AttributeError("Can't set fields of C struct.")
+        super().__setattr__(name, value)
+
     def cobj(self):
         ''' Returns wrapped c object '''
         return deref(self._as_parameter_)

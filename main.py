@@ -16,8 +16,7 @@ from h2libpy.lib.surface3d import del_surface3d
 # print(x)
 
 v = RealAVector.from_list([1,2,3,4,5])
-w = [1,2,3,4,5]
-
-# print(v)
-print(v[2], w[2])
-print(v[8:8], w[1:8])
+v.v3 = [2,3,5]
+print(v)
+print(v.v)
+print(v.v3)
