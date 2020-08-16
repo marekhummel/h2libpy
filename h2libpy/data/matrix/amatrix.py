@@ -208,13 +208,13 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     # ***** Operators ******
 
     def __add__(self, rhs):
-        verify_type(rhs, [AMatrix])
+        verify_type(rhs, [AMatrix, mat.SparseMatrix])
         a = self.clone()
         a.add(rhs)
         return a
 
     def __sub__(self, rhs):
-        verify_type(rhs, [AMatrix])
+        verify_type(rhs, [AMatrix, mat.SparseMatrix])
         a = self.clone()
         a.add(rhs, -1)
         return a
@@ -251,12 +251,12 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         return self.cols * self.rows
 
     def __iadd__(self, rhs):
-        verify_type(rhs, [AMatrix])
+        verify_type(rhs, [AMatrix, mat.SparseMatrix])
         self.add(rhs)
         return self
 
     def __isub__(self, rhs):
-        verify_type(rhs, [AMatrix])
+        verify_type(rhs, [AMatrix, mat.SparseMatrix])
         self.add(rhs, -1)
         return self
 
