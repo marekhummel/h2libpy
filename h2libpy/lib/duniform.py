@@ -16,7 +16,7 @@ CStructDUniform._fields_ = [
     ('rd', c_uint),
     ('cd', c_uint),
     ('S', CStructAMatrix),
-    ]
+]
 
 
 # ------------------------

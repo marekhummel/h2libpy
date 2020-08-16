@@ -5,13 +5,12 @@ from h2libpy.data.geometry import MacroSurface3d, Surface3d
 from h2libpy.data.matrix import H2Matrix
 from h2libpy.data.misc import Block, ClusterBasis
 from h2libpy.data.problem.bem3d import Bem3d
-from h2libpy.data.problem.bem3d.enums import InterpolationDirection as IntDir
 from h2libpy.data.vector import AVector
 from h2libpy.lib.bem3d import CEnumBasisFunctionBem3d
 from h2libpy.lib.block import admissible_2_cluster
 from h2libpy.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
                                       eval_neumann_fundamental_laplacebem3d)
-from h2libpy.lib.util.helper import uninit
+from h2libpy.lib.util.helper import get_address, uninit
 
 
 def main():
@@ -30,15 +29,16 @@ def main():
 
     # Create geometry
     mg = MacroSurface3d.new_sphere()
-    gr = Surface3d.from_macrosurface3d(mg, 32)
+    gr = Surface3d.from_macrosurface3d(mg, 8)
     print(f'Created geometry with {gr.vertices} vertices, {gr.edges} edges and \
           {gr.triangles} triangles')
 
     # Set up basis data structures for H-matrix approximations
     bem_slp = Bem3d.new_slp_laplace(gr, q_reg, q_sing, basis, basis)
     bem_dlp = Bem3d.new_dlp_laplace(gr, q_reg, q_sing, basis, basis, 0.5)
-    root = Bem3d.build_cluster(clf, basis)
-    broot = Block.build(root, root, eta, admissible_2_cluster)
+    root = bem_slp.build_cluster(clf, basis)
+    broot = Block.build(root, root, get_address(eta),
+                        admissible_2_cluster, strict=True, lower=False)
 
     # Create structure for row clusterbases
     rbV = ClusterBasis.from_cluster(root)
@@ -49,7 +49,6 @@ def main():
     # Init H2-matrix approximation scheme by interpolation
     bem_dlp.setup_h2matrix_aprx_inter(rbKM, cbKM, broot, m)
     bem_slp.setup_h2matrix_aprx_inter(rbV, cbV, broot, m)
-
 
     # Assemble row clusterbasis for SLP
     print('Assemble row basis for H2-matrix V:')

@@ -32,7 +32,7 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
     @classmethod
     def from_block(cls, b: 'misc.Block', rb: 'misc.ClusterBasis',
                    cb: 'misc.ClusterBasis') -> 'H2Matrix':
-        return cls(libh2matrix.build_from_block_hmatrix(b, rb, cb))
+        return cls(libh2matrix.build_from_block_h2matrix(b, rb, cb))
 
     # ***** Properties *****
 

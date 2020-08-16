@@ -34,8 +34,9 @@ class StructWrapper():
         return getattr(self, getter)()
 
     def cobj(self, no_ptr: bool = False):
-        return deref(self._as_parameter_) if not no_ptr \
-                                          else self._as_parameter_
+        return deref(self._as_parameter_) \
+            if not no_ptr \
+            else self._as_parameter_
 
     def avail_fields(self):
         ''' Lists all available fields in c struct '''

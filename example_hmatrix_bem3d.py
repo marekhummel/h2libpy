@@ -11,7 +11,7 @@ from h2libpy.lib.bem3d import CEnumBasisFunctionBem3d
 from h2libpy.lib.block import admissible_2_cluster
 from h2libpy.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
                                       eval_neumann_fundamental_laplacebem3d)
-from h2libpy.lib.util.helper import uninit
+from h2libpy.lib.util.helper import get_address, uninit
 
 
 def main():
@@ -37,8 +37,9 @@ def main():
     # Set up basis data structures for H-matrix approximations
     bem_slp = Bem3d.new_slp_laplace(gr, q_reg, q_sing, basis, basis)
     bem_dlp = Bem3d.new_dlp_laplace(gr, q_reg, q_sing, basis, basis, 0.5)
-    root = Bem3d.build_cluster(clf, basis)
-    broot = Block.build(root, root, eta, admissible_2_cluster)
+    root = bem_slp.build_cluster(clf, basis)
+    broot = Block.build(root, root, get_address(eta),
+                        admissible_2_cluster, strict=False, lower=False)
     bem_slp.setup_hmatrix_aprx_inter(IntDir.Row, root, root, broot, m)
     bem_dlp.setup_hmatrix_aprx_inter(IntDir.Row, root, root, broot, m)
 
