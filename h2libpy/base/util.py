@@ -1,3 +1,6 @@
+from ctypes import c_bool, c_double, c_int, pointer
+
+
 def deref(ptr):
     return ptr.contents
 
@@ -33,3 +36,15 @@ def to_enum(obj, enum):
         if obj.value == val.value.value:
             return val
     return None
+
+
+def get_address(obj, ctype=None):
+    if ctype is None:
+        if isinstance(obj, float):
+            return pointer(c_double(obj))
+        elif isinstance(obj, int):
+            return pointer(c_int(obj))
+        elif isinstance(obj, bool):
+            return pointer(c_bool(obj))
+    else:
+        return pointer(ctype(obj))
