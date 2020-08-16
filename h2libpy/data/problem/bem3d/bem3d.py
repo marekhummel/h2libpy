@@ -9,7 +9,7 @@ import h2libpy.data.vector as vec
 import h2libpy.lib.bem3d as libbem3d
 import h2libpy.lib.laplacebem3d as liblaplacebem3d
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.base.util import pylist_to_ptr, try_wrap
+from h2libpy.base.util import pylist_to_ptr, try_wrap, to_enum
 from h2libpy.data.problem.bem3d.enums import (IntegralType,
                                               InterpolationDirection,
                                               LagrangeType, QuadratureType)
@@ -22,24 +22,30 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
     # ***** Constructors / destructor *****
 
     @classmethod
-    def new(cls, gr: geo.Surface3d, row_basis: int, col_basis: int) -> 'Bem3d':
-        return cls(liblaplacebem3d.new_bem3d(gr, row_basis, col_basis))
+    def new(cls, gr: 'geo.Surface3d', row_basis: 'pbem3d.BasisFunction',
+            col_basis: 'pbem3d.BasisFunction') -> 'Bem3d':
+        obj = liblaplacebem3d.new_bem3d(gr, row_basis.value, col_basis.value)
+        return cls(obj)
 
     @classmethod
     def new_slp_laplace(cls, gr: 'geo.Surface3d',
                         q_regular: int, q_singular: int,
-                        row_basis: int, col_basis: int) -> 'Bem3d':
+                        row_basis: 'pbem3d.BasisFunction',
+                        col_basis: 'pbem3d.BasisFunction') -> 'Bem3d':
         func = liblaplacebem3d.new_slp_laplace_bem3d
-        instance = func(gr, q_regular, q_singular, row_basis, col_basis)
+        instance = func(gr, q_regular, q_singular, row_basis.value,
+                        col_basis.value)
         return cls(instance)
 
     @classmethod
     def new_dlp_laplace(cls, gr: 'geo.Surface3d',
                         q_regular: int, q_singular: int,
-                        row_basis: int, col_basis: int,
+                        row_basis: 'pbem3d.BasisFunction',
+                        col_basis: 'pbem3d.BasisFunction',
                         alpha: float) -> 'Bem3d':
         func = liblaplacebem3d.new_dlp_laplace_bem3d
-        instance = func(gr, q_regular, q_singular, row_basis, col_basis, alpha)
+        instance = func(gr, q_regular, q_singular, row_basis.value,
+                        col_basis.value, alpha)
         return cls(instance)
 
     # ***** Properties *****
@@ -50,11 +56,11 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
     def __getter_sq(self) -> 'pbem3d.SingQuad2d':
         return try_wrap(self.cobj().sq, pbem3d.SingQuad2d)
 
-    def __getter_row_basis(self) -> int:
-        return self.cobj().row_basis
+    def __getter_row_basis(self) -> 'pbem3d.BasisFunction':
+        return to_enum(self.cobj().row_basis, pbem3d.BasisFunction)
 
-    def __getter_col_basis(self) -> int:
-        return self.cobj().col_basis
+    def __getter_col_basis(self) -> 'pbem3d.BasisFunction':
+        return to_enum(self.cobj().col_basis, pbem3d.BasisFunction)
 
     def __getter_alpha(self) -> float:
         return self.cobj().alpha
@@ -90,15 +96,17 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         obj = libbem3d.build_bem3d_linear_clustergeometry(self, cidx)
         return try_wrap(obj, misc.ClusterGeometry)
 
-    def build_clustergeometry(self, idx: List[List[int]], basis: int) \
+    def build_clustergeometry(self, idx: List[List[int]],
+                              basis: 'pbem3d.BasisFunction') \
             -> 'misc.ClusterGeometry':
         csubs = [pylist_to_ptr(sub, c_uint) for sub in idx]
         cidx = pylist_to_ptr(csubs, c_uint)
-        obj = libbem3d.build_bem3d_clustergeometry(self, cidx, basis)
+        obj = libbem3d.build_bem3d_clustergeometry(self, cidx, basis.value)
         return try_wrap(obj, misc.ClusterGeometry)
 
-    def build_cluster(self, clf: int, basis: int) -> 'misc.Cluster':
-        obj = libbem3d.build_bem3d_cluster(self, clf, basis)
+    def build_cluster(self, clf: int, basis: 'pbem3d.BasisFunction') \
+            -> 'misc.Cluster':
+        obj = libbem3d.build_bem3d_cluster(self, clf, basis.value)
         return try_wrap(obj, misc.Cluster)
 
     def assemble_quad(self, quadtype: 'QuadratureType', ridx: List[int],

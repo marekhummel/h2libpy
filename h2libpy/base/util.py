@@ -26,3 +26,10 @@ def is_scalar(obj):
 def verify_type(obj, types):
     if not any(isinstance(obj, t) for t in types):
         raise TypeError(f'Invalid type for parameter, expected any of {types}')
+
+
+def to_enum(obj, enum):
+    for val in enum:
+        if obj.value == val.value.value:
+            return val
+    return None

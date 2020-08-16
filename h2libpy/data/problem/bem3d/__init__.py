@@ -1,6 +1,7 @@
 ''' Import classes here to make them available in
     h2libpy.data.problem.bem3d '''
 
+from h2libpy.data.problem.bem3d._bem3denums import BasisFunction
 from h2libpy.data.problem.bem3d.admisblock import AdmisBlock
 from h2libpy.data.problem.bem3d.aprxbem3d import AprxBem3d
 from h2libpy.data.problem.bem3d.bem3d import Bem3d

@@ -3,9 +3,8 @@ import time
 import h2libpy.solver.krylovsolvers as krylovsolvers
 from h2libpy.data.geometry import MacroSurface3d, Surface3d
 from h2libpy.data.matrix import AMatrix
-from h2libpy.data.problem.bem3d import Bem3d
+from h2libpy.data.problem.bem3d import Bem3d, BasisFunction
 from h2libpy.data.vector import AVector
-from h2libpy.lib.bem3d import CEnumBasisFunctionBem3d
 from h2libpy.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
                                       eval_neumann_fundamental_laplacebem3d)
 from h2libpy.lib.util.helper import uninit
@@ -16,7 +15,7 @@ def main():
     tt = time.time()
     q_reg = 2
     q_sing = q_reg + 2
-    basis = CEnumBasisFunctionBem3d.BASIS_CONSTANT_BEM3D
+    basis = BasisFunction.Constant
     eps_solve = 1.0E-10
     maxiter = 500
 

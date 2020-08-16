@@ -4,9 +4,8 @@ import h2libpy.solver.krylovsolvers as krylovsolvers
 from h2libpy.data.geometry import MacroSurface3d, Surface3d
 from h2libpy.data.matrix import H2Matrix
 from h2libpy.data.misc import Block, ClusterBasis
-from h2libpy.data.problem.bem3d import Bem3d
+from h2libpy.data.problem.bem3d import Bem3d, BasisFunction
 from h2libpy.data.vector import AVector
-from h2libpy.lib.bem3d import CEnumBasisFunctionBem3d
 from h2libpy.lib.block import admissible_2_cluster
 from h2libpy.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
                                       eval_neumann_fundamental_laplacebem3d)
@@ -20,7 +19,7 @@ def main():
     # Set up basic parameters
     q_reg = 2
     q_sing = q_reg + 2
-    basis = CEnumBasisFunctionBem3d.BASIS_CONSTANT_BEM3D
+    basis = BasisFunction.Constant
     m = 4
     clf = 2 * m * m * m
     eta = 1.4

@@ -43,9 +43,9 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
 
     @classmethod
     def build(cls, cf: 'misc.ClusterGeometry', size: int, idx: List[int],
-              clf: int, mode: int) -> 'Cluster':
+              clf: int, mode: 'misc.ClusterMode') -> 'Cluster':
         cidx = pylist_to_ptr(idx, c_uint)
-        return cls(libcluster.build_pca_cluster(cf, size, cidx, clf, mode))
+        return cls(libcluster.build_cluster(cf, size, cidx, clf, mode.value))
 
     # ***** Properties *****
 
