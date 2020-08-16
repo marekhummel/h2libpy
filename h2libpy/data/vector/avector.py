@@ -11,8 +11,7 @@ import h2libpy.lib.rkmatrix as librkmatrix
 import h2libpy.lib.sparsematrix as libsparsematrix
 import h2libpy.lib.uniform as libuniform
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.base.util import (cptr_to_list, is_scalar, pylist_to_ptr,
-                               verify_type)
+from h2libpy.base.util import cptr_to_list, pylist_to_ptr, verify_type
 from h2libpy.lib.settings import field
 
 
@@ -252,7 +251,7 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
         verify_type(rhs, [AVector, int, float])
         if isinstance(rhs, AVector):
             return self.dot(rhs)
-        elif is_scalar(rhs):
+        elif isinstance(rhs, (int, float)):
             v = AVector.new(self.dim, zeros=True)
             v.add(self, rhs)
             return v
