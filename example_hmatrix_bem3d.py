@@ -14,6 +14,13 @@ from h2libpy.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
 from h2libpy.lib.util.helper import get_address, uninit
 
 
+# def eval_dirichlet_fundamental(xs, ns, data):
+#     from math import sqrt
+#     d = [xi - 1.2 for xi in xs[:3]]
+#     kernel = sum(di * di for di in d)
+#     return 1 / sqrt(kernel)
+
+
 def main():
     # Basic params
     tt = time.time()
@@ -30,7 +37,7 @@ def main():
 
     # Create geometry
     mg = MacroSurface3d.new_sphere()
-    gr = Surface3d.from_macrosurface3d(mg, 32)
+    gr = Surface3d.from_macrosurface3d(mg, 8)
     print(f'Created geometry with {gr.vertices} vertices, {gr.edges} edges and \
           {gr.triangles} triangles')
 
