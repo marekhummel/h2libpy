@@ -41,7 +41,7 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
 
     # ***** Properties *****
 
-    def __getter_a(self) -> List[float]:
+    def __getter_a(self) -> List[List[float]]:
         last_coeff = (self.rows - 1) + (self.cols - 1) * self.ld
         coeffs = cptr_to_list(self.cobj().a, last_coeff + 1)
         return [[coeffs[i + j * self.ld] for i in range(self.rows)]

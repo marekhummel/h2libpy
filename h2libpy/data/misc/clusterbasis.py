@@ -109,7 +109,7 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
                                                       cpre, cpost, cdata)
 
     def enumerate(self, t: 'misc.Cluster') -> List['ClusterBasis']:
-        ptr = libclusterbasis.enumerate_cluster(t, self)
+        ptr = libclusterbasis.enumerate_clusterbasis(t, self)
         lst = cptr_to_list(ptr, t.desc)
         return [try_wrap(c, ClusterBasis) for c in lst]
 

@@ -1,4 +1,5 @@
 from ctypes import c_bool, c_double, c_int, pointer
+from typing import List, Tuple, Any
 
 
 def deref(ptr):
@@ -6,17 +7,17 @@ def deref(ptr):
     return ptr.contents
 
 
-def cptr_to_list(ptr, length: int):
+def cptr_to_list(ptr, length: int) -> List[Any]:
     ''' Converts an C pointer to a python list '''
     return ptr[:length]
 
 
-def carray_to_tuple(carray):
+def carray_to_tuple(carray) -> Tuple[Any]:
     ''' Converts C array to python tuple '''
     return tuple(carray[:])
 
 
-def pylist_to_ptr(lst, ctype):
+def pylist_to_ptr(lst: List[Any], ctype):
     ''' Creates C pointer for given list '''
     return (ctype * len(lst))(*lst)
 
