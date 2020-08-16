@@ -12,11 +12,6 @@ from h2libpy.lib.surface3d import del_surface3d
 # print(a.cobj())
 # # del_amatrix(a) 
 
-mg = MacroSurface3d.new_sphere()
-gr = Surface3d.from_macrosurface3d(mg, 8)
-del_surface3d(gr)
-print(gr.cobj() is None)
-try:
-    del_surface3d(gr)
-except e:
-    pass
+from h2libpy.lib.util.helper import get_func
+x = get_func('INTERPOLATION_EPS_BEM3D', None, None)
+print(x)

@@ -11,7 +11,6 @@ import h2libpy.lib.sparsematrix as libsparsematrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import (cptr_to_list, pylist_to_ptr, try_wrap,
                                verify_type)
-from h2libpy.data.matrix.enums import ClearType, FillType, NormType
 from h2libpy.lib.settings import field
 
 
@@ -19,12 +18,13 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     # ***** Constructors / destructor *****
 
     @classmethod
-    def new(cls, rows: int, cols: int, *, fill: 'FillType' = FillType.Nothing):
-        if fill == FillType.Zeros:
+    def new(cls, rows: int, cols: int, *,
+            fill: 'mat.FillType' = mat.FillType.Nothing):
+        if fill == mat.FillType.Zeros:
             return cls(libamatrix.new_zero_amatrix(rows, cols))
-        elif fill == FillType.Identity:
+        elif fill == mat.FillType.Identity:
             return cls(libamatrix.new_identity_amatrix(rows, cols))
-        else:  # fill == FillType.Nothing
+        else:  # fill == mat.FillType.Nothing
             return cls(libamatrix.new_amatrix(rows, cols))
 
     @classmethod
@@ -70,16 +70,16 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         else:
             return libamatrix.getsize_amatrix(self)
 
-    def clear(self, *, clear_type: 'ClearType' = ClearType.All):
-        if clear_type == ClearType.Lower:
+    def clear(self, *, clear_type: 'mat.ClearType' = mat.ClearType.All):
+        if clear_type == mat.ClearType.Lower:
             libamatrix.clear_lower_amatrix(self, False)
-        elif clear_type == ClearType.LowerStrict:
+        elif clear_type == mat.ClearType.LowerStrict:
             libamatrix.clear_lower_amatrix(self, True)
-        elif clear_type == ClearType.Upper:
+        elif clear_type == mat.ClearType.Upper:
             libamatrix.clear_upper_amatrix(self, False)
-        elif clear_type == ClearType.UpperStrict:
+        elif clear_type == mat.ClearType.UpperStrict:
             libamatrix.clear_upper_amatrix(self, True)
-        else:  # clear_type == ClearType.All:
+        else:  # clear_type == mat.ClearType.All:
             libamatrix.clear_amatrix(self)
 
     def identity(self):
@@ -126,12 +126,12 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     def dot(self, other: 'AMatrix') -> float:
         return libamatrix.dotprod_amatrix(self, other)
 
-    def norm(self, *, ntype: NormType = NormType.Spectral):
-        if ntype == NormType.Frobenius:
+    def norm(self, *, ntype: 'mat.NormType' = mat.NormType.Spectral):
+        if ntype == mat.NormType.Frobenius:
             return libamatrix.normfrob_amatrix(self)
-        elif ntype == NormType.SquaredFrobenius:
+        elif ntype == mat.NormType.SquaredFrobenius:
             return libamatrix.normfrob2_amatrix(self)
-        else:  # ntype == NormType.Spectral
+        else:  # ntype == mat.NormType.Spectral
             return libamatrix.norm2_amatrix(self)
 
     def norm2_diff(self, other: 'AMatrix') -> float:
@@ -227,7 +227,7 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
 
     def __matmul__(self, rhs):
         verify_type(rhs, [AMatrix])
-        a = AMatrix.new(self.rows, self.cols, fill=FillType.Zeros)
+        a = AMatrix.new(self.rows, self.cols, fill=mat.FillType.Zeros)
         a.addmul(1.0, self, rhs, False, False)
         return a
 

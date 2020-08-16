@@ -6,7 +6,6 @@ import h2libpy.data.misc as misc
 import h2libpy.lib.h2matrix as libh2matrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import cptr_to_list, try_wrap, verify_type
-from h2libpy.data.matrix.enums import H2FillType, SizePart
 
 
 class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
@@ -14,14 +13,14 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
 
     @classmethod
     def new(cls, rb: 'misc.ClusterBasis', cb: 'misc.ClusterBasis',
-            fill: 'H2FillType' = H2FillType.Nothing) -> 'H2Matrix':
-        if fill == H2FillType.Uniform:
+            fill: 'mat.H2FillType' = mat.H2FillType.Nothing) -> 'H2Matrix':
+        if fill == mat.H2FillType.Uniform:
             return cls(libh2matrix.new_uniform_h2matrix(rb, cb))
-        elif fill == H2FillType.Full:
+        elif fill == mat.H2FillType.Full:
             return cls(libh2matrix.new_full_h2matrix(rb, cb))
-        elif fill == H2FillType.Zero:
+        elif fill == mat.H2FillType.Zero:
             return cls(libh2matrix.new_zero_h2matrix(rb, cb))
-        else:  # fill == H2FillType.Nothing:
+        else:  # fill == mat.H2FillType.Nothing:
             return cls(libh2matrix.new_h2matrix(rb, cb))
 
     @classmethod
@@ -82,14 +81,14 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
     def unref(self):
         libh2matrix.unref_h2matrix(self)
 
-    def size(self, *, part: 'SizePart' = SizePart.Total):
-        if part == SizePart.Near:
+    def size(self, *, part: 'mat.SizePart' = mat.SizePart.Total):
+        if part == mat.SizePart.Near:
             return libh2matrix.getnearsize_h2matrix(self)
-        elif part == SizePart.Far:
+        elif part == mat.SizePart.Far:
             return libh2matrix.getfarsize_h2matrix(self)
-        elif part == SizePart.Object:
+        elif part == mat.SizePart.Object:
             return libh2matrix.getsize_h2matrix(self)
-        elif part == SizePart.Total:
+        elif part == mat.SizePart.Total:
             return libh2matrix.gettotalsize_h2matrix(self)
 
     def clear(self):

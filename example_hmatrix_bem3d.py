@@ -6,13 +6,12 @@ from h2libpy.data.geometry import MacroSurface3d, Surface3d
 from h2libpy.data.matrix import HMatrix
 from h2libpy.data.misc import Block
 from h2libpy.data.problem.bem3d import BasisFunction, Bem3d
-from h2libpy.data.problem.bem3d.enums import InterpolationDirection as IntDir
+from h2libpy.data.problem.bem3d import InterpolationDirection as IntDir
 from h2libpy.data.vector import AVector
 from h2libpy.lib.block import admissible_2_cluster
 from h2libpy.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
                                       eval_neumann_fundamental_laplacebem3d)
 from h2libpy.lib.util.helper import uninit
-
 
 # def eval_dirichlet_fundamental(xs, ns, data):
 #     from math import sqrt

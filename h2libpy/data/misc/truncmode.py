@@ -1,7 +1,7 @@
 import h2libpy.data.vector as vec
 import h2libpy.lib.truncation as libtruncation
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.data.misc.enums import TruncModeInit
+from h2libpy.data.misc import TruncModeInit
 
 
 class TruncMode(StructWrapper, cstruct=libtruncation.CStructTruncMode):

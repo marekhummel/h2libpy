@@ -6,7 +6,6 @@ import h2libpy.data.misc as misc
 import h2libpy.lib.hmatrix as libhmatrix
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import cptr_to_list, try_wrap
-from h2libpy.data.matrix.enums import ClearType, SizePart
 
 
 class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
@@ -89,20 +88,20 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
     def unref(self):
         libhmatrix.unref_hmatrix(self)
 
-    def size(self, *, part: 'SizePart' = SizePart.Total):
-        if part == SizePart.Near:
+    def size(self, *, part: 'mat.SizePart' = mat.SizePart.Total):
+        if part == mat.SizePart.Near:
             return libhmatrix.getnearsize_hmatrix(self)
-        elif part == SizePart.Far:
+        elif part == mat.SizePart.Far:
             return libhmatrix.getfarsize_hmatrix(self)
-        else:  # part == SizePart.Total || part == SizePart.Object:
+        else:  # part == mat.SizePart.Total || part == mat.SizePart.Object:
             return libhmatrix.getsize_hmatrix(self)
 
-    def clear(self, *, clear_type: 'ClearType' = ClearType.All):
-        if clear_type == ClearType.Upper:
+    def clear(self, *, clear_type: 'mat.ClearType' = mat.ClearType.All):
+        if clear_type == mat.ClearType.Upper:
             libhmatrix.clear_upper_hmatrix(self, False)
-        elif clear_type == ClearType.UpperStrict:
+        elif clear_type == mat.ClearType.UpperStrict:
             libhmatrix.clear_upper_hmatrix(self, True)
-        elif clear_type == ClearType.All:
+        elif clear_type == mat.ClearType.All:
             libhmatrix.clear_hmatrix(self)
         else:
             raise ValueError('Clearing lower part not supported.')

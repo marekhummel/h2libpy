@@ -7,7 +7,6 @@ import h2libpy.lib.surface3d as libsurface3d
 from h2libpy.base.structwrapper import StructWrapper
 from h2libpy.base.util import (carray_to_tuple, cptr_to_list, deref,
                                pylist_to_ptr, try_wrap)
-from h2libpy.data.geometry.enums import ReadFormat
 from h2libpy.lib.settings import real
 
 
@@ -26,17 +25,18 @@ class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
 
     @classmethod
     def from_file(cls, file: str,
-                  fmt: 'ReadFormat' = ReadFormat.Default) -> 'Surface3d':
+                  fmt: 'geo.ReadFormat' = geo.ReadFormat.Default) \
+            -> 'Surface3d':
         cfile = file.encode()
-        if fmt == ReadFormat.NetCDF:
+        if fmt == geo.ReadFormat.NetCDF:
             return cls(libsurface3d.read_nc_surface3d(cfile))
-        elif fmt == ReadFormat.Netgen:
+        elif fmt == geo.ReadFormat.Netgen:
             return cls(libsurface3d.read_netgen_surface3d(cfile))
-        elif fmt == ReadFormat.Gmsh:
+        elif fmt == geo.ReadFormat.Gmsh:
             return cls(libsurface3d.read_gmsh_surface3d(cfile))
-        elif fmt == ReadFormat.Unv:
+        elif fmt == geo.ReadFormat.Unv:
             return cls(libsurface3d.read_unv_surface3d(cfile))
-        else:  # fmt == ReadFormat.Default
+        else:  # fmt == geo.ReadFormat.Default
             return cls(libsurface3d.read_surface3d(cfile))
 
     # ***** Properties *****
