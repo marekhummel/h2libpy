@@ -1,6 +1,5 @@
-import ctypes
-from ctypes import POINTER as PTR
 from ctypes import c_char, c_int, c_double, c_bool, pointer
+from h2libpy import lib
 
 
 def get_func(name: str, returntype, argtypes):
@@ -8,15 +7,6 @@ def get_func(name: str, returntype, argtypes):
     f.restype = returntype
     f.argtypes = argtypes
     return f
-
-
-def init():
-    global lib
-    # lib = ctypes.CDLL('./lib/libh2.so')
-    lib = ctypes.CDLL('../H2Lib/libh2.so')
-    init_h2lib = get_func('init_h2lib', None,
-                          [PTR(c_int), PTR(PTR(PTR(c_char)))])
-    init_h2lib(c_int(0), None)
 
 
 def uninit():
@@ -34,6 +24,3 @@ def get_address(obj, ctype=None):
             return pointer(c_bool(obj))
     else:
         return pointer(ctype(obj))
-
-
-init()
