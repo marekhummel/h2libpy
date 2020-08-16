@@ -27,9 +27,7 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     @classmethod
     def from_subvector(cls, src: 'AVector', dim: int,
                        off: int = 0) -> 'AVector':
-        v = libavector.new_avector(dim)
-        libavector.init_sub_avector(v, src, dim, off)
-        return cls(v)
+        return cls(libavector.new_sub_avector(src, dim, off))
 
     @classmethod
     def from_list(cls, elems: List[float], *, dim: int = -1):

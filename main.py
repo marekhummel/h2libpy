@@ -1,5 +1,5 @@
 from h2libpy.data.matrix import AMatrix, HMatrix, NormType, FillType, ClearType
-from h2libpy.data.vector import AVector
+from h2libpy.data.vector import AVector, RealAVector
 from h2libpy.lib.amatrix import del_amatrix
 from h2libpy.data.geometry import MacroSurface3d, Surface3d
 from h2libpy.lib.surface3d import del_surface3d
@@ -15,8 +15,7 @@ from h2libpy.lib.surface3d import del_surface3d
 # x = get_func('INTERPOLATION_EPS_BEM3D', None, None)
 # print(x)
 
-v = AVector.new(3)
-v.rand()
+v = RealAVector.from_list([1,2,3,4,5])
 print(v)
-print(3 * v)
-print(3.4 * v)
+w = RealAVector.from_subvector(v, 3, 1)
+print(w)
