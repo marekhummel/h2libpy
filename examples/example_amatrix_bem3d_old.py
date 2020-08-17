@@ -1,7 +1,7 @@
 import ctypes
 import time
 
-import init
+import init  # noqa
 from h2libpy.lib.amatrix import (addeval_amatrix_avector, del_amatrix,
                                  getsize_amatrix, new_amatrix)
 from h2libpy.lib.avector import (clear_avector, del_avector, getsize_avector,
