@@ -1,4 +1,4 @@
-from ctypes import POINTER
+from ctypes import POINTER, cast, c_void_p
 from typing import Any, Callable, List
 
 from h2libpy.base.util import deref
@@ -48,6 +48,9 @@ class StructWrapper():
     def cobj(self):
         ''' Returns wrapped c object '''
         return deref(self._as_parameter_)
+
+    def as_voidp(self):
+        return self.as_voidp()
 
     def avail_fields(self) -> List[str]:
         ''' Lists all available fields in c struct '''

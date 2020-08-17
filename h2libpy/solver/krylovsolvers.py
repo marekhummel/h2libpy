@@ -15,7 +15,7 @@ matrix_union = Union['mat.AMatrix', 'mat.SparseMatrix', 'mat.HMatrix',
 
 def solve_cg_avector(a, addeval, b: 'vec.AVector', x: 'vec.AVector',
                      eps: float, maxiter: int) -> int:
-    ca = cast(a.cobj(), c_void_p)
+    ca = a.as_voidp()
     caddeval = libkrylov.CFuncAddevalT(addeval)
     return libkrylovsolvers.solve_cg_avector(ca, caddeval, b, x, eps, maxiter)
 
@@ -39,7 +39,7 @@ def solve_cg(a: matrix_union, b: 'vec.AVector', x: 'vec.AVector',
 
 def solve_pcg_avector(a, addeval, prcd, pdata, b: 'vec.AVector',
                       x: 'vec.AVector', eps: float, maxiter: int) -> int:
-    ca = cast(a.cobj(), c_void_p)
+    ca = a.as_voidp()
     caddeval = libkrylov.CFuncAddevalT(addeval)
     cprcd = libkrylov.CFuncPrcdT(prcd)
     cpdata = cast(pdata, c_void_p)
@@ -68,7 +68,7 @@ def solve_pcg(a: matrix_union, prcd, pdata, b: 'vec.AVector', x: 'vec.AVector',
 
 def solve_gmres_avector(a, addeval, b: 'vec.AVector', x: 'vec.AVector',
                         eps: float, maxiter: int, kmax: int) -> int:
-    ca = cast(a.cobj(), c_void_p)
+    ca = a.as_voidp()
     caddeval = libkrylov.CFuncAddevalT(addeval)
     return libkrylovsolvers.solve_gmres_avector(ca, caddeval, b, x, eps,
                                                 maxiter, kmax)
@@ -94,7 +94,7 @@ def solve_gmres(a: matrix_union, b: 'vec.AVector', x: 'vec.AVector',
 def solve_pgmres_avector(a, addeval, prcd, pdata, b: 'vec.AVector',
                          x: 'vec.AVector', eps: float, maxiter: int,
                          kmax: int) -> int:
-    ca = cast(a.cobj(), c_void_p)
+    ca = a.as_voidp()
     caddeval = libkrylov.CFuncAddevalT(addeval)
     cprcd = libkrylov.CFuncPrcdT(prcd)
     cpdata = cast(pdata, c_void_p)

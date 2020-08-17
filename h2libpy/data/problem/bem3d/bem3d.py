@@ -438,13 +438,13 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
 
     def build_rkmatrix(self, row: 'misc.Cluster', col: 'misc.Cluster') \
             -> 'mat.RkMatrix':
-        cdata = cast(self.cobj(), c_void_p)
+        cdata = self.as_voidp()
         obj = libbem3d.build_bem3d_rkmatrix(row, col, cdata)
         return try_wrap(obj, mat.RkMatrix)
 
     def build_amatrix(self, row: 'misc.Cluster', col: 'misc.Cluster') \
             -> 'mat.AMatrix':
-        cdata = cast(self.cobj(), c_void_p)
+        cdata = self.as_voidp()
         obj = libbem3d.build_bem3d_amatrix(row, col, cdata)
         return try_wrap(obj, mat.AMatrix)
 
