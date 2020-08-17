@@ -56,7 +56,7 @@ class DBlock(StructWrapper, cstruct=libdblock.CStructDBlock):
     def update(self) -> None:
         libdblock.update_dblock(self)
 
-    def size(self) -> int:
+    def memsize(self) -> int:
         return libdblock.getsize_dblock(self)
 
     def depth(self) -> int:

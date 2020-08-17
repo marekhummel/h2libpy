@@ -64,7 +64,7 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         else:
             libamatrix.resize_amatrix(self, rows, cols)
 
-    def size(self, *, heaponly: bool = False) -> int:
+    def memsize(self, *, heaponly: bool = False) -> int:
         if heaponly:
             return libamatrix.getsize_heap_amatrix(self)
         else:

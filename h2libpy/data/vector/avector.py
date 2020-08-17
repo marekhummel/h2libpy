@@ -52,7 +52,7 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     def shrink(self, dim: int) -> None:
         libavector.shrink_avector(self, dim)
 
-    def size(self, heaponly: bool = False) -> int:
+    def memsize(self, heaponly: bool = False) -> int:
         if heaponly:
             return libavector.getsize_heap_avector(self)
         else:

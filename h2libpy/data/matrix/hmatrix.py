@@ -88,7 +88,7 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
     def unref(self) -> None:
         libhmatrix.unref_hmatrix(self)
 
-    def size(self, *, part: 'mat.SizePart' = mat.SizePart.Total) -> int:
+    def memsize(self, *, part: 'mat.SizePart' = mat.SizePart.Total) -> int:
         if part == mat.SizePart.Near:
             return libhmatrix.getnearsize_hmatrix(self)
         elif part == mat.SizePart.Far:

@@ -76,7 +76,7 @@ class ClusterOperator(StructWrapper,
         f = libclusteroperator.identify_son_clusterweight_clusteroperator
         return try_wrap(f(self, t), ClusterOperator)
 
-    def size(self) -> int:
+    def memsize(self) -> int:
         return libclusteroperator.getsize_clusteroperator(self)
 
     def print_tree(self) -> None:

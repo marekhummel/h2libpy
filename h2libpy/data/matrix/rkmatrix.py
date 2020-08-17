@@ -37,7 +37,7 @@ class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
     def resize(self, rows: int, cols: int, k: int) -> None:
         librkmatrix.resize_rkmatrix(self, rows, cols, k)
 
-    def size(self, *, heaponly: bool = False) -> int:
+    def memsize(self, *, heaponly: bool = False) -> int:
         if heaponly:
             return librkmatrix.getsize_heap_rkmatrix(self)
         else:

@@ -52,7 +52,7 @@ class Uniform(StructWrapper, cstruct=libuniform.CStructUniform):
     def unref_col(self) -> None:
         libuniform.unref_col_uniform(self)
 
-    def size(self) -> int:
+    def memsize(self) -> int:
         return libuniform.getsize_uniform(self)
 
     def clear(self) -> None:

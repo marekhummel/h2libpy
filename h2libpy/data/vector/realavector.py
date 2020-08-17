@@ -39,7 +39,7 @@ class RealAVector(StructWrapper, cstruct=librealavector.CStructRealAVector):
     def shrink(self, dim: int) -> None:
         librealavector.shrink_realavector(self, dim)
 
-    def size(self, heaponly: bool = False) -> int:
+    def memsize(self, heaponly: bool = False) -> int:
         if heaponly:
             return librealavector.getsize_heap_realavector(self)
         else:

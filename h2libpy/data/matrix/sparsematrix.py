@@ -51,7 +51,7 @@ class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparseMatrix):
     def setentry(self, row: int, col: int, x: float) -> None:
         libsparsematrix.setentry_sparsematrix(self, row, col, x)
 
-    def size(self) -> int:
+    def memsize(self) -> int:
         return libsparsematrix.getsize_sparsematrix(self)
 
     def sort(self) -> None:

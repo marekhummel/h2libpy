@@ -65,13 +65,13 @@ class DCluster(StructWrapper, cstruct=libdcluster.CStructDCluster):
         return libdcluster.dist_dcluster(self, other)
 
     def middist(self, other: 'DCluster') -> float:
-        return libdcluster.midist_dcluster(self, other)
+        return libdcluster.middist_dcluster(self, other)
 
     def find_direction(self, alpha: float, d: List[float]) -> int:
         cd = pylist_to_ptr(d, real)
         return libdcluster.finddirection_dcluster(self, alpha, cd)
 
-    def size(self) -> int:
+    def memsize(self) -> int:
         return libdcluster.getsize_dcluster(self)
 
     def depth(self) -> int:

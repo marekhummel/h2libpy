@@ -89,7 +89,7 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
             obj = libclusterbasis.clone_clusterbasis(self)
             return try_wrap(obj, ClusterBasis)
 
-    def size(self) -> int:
+    def memsize(self) -> int:
         return libclusterbasis.getsize_clusterbasis(self)
 
     def clear_weight(self) -> None:

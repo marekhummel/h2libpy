@@ -58,7 +58,7 @@ def main():
     start = time.time()
     bem_slp.assemble_hmatrix(broot, V)
     t = time.time() - start
-    size = V.size() / 1024 / 1024
+    size = V.memsize() / 1024 / 1024
     print(f'  {t:.2f} s')
     print(f'  {size:.3f} MB')
 
@@ -68,7 +68,7 @@ def main():
     start = time.time()
     bem_dlp.assemble_hmatrix(broot, KM)
     t = time.time() - start
-    size = KM.size() / 1024 / 1024
+    size = KM.memsize() / 1024 / 1024
     print(f'  {t:.2f} s')
     print(f'  {size:.3f} MB')
 
@@ -78,7 +78,7 @@ def main():
     start = time.time()
     bem_dlp.project_l2_c(eval_dirichlet_fundamental_laplacebem3d, gd, bem_dlp)
     t = time.time() - start
-    size = gd.size() / 1024 / 1024
+    size = gd.memsize() / 1024 / 1024
     print(f'  {t:.2f} s')
     print(f'  {size:.3f} MB')
 
@@ -89,7 +89,7 @@ def main():
     b.clear()
     b.addeval_hmatrix_avector(1.0, KM, gd)
     t = time.time() - start
-    size = b.size() / 1024 / 1024
+    size = b.memsize() / 1024 / 1024
     print(f'  {t:.2f} s')
     print(f'  {size:.3f} MB')
 
@@ -99,7 +99,7 @@ def main():
     start = time.time()
     krylovsolvers.solve_cg(V, b, x, eps_solve, maxiter)
     t = time.time() - start
-    size = x.size() / 1024 / 1024
+    size = x.memsize() / 1024 / 1024
     print(f'  {t:.2f} s')
     print(f'  {size:.3f} MB')
 
