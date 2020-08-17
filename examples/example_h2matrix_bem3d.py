@@ -1,5 +1,6 @@
 import time
 
+import init
 import h2libpy.solver.krylovsolvers as krylovsolvers
 from h2libpy.base.util import get_address
 from h2libpy.data.geometry import MacroSurface3d, Surface3d

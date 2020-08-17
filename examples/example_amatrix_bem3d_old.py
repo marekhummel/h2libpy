@@ -1,12 +1,12 @@
 import ctypes
 import time
 
-
+import init
 from h2libpy.lib.amatrix import (addeval_amatrix_avector, del_amatrix,
                                  getsize_amatrix, new_amatrix)
 from h2libpy.lib.avector import (clear_avector, del_avector, getsize_avector,
                                  new_avector)
-from h2libpy.lib.bem3d import (CFuncBoundaryFunc3d, CEnumBasisFunctionBem3d,
+from h2libpy.lib.bem3d import (CEnumBasisFunctionBem3d, CFuncBoundaryFunc3d,
                                assemble_bem3d_amatrix, del_bem3d, normL2_bem3d,
                                normL2diff_c_bem3d, projectL2_bem3d_c_avector)
 from h2libpy.lib.krylovsolvers import solve_cg_amatrix_avector
