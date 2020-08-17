@@ -11,5 +11,6 @@ from h2libpy.data.misc.dblock import DBlock
 from h2libpy.data.misc.dcluster import DCluster
 from h2libpy.data.misc.dclusterbasis import DClusterBasis
 from h2libpy.data.misc.dclusteroperator import DClusterOperator
+from h2libpy.data.misc.leveldir import LevelDir
 from h2libpy.data.misc.truncmode import TruncMode
 from h2libpy.data.misc.uniform import Uniform
