@@ -45,6 +45,17 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
                         col_basis.value, alpha)
         return cls(instance)
 
+    @classmethod
+    def new_adlp_laplace(cls, gr: 'geo.Surface3d',
+                         q_regular: int, q_singular: int,
+                         row_basis: 'pbem3d.BasisFunction',
+                         col_basis: 'pbem3d.BasisFunction',
+                         alpha: float) -> 'Bem3d':
+        func = liblaplacebem3d.new_adlp_laplace_bem3d
+        instance = func(gr, q_regular, q_singular, row_basis.value,
+                        col_basis.value, alpha)
+        return cls(instance)
+
     # ***** Properties *****
 
     def __getter_gr(self) -> 'geo.Surface3d':
