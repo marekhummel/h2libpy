@@ -10,7 +10,7 @@ from h2libpy.lib.util.structs import (CStructDBlock, CStructDCluster,
 # ------------------------
 
 
-CFuncAdmissible = CFUNCTYPE(c_bool, *[PTR(CStructDCluster), PTR(CStructDCluster), c_uint, PTR(c_uint), PTR(c_uint), c_void_p])
+CFuncAdmissible = CFUNCTYPE(c_bool, *(PTR(CStructDCluster), PTR(CStructDCluster), c_uint, PTR(c_uint), PTR(c_uint), c_void_p))
 
 
 # ------------------------

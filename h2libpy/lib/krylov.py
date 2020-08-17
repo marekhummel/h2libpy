@@ -9,9 +9,9 @@ from h2libpy.lib.util.structs import CStructAMatrix, CStructAVector
 # ------------------------------------
 
 
-CFuncAddevalT = CFUNCTYPE(None, *[field, c_void_p, CStructAVector, CStructAVector])
-CFuncPrcdT = CFUNCTYPE(None, *[c_void_p, CStructAVector])
-CFuncMvmT = CFUNCTYPE(None, *[field, c_bool, c_void_p, CStructAVector, CStructAVector])
+CFuncAddevalT = CFUNCTYPE(None, *(field, c_void_p, CStructAVector, CStructAVector))
+CFuncPrcdT = CFUNCTYPE(None, *(c_void_p, CStructAVector))
+CFuncMvmT = CFUNCTYPE(None, *(field, c_bool, c_void_p, CStructAVector, CStructAVector))
 
 
 # ------------------------------------

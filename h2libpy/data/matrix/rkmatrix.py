@@ -10,34 +10,34 @@ class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
     # ***** Constructors / destructor *****
 
     @classmethod
-    def new(cls, rows: int, cols: int, k: int):
+    def new(cls, rows: int, cols: int, k: int) -> 'RkMatrix':
         return cls(librkmatrix.new_rkmatrix(rows, cols, k))
 
     @classmethod
     def from_submatrix(cls, src: 'RkMatrix', rows: int, cols: int,
-                       roff: int, coff: int):
+                       roff: int, coff: int) -> 'RkMatrix':
         return cls(librkmatrix.new_sub_rkmatrix(src, rows, roff, cols, coff))
 
     # ***** Properties *****
 
     def __getter_a(self) -> 'mat.AMatrix':
-        try_wrap(pointer(self.cobj().a), mat.AMatrix)
+        return try_wrap(pointer(self.cobj().a), mat.AMatrix)
 
     def __getter_b(self) -> 'mat.AMatrix':
-        try_wrap(pointer(self.cobj().b), mat.AMatrix)
+        return try_wrap(pointer(self.cobj().b), mat.AMatrix)
 
     def __getter_k(self) -> int:
         return self.cobj().k
 
     # ***** Methods ******
 
-    def setrank(self, k: int):
+    def setrank(self, k: int) -> None:
         librkmatrix.setrank_rkmatrix(self, k)
 
-    def resize(self, rows: int, cols: int, k: int):
+    def resize(self, rows: int, cols: int, k: int) -> None:
         librkmatrix.resize_rkmatrix(self, rows, cols, k)
 
-    def size(self, *, heaponly: bool = False):
+    def size(self, *, heaponly: bool = False) -> int:
         if heaponly:
             return librkmatrix.getsize_heap_rkmatrix(self)
         else:
@@ -46,16 +46,16 @@ class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
     def clone(self) -> 'RkMatrix':
         return try_wrap(librkmatrix.clone_rkmatrix(self), RkMatrix)
 
-    def copy(self, target: 'RkMatrix', trans: bool = False):
+    def copy(self, target: 'RkMatrix', trans: bool = False) -> None:
         librkmatrix.copy_rkmatrix(trans, self, target)
 
-    def scale(self, alpha: float):
+    def scale(self, alpha: float) -> None:
         librkmatrix.scale_rkmatrix(alpha, self)
 
-    def rand(self, kmax: int):
+    def rand(self, kmax: int) -> None:
         librkmatrix.random_rkmatrix(self, kmax)
 
-    def norm(self):
+    def norm(self) -> float:
         return librkmatrix.norm2_rkmatrix(self)
 
     def norm2_diff(self, other: 'RkMatrix') -> float:

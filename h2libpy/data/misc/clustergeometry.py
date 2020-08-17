@@ -26,9 +26,9 @@ class ClusterGeometry(StructWrapper,
 
     # ***** Methods ******
 
-    def update_point_bbox(self, size: int, idx: List[int]):
+    def update_point_bbox(self, size: int, idx: List[int]) -> None:
         cidx = pylist_to_ptr(idx, c_uint)
         libclustergeometry.update_point_bbox_clustergeometry(self, size, cidx)
 
-    def update_support_bbox(self, t: 'misc.Cluster'):
+    def update_support_bbox(self, t: 'misc.Cluster') -> None:
         libclustergeometry.update_support_bbox_cluster(self, t)

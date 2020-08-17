@@ -11,7 +11,8 @@ class Uniform(StructWrapper, cstruct=libuniform.CStructUniform):
     # ***** Constructors / destructor *****
 
     @classmethod
-    def new(cls, rb: 'misc.ClusterBasis', cb: 'misc.ClusterBasis'):
+    def new(cls, rb: 'misc.ClusterBasis', cb: 'misc.ClusterBasis') \
+            -> 'Uniform':
         return cls(libuniform.new_uniform(rb, cb))
 
     # ***** Properties *****
@@ -39,34 +40,34 @@ class Uniform(StructWrapper, cstruct=libuniform.CStructUniform):
 
     # ***** Methods ******
 
-    def ref_row(self, rb: 'misc.ClusterBasis'):
+    def ref_row(self, rb: 'misc.ClusterBasis') -> None:
         libuniform.ref_row_uniform(self, rb)
 
-    def ref_col(self, cb: 'misc.ClusterBasis'):
+    def ref_col(self, cb: 'misc.ClusterBasis') -> None:
         libuniform.ref_col_uniform(self, cb)
 
-    def unref_row(self):
+    def unref_row(self) -> None:
         libuniform.unref_row_uniform(self)
 
-    def unref_col(self):
+    def unref_col(self) -> None:
         libuniform.unref_col_uniform(self)
 
     def size(self) -> int:
         return libuniform.getsize_uniform(self)
 
-    def clear(self):
+    def clear(self) -> None:
         libuniform.clear_uniform(self)
 
-    def copy(self, trans: bool, target: 'Uniform'):
+    def copy(self, trans: bool, target: 'Uniform') -> None:
         libuniform.copy_uniform(self, trans, target)
 
     def clone(self) -> 'Uniform':
         return try_wrap(libuniform.clone_uniform(self), Uniform)
 
-    def scale(self, alpha: float):
+    def scale(self, alpha: float) -> None:
         libuniform.scale_uniform(alpha, self)
 
-    def rand(self):
+    def rand(self) -> None:
         libuniform.random_uniform(self)
 
     def add_projected(self, ro: 'misc.ClusterOperator',
@@ -78,5 +79,5 @@ class Uniform(StructWrapper, cstruct=libuniform.CStructUniform):
                         cb: 'misc.ClusterBasis', co: 'misc.ClusterOperator'):
         libuniform.project_inplace_uniform(self, rb, ro, cb, co)
 
-    def add_rkmatrix(self, r: 'mat.RkMatrix'):
+    def add_rkmatrix(self, r: 'mat.RkMatrix') -> None:
         libuniform.add_rkmatrix_uniform(r, self)

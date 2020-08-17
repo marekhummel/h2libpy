@@ -10,7 +10,7 @@ from h2libpy.lib.util.structs import (CEnumClusterMode, CStructCluster,
 # ------------------------
 
 
-CFuncClusterCallbackT = CFUNCTYPE(None, *[PTR(CStructCluster), c_uint, c_void_p])
+CFuncClusterCallbackT = CFUNCTYPE(None, *(PTR(CStructCluster), c_uint, c_void_p))
 
 CEnumClusterMode.H2_ADAPTIVE = CEnumClusterMode(0)
 CEnumClusterMode.H2_REGULAR = CEnumClusterMode(1)

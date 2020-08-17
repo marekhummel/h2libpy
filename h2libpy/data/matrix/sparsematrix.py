@@ -12,15 +12,15 @@ class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparseMatrix):
     # ***** Constructors / destructor *****
 
     @classmethod
-    def new(cls, rows: int, cols: int, nz: int):
+    def new(cls, rows: int, cols: int, nz: int) -> 'SparseMatrix':
         return cls(libsparsematrix.new_raw_sparsematrix(rows, cols, nz))
 
     @classmethod
-    def new_identity(cls, rows: int, cols: int):
+    def new_identity(cls, rows: int, cols: int) -> 'SparseMatrix':
         return cls(libsparsematrix.new_identity_sparsematrix(rows, cols))
 
     @classmethod
-    def new_zero(cls, sp: 'SparsePattern'):
+    def new_zero(cls, sp: 'SparsePattern') -> 'SparseMatrix':
         return cls(libsparsematrix.new_raw_sparsematrix(sp))
 
     # ***** Properties *****
@@ -48,22 +48,22 @@ class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparseMatrix):
     def addentry(self, row: int, col: int, x: float) -> float:
         return libsparsematrix.addentry_sparsematrix(self, row, col, x)
 
-    def setentry(self, row: int, col: int, x: float):
+    def setentry(self, row: int, col: int, x: float) -> None:
         libsparsematrix.setentry_sparsematrix(self, row, col, x)
 
     def size(self) -> int:
         return libsparsematrix.getsize_sparsematrix(self)
 
-    def sort(self):
+    def sort(self) -> None:
         libsparsematrix.sort_sparsematrix(self)
 
-    def clear(self):
+    def clear(self) -> None:
         libsparsematrix.clear_sparsematrix(self)
 
-    def print(self):
+    def print(self) -> None:
         libsparsematrix.print_sparsematrix(self)
 
-    def print_eps(self, file: str, offset: int):
+    def print_eps(self, file: str, offset: int) -> None:
         libsparsematrix.print_eps_sparsematrix(self, file.encode(), offset)
 
     def norm(self) -> float:
@@ -74,5 +74,5 @@ class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparseMatrix):
 
     # -------
 
-    def copy_sparsematrix_hmatrix(self, target: 'mat.HMatrix'):
+    def copy_sparsematrix_hmatrix(self, target: 'mat.HMatrix') -> None:
         libhmatrix.copy_sparsematrix_hmatrix(self, target)

@@ -34,11 +34,11 @@ class Block(StructWrapper, cstruct=libblock.CStructBlock):
             return cls(libblock.build_nonstrict_block(rc, cc, cdata, cadm))
 
     @classmethod
-    def from_hmatrix(cls, h: 'mat.HMatrix'):
+    def from_hmatrix(cls, h: 'mat.HMatrix') -> 'Block':
         return cls(libhmatrix.build_from_hmatrix_block(h))
 
     @classmethod
-    def from_h2matrix(cls, h: 'mat.H2Matrix'):
+    def from_h2matrix(cls, h: 'mat.H2Matrix') -> 'Block':
         return cls(libh2matrix.build_from_h2matrix_block(h))
 
     # ***** Properties *****
@@ -66,10 +66,11 @@ class Block(StructWrapper, cstruct=libblock.CStructBlock):
 
     # ***** Methods ******
 
-    def update(self):
+    def update(self) -> None:
         libblock.update_block(self)
 
-    def iterate(self, bname: int, rname: int, cname: int, pre, post, data):
+    def iterate(self, bname: int, rname: int, cname: int, pre, post, data) \
+            -> None:
         cpre = libblock.CFuncBlockCallbackT(pre)
         cpost = libblock.CFuncBlockCallbackT(post)
         cdata = cast(data, c_void_p)

@@ -1,8 +1,8 @@
 from ctypes import c_bool, c_double, c_int, pointer
-from typing import List, Tuple, Any
+from typing import Any, List, Tuple
 
 
-def deref(ptr):
+def deref(ptr) -> Any:
     ''' Returns value behind a C pointer '''
     return ptr.contents
 
@@ -12,28 +12,28 @@ def cptr_to_list(ptr, length: int) -> List[Any]:
     return ptr[:length]
 
 
-def carray_to_tuple(carray) -> Tuple[Any]:
+def carray_to_tuple(carray) -> Tuple[Any, ...]:
     ''' Converts C array to python tuple '''
     return tuple(carray[:])
 
 
-def pylist_to_ptr(lst: List[Any], ctype):
+def pylist_to_ptr(lst: List[Any], ctype) -> Any:
     ''' Creates C pointer for given list '''
     return (ctype * len(lst))(*lst)
 
 
-def try_wrap(obj, wrapperclass):
+def try_wrap(obj, wrapperclass) -> Any:
     ''' Trys to wrap C object in corresponding wrapper class '''
     return wrapperclass(obj) if obj else None
 
 
-def verify_type(obj, types):
+def verify_type(obj, types) -> None:
     ''' Checks if obj is of any type in types, raises error if not '''
     if not any(isinstance(obj, t) for t in types):
         raise TypeError(f'Invalid type for parameter, expected any of {types}')
 
 
-def to_enum(obj, enum):
+def to_enum(obj, enum) -> Any:
     ''' Converts CEnum object to its python equivalent '''
     for val in enum:
         if obj.value == val.value.value:
@@ -41,7 +41,7 @@ def to_enum(obj, enum):
     return None
 
 
-def get_address(obj, ctype=None):
+def get_address(obj, ctype=None) -> Any:
     ''' Returns memory location of given object.
         Needs to be converted to a c type first, provide if it can't be
         inferred.

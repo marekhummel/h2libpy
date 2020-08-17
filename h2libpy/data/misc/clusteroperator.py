@@ -22,11 +22,11 @@ class ClusterOperator(StructWrapper,
             return cls(libclusteroperator.new_clusteroperator(t))
 
     @classmethod
-    def from_cluster(cls, t: 'misc.Cluster'):
+    def from_cluster(cls, t: 'misc.Cluster') -> 'ClusterOperator':
         return cls(libclusteroperator.build_from_cluster_clusteroperator(t))
 
     @classmethod
-    def from_clusterbasis(cls, cb: 'misc.ClusterBasis'):
+    def from_clusterbasis(cls, cb: 'misc.ClusterBasis') -> 'ClusterOperator':
         obj = libclusteroperator.build_from_clusterbasis_clusteroperator(cb)
         return cls(obj)
 
@@ -56,19 +56,19 @@ class ClusterOperator(StructWrapper,
 
     # ***** Methods ******
 
-    def remove_sons(self):
+    def remove_sons(self) -> None:
         libclusteroperator.removesons_clusteroperator(self)
 
-    def ref(self, ptr: 'ClusterOperator'):
-        libclusteroperator.ref_clusteroperator(pointer(ptr), self)
+    def ref(self, ptr: 'ClusterOperator') -> None:
+        libclusteroperator.ref_clusteroperator(pointer(ptr.cobj()), self)
 
-    def unref(self):
+    def unref(self) -> None:
         libclusteroperator.unref_clusteroperator(self)
 
-    def update(self):
+    def update(self) -> None:
         libclusteroperator.update_clusteroperator(self)
 
-    def resize(self, krow: int, kcol: int):
+    def resize(self, krow: int, kcol: int) -> None:
         libclusteroperator.resize_clusteroperator(self, krow, kcol)
 
     def identify_son_clusterweight(self, t: 'misc.Cluster') \
@@ -79,10 +79,10 @@ class ClusterOperator(StructWrapper,
     def size(self) -> int:
         return libclusteroperator.getsize_clusteroperator(self)
 
-    def print_tree(self):
+    def print_tree(self) -> None:
         libclusteroperator.print_tree_clusteroperator(self)
 
-    def norm2diff(self, other: 'ClusterOperator'):
+    def norm2diff(self, other: 'ClusterOperator') -> None:
         libclusteroperator.norm2diff_clusteroperator(self, other)
 
     def compare_weights(self, other: 'ClusterOperator') -> float:

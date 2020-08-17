@@ -63,22 +63,22 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
 
     # ***** Methods ******
 
-    def ref(self, ptr: 'ClusterBasis'):
-        libclusterbasis.ref_clusterbasis(pointer(ptr), self)
+    def ref(self, ptr: 'ClusterBasis') -> None:
+        libclusterbasis.ref_clusterbasis(pointer(ptr.cobj()), self)
 
-    def unref(self):
+    def unref(self) -> None:
         libclusterbasis.unref_clusterbasis(self)
 
-    def update(self):
+    def update(self) -> None:
         libclusterbasis.update_clusterbasis(self)
 
-    def update_tree(self):
+    def update_tree(self) -> None:
         libclusterbasis.update_tree_clusterbasis(self)
 
-    def resize(self, k: int):
+    def resize(self, k: int) -> None:
         libclusterbasis.resize_clusterbasis(self, k)
 
-    def setrank(self, k: int):
+    def setrank(self, k: int) -> None:
         libclusterbasis.setrank_clusterbasis(self, k)
 
     def clone(self, *, structure_only: bool = False) -> 'ClusterBasis':
@@ -92,16 +92,17 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
     def size(self) -> int:
         return libclusterbasis.getsize_clusterbasis(self)
 
-    def clear_weight(self):
+    def clear_weight(self) -> None:
         libclusterbasis.clear_weight_clusterbasis(self)
 
-    def iterate(self, cbname: int, pre, post, data):
+    def iterate(self, cbname: int, pre, post, data) -> None:
         cpre = libclusterbasis.CFuncClusterBasisCallbackT(pre)
         cpost = libclusterbasis.CFuncClusterBasisCallbackT(post)
         cdata = cast(data, c_void_p)
         libclusterbasis.iterate_clusterbasis(self, cbname, cpre, cpost, cdata)
 
-    def iterate_parallel(self, cbname: int, pardepth: int, pre, post, data):
+    def iterate_parallel(self, cbname: int, pardepth: int, pre, post, data) \
+            -> None:
         cpre = libclusterbasis.CFuncClusterBasisCallbackT(pre)
         cpost = libclusterbasis.CFuncClusterBasisCallbackT(post)
         cdata = cast(data, c_void_p)
@@ -117,7 +118,7 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
         obj = libclusterbasis.new_coeffs_clusterbasis_avector(self)
         return try_wrap(obj, vec.AVector)
 
-    def ortho(self, co: 'misc.ClusterOperator'):
+    def ortho(self, co: 'misc.ClusterOperator') -> None:
         libclusterbasis.ortho_clusterbasis(self, co)
 
     def check_ortho(self) -> float:

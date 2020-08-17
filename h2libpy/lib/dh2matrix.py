@@ -13,7 +13,7 @@ from h2libpy.lib.util.structs import (CStructAMatrix, CStructAVector,
 # ------------------------
 
 
-CFuncDH2MatrixCallbackT = CFUNCTYPE(None, *[PTR(CStructDH2Matrix), c_uint, c_uint, c_uint, c_uint, c_void_p])
+CFuncDH2MatrixCallbackT = CFUNCTYPE(None, *(PTR(CStructDH2Matrix), c_uint, c_uint, c_uint, c_uint, c_void_p))
 
 
 # ------------------------

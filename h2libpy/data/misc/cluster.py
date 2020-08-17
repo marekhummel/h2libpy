@@ -78,7 +78,7 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
 
     # ***** Methods ******
 
-    def update(self):
+    def update(self) -> None:
         libcluster.update_cluster(self)
 
     def depth(self, *, minlvl: bool = True) -> int:
@@ -87,19 +87,19 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
         else:
             return libcluster.getdepth_cluster(self)
 
-    def extend(self, depth: int):
+    def extend(self, depth: int) -> None:
         libcluster.extend_cluster(self, depth)
 
-    def cut(self, depth: int):
+    def cut(self, depth: int) -> None:
         libcluster.cut_cluster(self, depth)
 
-    def balance(self, depth: int):
+    def balance(self, depth: int) -> None:
         libcluster.balance_cluster(self, depth)
 
-    def coarsen(self, minsize: int):
+    def coarsen(self, minsize: int) -> None:
         libcluster.coarsen_cluster(self, minsize)
 
-    def setsons(self, sons: int):
+    def setsons(self, sons: int) -> None:
         libcluster.setsons_cluster(self, sons)
 
     def diam2(self) -> float:
@@ -114,13 +114,14 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
     def dist_max(self, other: 'Cluster') -> float:
         return libcluster.getdist_max_cluster(self, other)
 
-    def iterate(self, tname: int, pre, post, data):
+    def iterate(self, tname: int, pre, post, data) -> None:
         cpre = libcluster.CFuncClusterCallbackT(pre)
         cpost = libcluster.CFuncClusterCallbackT(post)
         cdata = cast(data, c_void_p)
         libcluster.iterate_cluster(self, tname, cpre, cpost, cdata)
 
-    def iterate_parallel(self, tname: int, pardepth: int, pre, post, data):
+    def iterate_parallel(self, tname: int, pardepth: int, pre, post, data) \
+            -> None:
         cpre = libcluster.CFuncClusterCallbackT(pre)
         cpost = libcluster.CFuncClusterCallbackT(post)
         cdata = cast(data, c_void_p)
@@ -134,5 +135,5 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
 
     # -------
 
-    def update_bbox(self):
+    def update_bbox(self) -> None:
         libclustergeometry.update_bbox_cluster(self)

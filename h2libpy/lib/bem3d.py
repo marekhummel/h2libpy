@@ -26,26 +26,26 @@ from h2libpy.lib.util.structs import (CEnumBasisFunctionBem3d,
 # ------------------------------------
 
 
-CFuncQuadPoints3d = CFUNCTYPE(None, *[PTR(CStructBem3d), real*3, real*3, real, PTR(PTR(real))*3, PTR(PTR(real))*3])
-CFuncBoundaryFunc3d = CFUNCTYPE(field, *[PTR(real), PTR(real), c_void_p])
-CFuncKernelFunc3d = CFUNCTYPE(field, *[PTR(real), PTR(real), PTR(real), PTR(real), c_void_p])
-CFuncKernelWaveFunc3d = CFUNCTYPE(field, *[PTR(real), PTR(real), PTR(real), PTR(real), PTR(real), c_void_p])
-CFuncNearField = CFUNCTYPE(None, *[PTR(c_uint), PTR(c_uint), PTR(CStructBem3d), c_bool, PTR(CStructAMatrix)])
-CFuncFarFieldRk = CFUNCTYPE(None, *[PTR(CStructCluster), c_uint, PTR(CStructCluster), c_uint, PTR(CStructBem3d), PTR(CStructRkMatrix)])
-CFuncFarFieldU = CFUNCTYPE(None, *[c_uint, c_uint, c_uint, PTR(CStructBem3d)])
-CFuncLeafRowCol = CFUNCTYPE(None, *[c_uint, PTR(CStructBem3d)])
+CFuncQuadPoints3d = CFUNCTYPE(None, *(PTR(CStructBem3d), real*3, real*3, real, PTR(PTR(real))*3, PTR(PTR(real))*3))
+CFuncBoundaryFunc3d = CFUNCTYPE(field, *(PTR(real), PTR(real), c_void_p))
+CFuncKernelFunc3d = CFUNCTYPE(field, *(PTR(real), PTR(real), PTR(real), PTR(real), c_void_p))
+CFuncKernelWaveFunc3d = CFUNCTYPE(field, *(PTR(real), PTR(real), PTR(real), PTR(real), PTR(real), c_void_p))
+CFuncNearField = CFUNCTYPE(None, *(PTR(c_uint), PTR(c_uint), PTR(CStructBem3d), c_bool, PTR(CStructAMatrix)))
+CFuncFarFieldRk = CFUNCTYPE(None, *(PTR(CStructCluster), c_uint, PTR(CStructCluster), c_uint, PTR(CStructBem3d), PTR(CStructRkMatrix)))
+CFuncFarFieldU = CFUNCTYPE(None, *(c_uint, c_uint, c_uint, PTR(CStructBem3d)))
+CFuncLeafRowCol = CFUNCTYPE(None, *(c_uint, PTR(CStructBem3d)))
 CFuncTransferRowCol = CFuncLeafRowCol
 
-CFuncFundamental = CFUNCTYPE(None, *[PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(CStructAMatrix)])
-CFuncFundamentalWave = CFUNCTYPE(None, *[PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(real), PTR(CStructAMatrix)])
-CFuncDnyFundamental = CFUNCTYPE(None, *[PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(real*3), PTR(CStructAMatrix)])
-CFuncDnxDnyFundamental = CFUNCTYPE(None, *[PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(real*3), PTR(real*3), PTR(CStructAMatrix)])
-CFuncKernelRowCol = CFUNCTYPE(None, *[PTR(c_uint), PTR(real*3), PTR(CStructBem3d), PTR(CStructAMatrix)])
-CFuncDnzKernelRowCol = CFUNCTYPE(None, *[PTR(c_uint), PTR(real*3), PTR(real*3), PTR(CStructBem3d), PTR(CStructAMatrix)])
+CFuncFundamental = CFUNCTYPE(None, *(PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(CStructAMatrix)))
+CFuncFundamentalWave = CFUNCTYPE(None, *(PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(real), PTR(CStructAMatrix)))
+CFuncDnyFundamental = CFUNCTYPE(None, *(PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(real*3), PTR(CStructAMatrix)))
+CFuncDnxDnyFundamental = CFUNCTYPE(None, *(PTR(CStructBem3d), PTR(real*3), PTR(real*3), PTR(real*3), PTR(real*3), PTR(CStructAMatrix)))
+CFuncKernelRowCol = CFUNCTYPE(None, *(PTR(c_uint), PTR(real*3), PTR(CStructBem3d), PTR(CStructAMatrix)))
+CFuncDnzKernelRowCol = CFUNCTYPE(None, *(PTR(c_uint), PTR(real*3), PTR(real*3), PTR(CStructBem3d), PTR(CStructAMatrix)))
 CFuncFundamentalRowCol = CFuncKernelRowCol
 CFuncDnzFundamentalRowCol = CFuncDnzKernelRowCol
-CFuncLagrangeRowCol = CFUNCTYPE(None, *[PTR(c_uint), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(CStructBem3d), PTR(CStructAMatrix)])
-CFuncLagrangeWaveRowCol = CFUNCTYPE(None, *[PTR(c_uint), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(real), PTR(CStructBem3d), PTR(CStructAMatrix)])
+CFuncLagrangeRowCol = CFUNCTYPE(None, *(PTR(c_uint), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(CStructBem3d), PTR(CStructAMatrix)))
+CFuncLagrangeWaveRowCol = CFUNCTYPE(None, *(PTR(c_uint), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(CStructRealAVector), PTR(real), PTR(CStructBem3d), PTR(CStructAMatrix)))
 
 CEnumBasisFunctionBem3d.BASIS_NONE_BEM3D = CEnumBasisFunctionBem3d(0)
 CEnumBasisFunctionBem3d.BASIS_CONSTANT_BEM3D = CEnumBasisFunctionBem3d(ord('c'))

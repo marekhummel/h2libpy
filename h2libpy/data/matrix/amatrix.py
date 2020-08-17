@@ -19,7 +19,7 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
 
     @classmethod
     def new(cls, rows: int, cols: int, *,
-            fill: 'mat.FillType' = mat.FillType.Nothing):
+            fill: 'mat.FillType' = mat.FillType.Nothing) -> 'AMatrix':
         if fill == mat.FillType.Zeros:
             return cls(libamatrix.new_zero_amatrix(rows, cols))
         elif fill == mat.FillType.Identity:
@@ -29,11 +29,11 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
 
     @classmethod
     def from_submatrix(cls, src: 'AMatrix', rows: int, cols: int,
-                       roff: int, coff: int):
+                       roff: int, coff: int) -> 'AMatrix':
         return cls(libamatrix.new_sub_amatrix(src, rows, roff, cols, coff))
 
     @classmethod
-    def from_list(cls, elems: List[float], rows: int, cols: int):
+    def from_list(cls, elems: List[float], rows: int, cols: int) -> 'AMatrix':
         assert len(elems) == rows * cols
         celems = pylist_to_ptr(elems, field)
         obj = libamatrix.new_pointer_amatrix(celems, rows, cols)
@@ -58,19 +58,19 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
 
     # ***** Methods ******
 
-    def resize(self, rows: int, cols: int, *, copy: bool = False):
+    def resize(self, rows: int, cols: int, *, copy: bool = False) -> None:
         if copy:
             libamatrix.resizecopy_amatrix(self, rows, cols)
         else:
             libamatrix.resize_amatrix(self, rows, cols)
 
-    def size(self, *, heaponly: bool = False):
+    def size(self, *, heaponly: bool = False) -> int:
         if heaponly:
             return libamatrix.getsize_heap_amatrix(self)
         else:
             return libamatrix.getsize_amatrix(self)
 
-    def clear(self, *, clear_type: 'mat.ClearType' = mat.ClearType.All):
+    def clear(self, *, clear_type: 'mat.ClearType' = mat.ClearType.All) -> None:
         if clear_type == mat.ClearType.Lower:
             libamatrix.clear_lower_amatrix(self, False)
         elif clear_type == mat.ClearType.LowerStrict:
@@ -82,16 +82,16 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         else:  # clear_type == mat.ClearType.All:
             libamatrix.clear_amatrix(self)
 
-    def identity(self):
+    def identity(self) -> None:
         libamatrix.identity_amatrix(self)
 
-    def rand(self, *, ensure_self_adjoint: bool = False):
+    def rand(self, *, ensure_self_adjoint: bool = False) -> None:
         if ensure_self_adjoint:
             libamatrix.random_selfadjoint_amatrix(self)
         else:
             libamatrix.random_amatrix(self)
 
-    def rand_invert(self, alpha: float, *, ensure_pos_def: bool = False):
+    def rand_invert(self, alpha: float, *, ensure_pos_def: bool = False) -> None:
         if ensure_pos_def:
             libamatrix.random_spd_amatrix(self, alpha)
         else:
@@ -108,7 +108,7 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     def clone(self) -> 'AMatrix':
         return try_wrap(libamatrix.clone_amatrix(self), AMatrix)
 
-    def print(self, *, matlab: bool = False):
+    def print(self, *, matlab: bool = False) -> None:
         if matlab:
             libamatrix.print_matlab_amatrix(self)
         else:
@@ -117,16 +117,16 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     def is_isometric(self, trans: bool = False) -> float:
         return libamatrix.check_ortho_amatrix(trans, self)
 
-    def scale(self, alpha: float):
+    def scale(self, alpha: float) -> None:
         libamatrix.scale_amatrix(alpha, self)
 
-    def conjugate(self):
+    def conjugate(self) -> None:
         libamatrix.conjugate_amatrix(self)
 
     def dot(self, other: 'AMatrix') -> float:
         return libamatrix.dotprod_amatrix(self, other)
 
-    def norm(self, *, ntype: 'mat.NormType' = mat.NormType.Spectral):
+    def norm(self, *, ntype: 'mat.NormType' = mat.NormType.Spectral) -> float:
         if ntype == mat.NormType.Frobenius:
             return libamatrix.normfrob_amatrix(self)
         elif ntype == mat.NormType.SquaredFrobenius:
@@ -207,63 +207,63 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
 
     # ***** Operators ******
 
-    def __add__(self, rhs):
+    def __add__(self, rhs: Union['AMatrix', 'mat.SparseMatrix']) -> 'AMatrix':
         verify_type(rhs, [AMatrix, mat.SparseMatrix])
         a = self.clone()
         a.add(rhs)
         return a
 
-    def __sub__(self, rhs):
+    def __sub__(self, rhs: Union['AMatrix', 'mat.SparseMatrix']) -> 'AMatrix':
         verify_type(rhs, [AMatrix, mat.SparseMatrix])
         a = self.clone()
         a.add(rhs, -1)
         return a
 
-    def __mul__(self, rhs):
+    def __mul__(self, rhs: Union[int, float]) -> 'AMatrix':
         verify_type(rhs, [int, float])
         a = self.clone()
         a.scale(rhs)
         return a
 
-    def __matmul__(self, rhs):
+    def __matmul__(self, rhs: 'AMatrix') -> 'AMatrix':
         verify_type(rhs, [AMatrix])
         a = AMatrix.new(self.rows, self.cols, fill=mat.FillType.Zeros)
         a.addmul(1.0, self, rhs, False, False)
         return a
 
-    def __rmul__(self, lhs):
+    def __rmul__(self, lhs: Union[int, float]) -> 'AMatrix':
         return self * lhs
 
-    def __neg__(self):
+    def __neg__(self) -> 'AMatrix':
         return -1 * self
 
-    def __getitem__(self, index):
+    def __getitem__(self, index) -> List[float]:
         if index not in range(self.cols):
             raise ValueError('Index out of range.')
         return self.a[index]
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if self.cols != other.cols or self.rows != other.rows:
             return False
         return self.a == other.a
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.cols * self.rows
 
-    def __iadd__(self, rhs):
+    def __iadd__(self, rhs: Union['AMatrix', 'mat.SparseMatrix']) -> 'AMatrix':
         verify_type(rhs, [AMatrix, mat.SparseMatrix])
         self.add(rhs)
         return self
 
-    def __isub__(self, rhs):
+    def __isub__(self, rhs: Union['AMatrix', 'mat.SparseMatrix']) -> 'AMatrix':
         verify_type(rhs, [AMatrix, mat.SparseMatrix])
         self.add(rhs, -1)
         return self
 
-    def __imul__(self, rhs):
+    def __imul__(self, rhs: Union[int, float]) -> 'AMatrix':
         verify_type(rhs, [int, float])
         self.scale(rhs)
         return self
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.a)

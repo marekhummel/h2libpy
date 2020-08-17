@@ -50,25 +50,25 @@ class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
     def __getter_triangles(self) -> int:
         return self.cobj().triangles
 
-    def __getter_x(self) -> List[Tuple[float, float, float]]:
+    def __getter_x(self) -> List[Tuple[float, ...]]:
         vs = cptr_to_list(self.cobj().x, self.vertices)
-        return [carray_to_tuple(v) for v in vs]
+        return [tuple(float(x) for x in carray_to_tuple(v)) for v in vs]
 
-    def __getter_e(self) -> List[Tuple[int, int]]:
+    def __getter_e(self) -> List[Tuple[int, ...]]:
         vs = cptr_to_list(self.cobj().e, self.edges)
-        return [carray_to_tuple(v) for v in vs]
+        return [tuple(int(x) for x in carray_to_tuple(v)) for v in vs]
 
-    def __getter_t(self) -> List[Tuple[int, int, int]]:
+    def __getter_t(self) -> List[Tuple[int, ...]]:
         vs = cptr_to_list(self.cobj().t, self.triangles)
-        return [carray_to_tuple(v) for v in vs]
+        return [tuple(int(x) for x in carray_to_tuple(v)) for v in vs]
 
-    def __getter_s(self) -> List[Tuple[int, int, int]]:
+    def __getter_s(self) -> List[Tuple[int, ...]]:
         vs = cptr_to_list(self.cobj().s, self.triangles)
-        return [carray_to_tuple(v) for v in vs]
+        return [tuple(int(x) for x in carray_to_tuple(v)) for v in vs]
 
-    def __getter_n(self) -> List[Tuple[float, float, float]]:
+    def __getter_n(self) -> List[Tuple[float, ...]]:
         vs = cptr_to_list(self.cobj().n, self.triangles)
-        return [carray_to_tuple(v) for v in vs]
+        return [tuple(float(x) for x in carray_to_tuple(v)) for v in vs]
 
     def __getter_g(self) -> float:
         return deref(self.cobj().g).value
@@ -81,7 +81,7 @@ class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
 
     # ***** Methods ******
 
-    def prepare(self):
+    def prepare(self) -> None:
         libsurface3d.prepare_surface3d(self)
 
     def get_properties(self) -> Tuple[float, float, float, float]:
@@ -94,7 +94,7 @@ class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
         return (phmin.contents.value, phmax.contents.value,
                 panglemin.contents.value, pangleedge.contents.value)
 
-    def print(self):
+    def print(self) -> None:
         libsurface3d.print_surface3d(self)
 
     def check(self) -> int:
@@ -106,12 +106,12 @@ class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
     def is_oriented(self) -> bool:
         return libsurface3d.isoriented_surface3d(self)
 
-    def scale(self, a: List[float], b: List[float]):
+    def scale(self, a: List[float], b: List[float]) -> None:
         ca = pylist_to_ptr(a, real)
         cb = pylist_to_ptr(b, real)
         libsurface3d.scale_surface3d(self, ca, cb)
 
-    def translate(self, t: List[float]):
+    def translate(self, t: List[float]) -> None:
         ct = pylist_to_ptr(t, real)
         libsurface3d.translate_surface3d(self, ct)
 
@@ -119,7 +119,7 @@ class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
         obj = libsurface3d.merge_surface3d(self, other)
         return try_wrap(obj, Surface3d)
 
-    def write(self, file: str, *, netcdf: bool = False):
+    def write(self, file: str, *, netcdf: bool = False) -> None:
         cfile = file.encode()
         if netcdf:
             libsurface3d.write_nc_surface3d(self, cfile)

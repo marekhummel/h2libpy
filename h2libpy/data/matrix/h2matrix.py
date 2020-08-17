@@ -72,32 +72,32 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
         else:
             return try_wrap(libh2matrix.clone_h2matrix(self, rb, cb), H2Matrix)
 
-    def update(self):
+    def update(self) -> None:
         libh2matrix.update_h2matrix(self)
 
-    def ref(self, ptr: 'H2Matrix'):
-        libh2matrix.ref_h2matrix(pointer(ptr), self)
+    def ref(self, ptr: 'H2Matrix') -> None:
+        libh2matrix.ref_h2matrix(pointer(ptr.cobj()), self)
 
-    def unref(self):
+    def unref(self) -> None:
         libh2matrix.unref_h2matrix(self)
 
-    def size(self, *, part: 'mat.SizePart' = mat.SizePart.Total):
+    def size(self, *, part: 'mat.SizePart' = mat.SizePart.Total) -> int:
         if part == mat.SizePart.Near:
             return libh2matrix.getnearsize_h2matrix(self)
         elif part == mat.SizePart.Far:
             return libh2matrix.getfarsize_h2matrix(self)
         elif part == mat.SizePart.Object:
             return libh2matrix.getsize_h2matrix(self)
-        elif part == mat.SizePart.Total:
+        else:  # part == mat.SizePart.Total:
             return libh2matrix.gettotalsize_h2matrix(self)
 
-    def clear(self):
+    def clear(self) -> None:
         libh2matrix.clear_h2matrix(self)
 
-    def scale(self, alpha: float):
+    def scale(self, alpha: float) -> None:
         libh2matrix.scale_h2matrix(alpha, self)
 
-    def rand(self):
+    def rand(self) -> None:
         libh2matrix.random_h2matrix(self)
 
     def enumerate(self) -> List['H2Matrix']:
@@ -113,14 +113,14 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
         libh2matrix.iterate_h2matrix(self, mname, rname, cname, pardepth,
                                      cpre, cpost, cdata)
 
-    def project(self, src: Union['mat.AMatrix', 'mat.HMatrix']):
+    def project(self, src: Union['mat.AMatrix', 'mat.HMatrix']) -> None:
         verify_type(src, [mat.AMatrix, mat.HMatrix])
         if isinstance(src, mat.AMatrix):
             libh2matrix.project_amatrix_h2matrix(self, src)
         elif isinstance(src, mat.HMatrix):
             libh2matrix.project_hmatrix_h2matrix(self, src)
 
-    def norm(self):
+    def norm(self) -> float:
         return libh2matrix.norm2_h2matrix(self)
 
     def norm2_diff(self, other: 'H2Matrix') -> float:

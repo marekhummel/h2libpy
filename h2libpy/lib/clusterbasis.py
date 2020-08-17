@@ -11,7 +11,7 @@ from h2libpy.lib.util.structs import (CStructAMatrix, CStructAVector,
 # ------------------------
 
 
-CFuncClusterBasisCallbackT = CFUNCTYPE(None, *[PTR(CStructClusterBasis), c_uint, c_void_p])
+CFuncClusterBasisCallbackT = CFUNCTYPE(None, *(PTR(CStructClusterBasis), c_uint, c_void_p))
 
 
 # ------------------------

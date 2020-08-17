@@ -1,8 +1,11 @@
-from h2libpy.base.util import deref
 from ctypes import POINTER
+from typing import Any, Callable, List
+
+from h2libpy.base.util import deref
 
 
 class StructWrapper():
+    __init__: Callable[[Any, List[Any]], None]
 
     def __init_subclass__(cls, *, cstruct):
         ''' Sets default constructor for all struct wrappers.
@@ -15,7 +18,7 @@ class StructWrapper():
         cls.__init__ = _new_init
         return super().__init_subclass__()
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str):
         ''' To make struct fields available in classes if an getter method
             is provided in subclass
         '''
@@ -33,7 +36,7 @@ class StructWrapper():
         # Return value
         return getattr(self, getter)()
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: Any):
         ''' Prohibits from setting a class varible with the same name like
             a field of the struct
         '''
@@ -46,7 +49,7 @@ class StructWrapper():
         ''' Returns wrapped c object '''
         return deref(self._as_parameter_)
 
-    def avail_fields(self):
+    def avail_fields(self) -> List[str]:
         ''' Lists all available fields in c struct '''
         fields = self._as_parameter_.contents._fields_
         members = [name for (name, ctype) in fields]

@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 import h2libpy.data.matrix as mat
 import h2libpy.data.misc as misc
@@ -30,7 +30,7 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
         return cls(libavector.new_sub_avector(src, dim, off))
 
     @classmethod
-    def from_list(cls, elems: List[float], *, dim: int = -1):
+    def from_list(cls, elems: List[float], *, dim: int = -1) -> 'AVector':
         cdim = dim if dim != -1 else len(elems)
         celems = pylist_to_ptr(elems, field)
         obj = libavector.new_pointer_avector(celems, cdim)
@@ -46,10 +46,10 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
 
     # ***** Methods ******
 
-    def resize(self, dim: int):
+    def resize(self, dim: int) -> None:
         libavector.resize_avector(self, dim)
 
-    def shrink(self, dim: int):
+    def shrink(self, dim: int) -> None:
         libavector.shrink_avector(self, dim)
 
     def size(self, heaponly: bool = False) -> int:
@@ -58,28 +58,28 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
         else:
             return libavector.getsize_avector(self)
 
-    def clear(self):
+    def clear(self) -> None:
         libavector.clear_avector(self)
 
-    def fill(self, value: float):
+    def fill(self, value: float) -> None:
         libavector.fill_avector(self, value)
 
-    def rand(self, force_real: bool = False):
+    def rand(self, force_real: bool = False) -> None:
         if force_real:
             libavector.random_real_avector(self)
         else:
             libavector.random_avector(self)
 
-    def copy(self, target: 'AVector'):
+    def copy(self, target: 'AVector') -> None:
         if self.dim == target.dim:
             libavector.copy_avector(self, target)
         else:
             libavector.copy_sub_avector(self, target)
 
-    def print(self):
+    def print(self) -> None:
         libavector.print_avector(self)
 
-    def scale(self, alpha: float):
+    def scale(self, alpha: float) -> None:
         libavector.scale_avector(alpha, self)
 
     def norm(self) -> float:
@@ -88,7 +88,7 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     def dot(self, other: 'AVector') -> float:
         return libavector.dotprod_avector(self, other)
 
-    def add(self, other: 'AVector', alpha: float = 1.0):
+    def add(self, other: 'AVector', alpha: float = 1.0) -> None:
         libavector.add_avector(alpha, other, self)
 
     # -------
@@ -119,11 +119,11 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
 
     def fastaddevaltrans_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
                                          src: 'AVector'):
-        libamatrix.fastaddevaltrans_hmatrix_avector(alpha, h, src, self)
+        libhmatrix.fastaddevaltrans_hmatrix_avector(alpha, h, src, self)
 
     def addevaltrans_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
                                      src: 'AVector'):
-        libamatrix.addevaltrans_hmatrix_avector(alpha, h, src, self)
+        libhmatrix.addevaltrans_hmatrix_avector(alpha, h, src, self)
 
     def addeval_sparsematrix_avector(self, alpha: float, a: 'mat.SparseMatrix',
                                      src: 'AVector'):
@@ -179,10 +179,10 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
         func = libclusterbasis.forward_parallel_clusterbasis_avector
         func(cb, src, self, pardepth)
 
-    def forward_nopermutaion_clusterbasis_avector(self,
-                                                  cb: 'misc.ClusterBasis',
-                                                  src: 'AVector'):
-        func = libclusterbasis.forward_nopermutaion_clusterbasis_avector
+    def forward_nopermutation_clusterbasis_avector(self,
+                                                   cb: 'misc.ClusterBasis',
+                                                   src: 'AVector'):
+        func = libclusterbasis.forward_nopermutation_clusterbasis_avector
         func(cb, src, self)
 
     def forward_notransfer_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
@@ -198,10 +198,10 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
         func = libclusterbasis.backward_parallel_clusterbasis_avector
         func(cb, src, self, pardepth)
 
-    def backward_nopermutaion_clusterbasis_avector(self,
-                                                   cb: 'misc.ClusterBasis',
-                                                   src: 'AVector'):
-        func = libclusterbasis.backward_nopermutaion_clusterbasis_avector
+    def backward_nopermutation_clusterbasis_avector(self,
+                                                    cb: 'misc.ClusterBasis',
+                                                    src: 'AVector'):
+        func = libclusterbasis.backward_nopermutation_clusterbasis_avector
         func(cb, src, self)
 
     def backward_notransfer_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
@@ -231,62 +231,59 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
 
     # ***** Operators ******
 
-    def __add__(self, rhs):
+    def __add__(self, rhs: 'AVector') -> 'AVector':
         verify_type(rhs, [AVector])
         v = AVector.new(self.dim, zeros=True)
         v.add(self)
         v.add(rhs)
         return v
 
-    def __sub__(self, rhs):
+    def __sub__(self, rhs: 'AVector') -> 'AVector':
         verify_type(rhs, [AVector])
         v = AVector.new(self.dim, zeros=True)
         v.add(self)
         v.add(rhs, -1)
         return v
 
-    def __mul__(self, rhs):
-        verify_type(rhs, [AVector, int, float])
-        if isinstance(rhs, AVector):
-            return self.dot(rhs)
-        elif isinstance(rhs, (int, float)):
-            v = AVector.new(self.dim, zeros=True)
-            v.add(self, rhs)
-            return v
+    def __mul__(self, rhs: Union[int, float]) -> 'AVector':
+        verify_type(rhs, [int, float])
+        v = AVector.new(self.dim, zeros=True)
+        v.add(self, rhs)
+        return v
 
-    def __rmul__(self, lhs):
+    def __rmul__(self, lhs: Union[int, float]) -> 'AVector':
         return self * lhs
 
-    def __neg__(self):
+    def __neg__(self) -> 'AVector':
         v = AVector.new(self.dim, zeros=True)
         v.add(self, -1)
         return v
 
-    def __getitem__(self, index):
+    def __getitem__(self, index) -> float:
         return list(self.v)[index]
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if self.dim != other.dim:
             return False
         return self.v == other.v
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.dim
 
-    def __iadd__(self, rhs):
+    def __iadd__(self, rhs: 'AVector') -> 'AVector':
         verify_type(rhs, [AVector])
         self.add(rhs)
         return self
 
-    def __isub__(self, rhs):
+    def __isub__(self, rhs: 'AVector') -> 'AVector':
         verify_type(rhs, [AVector])
         self.add(rhs, -1)
         return self
 
-    def __imul__(self, rhs):
+    def __imul__(self, rhs: Union[int, float]) -> 'AVector':
         verify_type(rhs, [int, float])
         self.scale(rhs)
         return self
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.v)

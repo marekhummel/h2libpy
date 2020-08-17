@@ -1,4 +1,4 @@
-from ctypes import c_uint, c_void_p, cast, pointer
+from ctypes import c_uint, c_void_p, cast
 from typing import List, Tuple
 
 import h2libpy.data.geometry.surface3d as geo
@@ -9,7 +9,7 @@ import h2libpy.data.vector as vec
 import h2libpy.lib.bem3d as libbem3d
 import h2libpy.lib.laplacebem3d as liblaplacebem3d
 from h2libpy.base.structwrapper import StructWrapper
-from h2libpy.base.util import pylist_to_ptr, try_wrap, to_enum
+from h2libpy.base.util import get_address, pylist_to_ptr, to_enum, try_wrap
 from h2libpy.lib.settings import real
 
 VectorListType = List[Tuple[float, float, float]]
@@ -21,7 +21,7 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
     @classmethod
     def new(cls, gr: 'geo.Surface3d', row_basis: 'pbem3d.BasisFunction',
             col_basis: 'pbem3d.BasisFunction') -> 'Bem3d':
-        obj = liblaplacebem3d.new_bem3d(gr, row_basis.value, col_basis.value)
+        obj = libbem3d.new_bem3d(gr, row_basis.value, col_basis.value)
         return cls(obj)
 
     @classmethod
@@ -146,7 +146,7 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         cy = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in y], real)
         cnx = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in nx], real)
         cny = pylist_to_ptr([pylist_to_ptr(list(v), real) for v in ny], real)
-        cdirec = pointer(direc)
+        cdirec = get_address(direc)
         ckernel = libbem3d.CFuncKernelWaveFunc3d(kernel)
         libbem3d.fill_wave_bem3d(self, cx, cy, cnx, cny, v, cdirec, ckernel)
 
@@ -242,7 +242,8 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
                                tree: 'misc.Block', m: int, accur: float):
         libbem3d.setup_hmatrix_aprx_hca_bem3d(self, rc, cc, tree, m, accur)
 
-    def setup_h2matrix_recomp(self, hiercomp: bool, accur_hiercomp: float):
+    def setup_h2matrix_recomp(self, hiercomp: bool, accur_hiercomp: float) \
+            -> None:
         libbem3d.setup_h2matrix_recomp_bem3d(self, hiercomp, accur_hiercomp)
 
     def setup_h2matrix_aprx_inter(self, rb: 'misc.ClusterBasis',
@@ -279,7 +280,7 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         func = libbem3d.setup_dh2matrix_aprx_inter_recomp_bem3d
         func(self, rb, cb, tree, m, tm, eps)
 
-    def assemble_amatrix(self, g: 'mat.AMatrix'):
+    def assemble_amatrix(self, g: 'mat.AMatrix') -> None:
         libbem3d.assemble_bem3d_amatrix(self, g)
 
     def assemble_hmatrix(self, b: 'misc.Block', g: 'mat.HMatrix', *,
@@ -289,35 +290,36 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         else:
             libbem3d.assemble_bem3d_hmatrix(self, b, g)
 
-    def assemble_hmatrix_near(self, b: 'misc.Block', g: 'mat.HMatrix'):
+    def assemble_hmatrix_near(self, b: 'misc.Block', g: 'mat.HMatrix') -> None:
         libbem3d.assemble_bem3d_nearfield_hmatrix(self, b, g)
 
-    def assemble_hmatrix_far(self, b: 'misc.Block', g: 'mat.HMatrix'):
+    def assemble_hmatrix_far(self, b: 'misc.Block', g: 'mat.HMatrix') -> None:
         libbem3d.assemble_bem3d_farfield_hmatrix(self, b, g)
 
-    def assemble_h2matrix_row(self, rb: 'misc.ClusterBasis'):
+    def assemble_h2matrix_row(self, rb: 'misc.ClusterBasis') -> None:
         libbem3d.assemble_bem3d_h2matrix_row_clusterbasis(self, rb)
 
-    def assemble_h2matrix_col(self, cb: 'misc.ClusterBasis'):
+    def assemble_h2matrix_col(self, cb: 'misc.ClusterBasis') -> None:
         libbem3d.assemble_bem3d_h2matrix_col_clusterbasis(self, cb)
 
-    def assemble_h2matrix(self, g: 'mat.H2Matrix'):
+    def assemble_h2matrix(self, g: 'mat.H2Matrix') -> None:
         libbem3d.assemble_bem3d_h2matrix(self, g)
 
-    def assemble_h2matrix_near(self, g: 'mat.H2Matrix'):
+    def assemble_h2matrix_near(self, g: 'mat.H2Matrix') -> None:
         libbem3d.assemble_bem3d_nearfield_h2matrix(self, g)
 
-    def assemble_h2matrix_far(self, g: 'mat.H2Matrix'):
+    def assemble_h2matrix_far(self, g: 'mat.H2Matrix') -> None:
         libbem3d.assemble_bem3d_farfield_h2matrix(self, g)
 
-    def assemble_hiercomp_h2matrix(self, b: 'misc.Block', g: 'mat.H2Matrix'):
+    def assemble_hiercomp_h2matrix(self, b: 'misc.Block', g: 'mat.H2Matrix') \
+            -> None:
         libbem3d.assemblehiercomp_bem3d_h2matrix(self, b, g)
 
-    def assemble_dh2matrix_row(self, rb: 'misc.DClusterBasis'):
+    def assemble_dh2matrix_row(self, rb: 'misc.DClusterBasis') -> None:
         libbem3d.assemble_bem3d_dh2matrix_row_dclusterbasis(self, rb)
 
-    def assemble_dh2matrix_col(self, cb: 'misc.DClusterBasis'):
-        libbem3d.assemble_bem3d_h2matrix_col_dclusterbasis(self, cb)
+    def assemble_dh2matrix_col(self, cb: 'misc.DClusterBasis') -> None:
+        libbem3d.assemble_bem3d_dh2matrix_col_dclusterbasis(self, cb)
 
     def assemble_dh2matrix_row_ortho(self, rb: 'misc.DClusterBasis',
                                      ro: 'misc.DClusterOperator'):
@@ -335,13 +337,13 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         func = libbem3d.assemble_bem3d_dh2matrix_recomp_both_dclusterbasis
         func(self, rb, ro, cb, co, root)
 
-    def assemble_dh2matrix(self, g: 'mat.DH2Matrix'):
+    def assemble_dh2matrix(self, g: 'mat.DH2Matrix') -> None:
         libbem3d.assemble_bem3d_dh2matrix(self, g)
 
-    def assemble_dh2matrix_near(self, g: 'mat.DH2Matrix'):
+    def assemble_dh2matrix_near(self, g: 'mat.DH2Matrix') -> None:
         libbem3d.assemble_bem3d_nearfield_dh2matrix(self, g)
 
-    def assemble_dh2matrix_far(self, g: 'mat.DH2Matrix'):
+    def assemble_dh2matrix_far(self, g: 'mat.DH2Matrix') -> None:
         libbem3d.assemble_bem3d_farfield_dh2matrix(self, g)
 
     def assemble_lagrange(self, ltype: 'pbem3d.LagrangeType', idx: List[int],
@@ -408,41 +410,41 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
         cdata = cast(data, c_void_p)
         return libbem3d.normL2diff_l_bem3d(self, x, cf, cdata)
 
-    def integrate_c(self, f, w: 'vec.AVector', data):
+    def integrate_c(self, f, w: 'vec.AVector', data) -> None:
         cf = libbem3d.CFuncBoundaryFunc3d(f)
         cdata = cast(data, c_void_p)
         libbem3d.integrate_bem3d_c_avector(self, cf, w, cdata)
 
-    def integrate_l(self, f, w: 'vec.AVector', data):
+    def integrate_l(self, f, w: 'vec.AVector', data) -> None:
         cf = libbem3d.CFuncBoundaryFunc3d(f)
         cdata = cast(data, c_void_p)
         libbem3d.integrate_bem3d_l_avector(self, cf, w, cdata)
 
-    def project_l2_c(self, f, w: 'vec.AVector', data):
+    def project_l2_c(self, f, w: 'vec.AVector', data) -> None:
         cf = libbem3d.CFuncBoundaryFunc3d(f)
         cdata = cast(data, c_void_p)
         libbem3d.projectL2_bem3d_c_avector(self, cf, w, cdata)
 
-    def project_l2_l(self, f, w: 'vec.AVector', data):
+    def project_l2_l(self, f, w: 'vec.AVector', data) -> None:
         cf = libbem3d.CFuncBoundaryFunc3d(f)
         cdata = cast(data, c_void_p)
         libbem3d.projectL2_bem3d_l_avector(self, cf, w, cdata)
 
-    def setup_vertex_to_triangle_map(self):
-        libbem3d.setup_vertex_to_triangle_map(self)
+    def setup_vertex_to_triangle_map(self) -> None:
+        libbem3d.setup_vertex_to_triangle_map_bem3d(self)
 
     # def build_cube_quadpoints(self):
     #     pass
 
     def build_rkmatrix(self, row: 'misc.Cluster', col: 'misc.Cluster') \
             -> 'mat.RkMatrix':
-        cdata = cast(self, c_void_p)
+        cdata = cast(self.cobj(), c_void_p)
         obj = libbem3d.build_bem3d_rkmatrix(row, col, cdata)
         return try_wrap(obj, mat.RkMatrix)
 
     def build_amatrix(self, row: 'misc.Cluster', col: 'misc.Cluster') \
             -> 'mat.AMatrix':
-        cdata = cast(self, c_void_p)
+        cdata = cast(self.cobj(), c_void_p)
         obj = libbem3d.build_bem3d_amatrix(row, col, cdata)
         return try_wrap(obj, mat.AMatrix)
 

@@ -9,7 +9,7 @@ from h2libpy.lib.util.structs import CStructMacroSurface3d, CStructSurface3d
 # ------------------------
 
 
-CFuncPhi = CFUNCTYPE(None, *[c_uint, real, real, c_void_p, real*3])
+CFuncPhi = CFUNCTYPE(None, *(c_uint, real, real, c_void_p, real*3))
 
 
 # ------------------------

@@ -8,9 +8,9 @@ from h2libpy.lib.util.structs import (CStructBlock, CStructBlockEntry, CStructCl
 # ------------------------
 
 
-CFuncAdmissible = CFUNCTYPE(c_bool, *[PTR(CStructCluster), PTR(CStructCluster), c_void_p])
-CFuncBlockCallbackT = CFUNCTYPE(None, *[PTR(CStructBlock), c_uint, c_uint, c_uint, c_uint, c_void_p])
-CFuncBlockEntryCallbackT = CFUNCTYPE(None, *[PTR(CStructBlockEntry), c_uint, c_void_p])
+CFuncAdmissible = CFUNCTYPE(c_bool, *(PTR(CStructCluster), PTR(CStructCluster), c_void_p))
+CFuncBlockCallbackT = CFUNCTYPE(None, *(PTR(CStructBlock), c_uint, c_uint, c_uint, c_uint, c_void_p))
+CFuncBlockEntryCallbackT = CFUNCTYPE(None, *(PTR(CStructBlockEntry), c_uint, c_void_p))
 
 
 # ------------------------
