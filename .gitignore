@@ -1,12 +1,14 @@
 # Editor settings
 .vscode/
 
+# Linting
+.mypy_cache
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
 # C extensions
-*.so
-!libh2.so
+libh2.so
 
 # Todo
 todo.txt
