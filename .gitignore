@@ -10,5 +10,10 @@ __pycache__/
 # C extensions
 libh2.so
 
+# distribution
+build/
+*.egg-info/
+dist/
+
 # Todo
 todo.txt

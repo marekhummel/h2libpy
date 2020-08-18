@@ -39,8 +39,8 @@ def main():
     # Create geometry
     mg = MacroSurface3d.new_sphere()
     gr = Surface3d.from_macrosurface3d(mg, 8)
-    print(f'Created geometry with {gr.vertices} vertices, {gr.edges} edges and \
-          {gr.triangles} triangles')
+    print(f'Created geometry with {gr.vertices} vertices, {gr.edges} edges and'
+          f' {gr.triangles} triangles')
 
     # Set up basis data structures for H-matrix approximations
     bem_slp = Bem3d.new_slp_laplace(gr, q_reg, q_sing, basis, basis)
