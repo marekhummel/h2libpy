@@ -3,6 +3,11 @@ from h2libpy.base.structwrapper import StructWrapper
 
 
 class ParBem3d(StructWrapper, cstruct=libbem3d.CStructParBem3d):
+    # ***** Fields *****
+    grcnn: int
+    gccnn: int
+    grbnn: int
+    gcbnn: int
 
     # ***** Properties *****
 

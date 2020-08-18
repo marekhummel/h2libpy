@@ -3,6 +3,20 @@ from h2libpy.base.structwrapper import StructWrapper
 
 
 class SingQuad2d(StructWrapper, cstruct=libsingquad2d.CStructSingQuad2d):
+    # ***** Fields *****
+    base_id: float
+    n_id: int
+    base_edge: float
+    n_edge: int
+    base_vert: float
+    n_vert: int
+    base_dist: float
+    n_dist: int
+    base_single: float
+    n_single: int
+    q: int
+    q2: int
+    nmax: int
 
     # ***** Properties *****
 

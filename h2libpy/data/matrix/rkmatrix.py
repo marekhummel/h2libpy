@@ -7,6 +7,11 @@ from h2libpy.base.util import try_wrap
 
 
 class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
+    # ***** Fields *****
+    a: 'mat.AMatrix'
+    b: 'mat.AMatrix'
+    k: int
+
     # ***** Constructors / destructor *****
 
     @classmethod

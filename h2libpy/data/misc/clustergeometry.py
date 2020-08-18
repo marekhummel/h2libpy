@@ -10,6 +10,10 @@ from h2libpy.base.util import pylist_to_ptr
 
 class ClusterGeometry(StructWrapper,
                       cstruct=libclustergeometry.CStructClusterGeometry):
+    # ***** Fields *****
+    dim: int
+    nidx: int
+
     # ***** Constructors / destructor *****
 
     @classmethod

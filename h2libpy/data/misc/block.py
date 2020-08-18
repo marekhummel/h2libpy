@@ -11,6 +11,14 @@ from h2libpy.base.util import cptr_to_list, try_wrap
 
 
 class Block(StructWrapper, cstruct=libblock.CStructBlock):
+    # ***** Fields *****
+    rc: 'misc.Cluster'
+    cc: 'misc.Cluster'
+    a: bool
+    rsons: int
+    csons: int
+    desc: int
+
     # ***** Constructors / destructor *****
 
     @classmethod
@@ -43,10 +51,10 @@ class Block(StructWrapper, cstruct=libblock.CStructBlock):
 
     # ***** Properties *****
 
-    def __gettter_rc(self) -> 'misc.Cluster':
+    def __getter_rc(self) -> 'misc.Cluster':
         return try_wrap(self.cobj().rc, misc.Cluster)
 
-    def __gettter_cc(self) -> 'misc.Cluster':
+    def __getter_cc(self) -> 'misc.Cluster':
         return try_wrap(self.cobj().cc, misc.Cluster)
 
     def __getter_a(self) -> bool:

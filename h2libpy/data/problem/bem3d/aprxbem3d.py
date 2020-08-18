@@ -6,6 +6,26 @@ from h2libpy.base.util import try_wrap
 
 
 class AprxBem3d(StructWrapper, cstruct=libbem3d.CStructAprxBem3d):
+    # ***** Fields *****
+    m_inter: int
+    k_inter: int
+    l_green: int
+    m_green: int
+    ml_green: int
+    k_green: int
+    delta_green: float
+    grc_green: 'pbem3d.GreenCluster3d'
+    gcc_green: 'pbem3d.GreenCluster3d'
+    grb_green: 'pbem3d.GreenClusterBasis3d'
+    gcb_green: 'pbem3d.GreenClusterBasis3d'
+    accur_aca: float
+    recomp: bool
+    accur_recomp: float
+    coarsen: bool
+    accur_coarsen: float
+    hiercomp: bool
+    accur_hiercomp: float
+    tm: 'misc.TruncMode'
 
     # ***** Properties *****
 

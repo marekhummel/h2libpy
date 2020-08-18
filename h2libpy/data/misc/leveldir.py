@@ -7,6 +7,9 @@ from h2libpy.lib.settings import real
 
 
 class LevelDir(StructWrapper, cstruct=libdcluster.CStructLevelDir):
+    # ***** Fields *****
+    depth: int
+    dim: int
 
     # ***** Constructors / destructor *****
 

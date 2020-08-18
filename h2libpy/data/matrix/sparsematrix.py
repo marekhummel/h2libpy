@@ -9,6 +9,12 @@ from h2libpy.data.matrix.sparsepattern import SparsePattern
 
 
 class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparseMatrix):
+    # ***** Fields *****
+    rows: int
+    cols: int
+    nz: int
+    coeff: List[float]
+    
     # ***** Constructors / destructor *****
 
     @classmethod

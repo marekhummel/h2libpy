@@ -9,6 +9,17 @@ from h2libpy.base.util import cptr_to_list, try_wrap, verify_type
 
 
 class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
+    # ***** Fields *****
+    rb: 'misc.ClusterBasis'
+    cb: 'misc.ClusterBasis'
+    u: 'misc.Uniform'
+    f: 'misc.Uniform'
+    rsons: int
+    csons: int
+    refs: int
+    desc: int
+
+
     # ***** Constructors / destructor *****
 
     @classmethod

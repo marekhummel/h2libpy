@@ -5,6 +5,11 @@ import h2libpy.data.problem.bem3d as pbem3d
 
 
 class TriList(StructWrapper, cstruct=libbem3d.CStructTriList):
+    # ***** Fields *****
+    t: int
+    vt: 'pbem3d.VertList'
+    next: 'TriList'
+
     # ***** Constructors / destructor *****
 
     @classmethod

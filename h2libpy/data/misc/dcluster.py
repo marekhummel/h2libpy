@@ -9,6 +9,16 @@ from h2libpy.lib.settings import real
 
 
 class DCluster(StructWrapper, cstruct=libdcluster.CStructDCluster):
+    # ***** Fields *****
+    size: int
+    idx: List[int]
+    sons: int
+    son: List['DCluster']
+    dim: int
+    bmin: List[float]
+    bmax: List[float]
+    directions: int
+
     # ***** Constructors / destructor *****
 
     @classmethod

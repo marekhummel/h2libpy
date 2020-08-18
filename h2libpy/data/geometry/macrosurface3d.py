@@ -7,6 +7,15 @@ from h2libpy.base.util import carray_to_tuple, cptr_to_list
 
 class MacroSurface3d(StructWrapper,
                      cstruct=libmacrosurface3d.CStructMacroSurface3d):
+    # ***** Fields *****
+    vertices: int
+    edges: int
+    triangles: int
+    x: List[Tuple[float, ...]]
+    e: List[Tuple[int, ...]]
+    t: List[Tuple[int, ...]]
+    s: List[Tuple[int, ...]]
+
     # ***** Constructors / destructor *****
 
     @classmethod

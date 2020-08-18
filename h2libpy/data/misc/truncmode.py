@@ -5,6 +5,13 @@ from h2libpy.data.misc import TruncModeInit
 
 
 class TruncMode(StructWrapper, cstruct=libtruncation.CStructTruncMode):
+    # ***** Fields *****
+    frobenius: bool
+    absolute: bool
+    blocks: bool
+    zeta_level: float
+    zeta_age: float
+
     # ***** Constructors / destructor *****
 
     @classmethod

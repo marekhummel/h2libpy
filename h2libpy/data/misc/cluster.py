@@ -9,6 +9,13 @@ from h2libpy.base.util import cptr_to_list, pylist_to_ptr, try_wrap
 
 
 class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
+    # ***** Fields *****
+    size: int
+    sons: int
+    dim: int
+    desc: int
+    type: int
+
     # ***** Constructors / destructor *****
 
     @classmethod

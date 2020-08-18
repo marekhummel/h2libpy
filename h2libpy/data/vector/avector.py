@@ -16,6 +16,10 @@ from h2libpy.lib.settings import field
 
 
 class AVector(StructWrapper, cstruct=libavector.CStructAVector):
+    # ***** Fields *****
+    dim: int
+    v: Tuple[float, ...]
+
     # ***** Constructors / destructor *****
 
     @classmethod

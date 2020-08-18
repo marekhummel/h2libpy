@@ -11,6 +11,15 @@ from h2libpy.base.util import cptr_to_list, try_wrap
 
 class ClusterOperator(StructWrapper,
                       cstruct=libclusteroperator.CStructClusterOperator):
+    # ***** Fields *****
+    t: 'misc.Cluster'
+    krow: int
+    kcol: int
+    C: 'mat.AMatrix'
+    sons: int
+    son: List['ClusterOperator']
+    refs: int
+
     # ***** Constructors / destructor *****
 
     @classmethod

@@ -5,6 +5,9 @@ from h2libpy.base.util import try_wrap
 
 
 class CompData(StructWrapper, cstruct=libbem3d.CStructCompData):
+    # ***** Fields *****
+    bem: 'pbem3d.Bem3d'
+    rows: bool
 
     # ***** Properties *****
 

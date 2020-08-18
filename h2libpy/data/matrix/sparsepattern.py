@@ -4,6 +4,10 @@ from h2libpy.base.structwrapper import StructWrapper
 
 class SparsePattern(StructWrapper,
                     cstruct=libsparsepattern.CStructSparsePattern):
+    # ***** Fields *****
+    rows: int
+    cols: int
+    
     # ***** Constructors / destructor *****
 
     @classmethod

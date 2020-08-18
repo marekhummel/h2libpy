@@ -8,6 +8,15 @@ from ctypes import pointer
 
 
 class Uniform(StructWrapper, cstruct=libuniform.CStructUniform):
+    # ***** Fields *****
+    rb: 'misc.ClusterBasis'
+    cb: 'misc.ClusterBasis'
+    S: 'mat.AMatrix'
+    rnext: 'Uniform'
+    rprev: 'Uniform'
+    cnext: 'Uniform'
+    cprev: 'Uniform'
+
     # ***** Constructors / destructor *****
 
     @classmethod

@@ -6,6 +6,11 @@ from h2libpy.base.util import try_wrap
 
 
 class GreenCluster3d(StructWrapper, cstruct=libbem3d.CStructGreenCluster3d):
+    # ***** Fields *****
+    V: 'mat.AMatrix'
+    t: 'misc.Cluster'
+    sons: int
+
     # ***** Properties *****
 
     def __getter_V(self) -> 'mat.AMatrix':

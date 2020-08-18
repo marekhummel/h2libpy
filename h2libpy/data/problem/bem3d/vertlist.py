@@ -4,6 +4,10 @@ from h2libpy.base.structwrapper import StructWrapper
 
 
 class VertList(StructWrapper, cstruct=libbem3d.CStructVertList):
+    # ***** Fields *****
+    v: int
+    next: 'VertList'
+
     # ***** Constructors / destructor *****
 
     @classmethod

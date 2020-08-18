@@ -10,6 +10,19 @@ from h2libpy.base.util import cptr_to_list, try_wrap
 
 
 class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
+    # ***** Fields *****
+    t: 'misc.Cluster'
+    k: int
+    ktree: int
+    kbranch: int
+    V: 'mat.AMatrix'
+    E: 'mat.AMatrix'
+    sons: int
+    Z: 'mat.AMatrix'
+    refs: int
+    rlist: 'misc.Uniform'
+    rclist: 'misc.Uniform'
+
     # ***** Constructors / destructor *****
 
     @classmethod

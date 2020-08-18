@@ -15,6 +15,12 @@ from h2libpy.lib.settings import field
 
 
 class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
+    # ***** Fields *****
+    a: List[List[float]]
+    ld: int
+    rows: int
+    cols: int
+
     # ***** Constructors / destructor *****
 
     @classmethod

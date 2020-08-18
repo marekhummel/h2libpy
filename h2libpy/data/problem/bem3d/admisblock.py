@@ -4,7 +4,14 @@ from h2libpy.base.structwrapper import StructWrapper
 
 
 class AdmisBlock(StructWrapper, cstruct=libbem3d.CStructAdmisBlock):
-    # ***** Constructors / destructor *****
+    # ***** Fields *****
+    name: int
+    rname: int
+    cname: int
+    father: int
+    son: int
+    length: int
+    next: 'AdmisBlock'
 
     # ***** Properties *****
 

@@ -7,6 +7,12 @@ from h2libpy.lib.settings import field
 
 
 class RealAVector(StructWrapper, cstruct=librealavector.CStructRealAVector):
+    # ***** Fields *****
+    dim: int
+    v: Tuple[float, ...]
+
+    # ***** Constructors / destructor *****
+
     @classmethod
     def new(cls, dim: int) -> 'RealAVector':
         return cls(librealavector.new_realavector(dim))

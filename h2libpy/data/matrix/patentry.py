@@ -4,6 +4,10 @@ from h2libpy.base.util import try_wrap
 
 
 class PatEntry(StructWrapper, cstruct=libsparsepattern.CStructPatEntry):
+    # ***** Fields *****
+    row: int
+    col: int
+    next: 'PatEntry'
 
     # ***** Properties *****
 

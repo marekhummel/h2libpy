@@ -11,6 +11,19 @@ from h2libpy.lib.settings import real
 
 
 class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
+    # ***** Fields *****
+    vertices: int
+    edges: int
+    triangles: int
+    x: List[Tuple[float, ...]]
+    e: List[Tuple[int, ...]]
+    t: List[Tuple[int, ...]]
+    s: List[Tuple[int, ...]]
+    n: List[Tuple[float, ...]]
+    g: float
+    hmin: float
+    hmax: float
+
     # ***** Constructors / destructor *****
 
     @classmethod

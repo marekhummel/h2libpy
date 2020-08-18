@@ -4,6 +4,9 @@ from h2libpy.base.structwrapper import StructWrapper
 
 
 class ListNode(StructWrapper, cstruct=libbem3d.CStructListNode):
+    # ***** Fields *****
+    data: int
+    next: 'ListNode'
 
     # ***** Properties *****
 

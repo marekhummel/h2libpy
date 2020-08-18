@@ -16,6 +16,18 @@ VectorListType = List[Tuple[float, float, float]]
 
 
 class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
+    # ***** Fields *****
+    gr: 'geo.Surface3d'
+    sq: 'pbem3d.SingQuad2d'
+    row_basis: 'pbem3d.BasisFunction'
+    col_basis: 'pbem3d.BasisFunction'
+    alpha: float
+    k: float
+    kernel_const: float
+    aprx: 'pbem3d.AprxBem3d'
+    par: 'pbem3d.ParBem3d'
+    kernels: 'pbem3d.KernelBem3d'
+
     # ***** Constructors / destructor *****
 
     @classmethod
