@@ -67,7 +67,7 @@ def main():
     b = AVector.new(gr.triangles, zeros=True)
     print('Compute right-hand-side:')
     start = time.time()
-    b.addeval_amatrix_avector(1.0, KM, gd)
+    b.mvm(1.0, False, KM, gd)
     t = time.time() - start
     size = b.memsize() / 1024 / 1024
     print(f'  {t:.2f} s')

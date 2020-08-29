@@ -1,0 +1,44 @@
+# def addeval_amatrix_avector(self, alpha: float, a: 'mat.AMatrix',
+#                             src: 'AVector'):
+#     libamatrix.addeval_amatrix_avector(alpha, a, src, self)
+
+# def addevaltrans_amatrix_avector(self, alpha: float,
+#                                  a: 'mat.AMatrix', src: 'AVector'):
+#     libamatrix.addevaltrans_amatrix_avector(alpha, a, src, self)
+
+
+# def addeval_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
+#                             src: 'AVector'):
+#     libhmatrix.addeval_hmatrix_avector(alpha, h, src, self)
+
+# def addevaltrans_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
+#                                  src: 'AVector'):
+#     libhmatrix.addevaltrans_hmatrix_avector(alpha, h, src, self)
+
+
+# def addeval_sparsematrix_avector(self, alpha: float, a: 'mat.SparseMatrix',
+#                                  src: 'AVector'):
+#     libsparsematrix.addeval_sparsematrix_avector(alpha, a, src, self)
+
+# def addevaltrans_sparsematrix_avector(self, alpha: float,
+#                                       a: 'mat.SparseMatrix',
+#                                       src: 'AVector'):
+#     libsparsematrix.addevaltrans_sparsematrix_avector(alpha, a, src, self)
+
+
+# def addeval_rkmatrix_avector(self, alpha: float, a: 'mat.RkMatrix',
+#                              src: 'AVector'):
+#     librkmatrix.addeval_rkmatrix_avector(alpha, a, src, self)
+
+# def addevaltrans_rkmatrix_avector(self, alpha: float,
+#                                   a: 'mat.RkMatrix', src: 'AVector'):
+#     librkmatrix.addevaltrans_rkmatrix_avector(alpha, a, src, self)
+
+
+# def addeval_h2matrix_avector(self, alpha: float, h: 'mat.H2Matrix',
+#                              src: 'AVector'):
+#     libh2matrix.addeval_h2matrix_avector(alpha, h, src, self)
+
+# def addevaltrans_h2matrix_avector(self, alpha: float, h: 'mat.H2Matrix',
+#                                   src: 'AVector'):
+#     libh2matrix.addevaltrans_h2matrix_avector(alpha, h, src, self)

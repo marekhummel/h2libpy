@@ -15,6 +15,11 @@ from h2libpy.base.util import cptr_to_list, pylist_to_ptr, verify_type
 from h2libpy.lib.settings import field
 
 
+mvm_union = Union['mat.AMatrix', 'mat.SparseMatrix', 'mat.HMatrix',
+                  'mat.H2Matrix', 'mat.DH2Matrix', 'mat.RkMatrix',
+                  'misc.Uniform', 'misc.ClusterBasis']
+
+
 class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     # ***** Fields *****
     dim: int
@@ -100,82 +105,53 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
 
     # -------
 
-    def addeval_amatrix_avector(self, alpha: float, a: 'mat.AMatrix',
-                                src: 'AVector'):
-        libamatrix.addeval_amatrix_avector(alpha, a, src, self)
+    def mvm(self, alpha: float, trans: bool, a: mvm_union, src: 'AVector'):
+        mvm_types = [mat.AMatrix, mat.SparseMatrix, mat.HMatrix, mat.H2Matrix,
+                     mat.DH2Matrix, mat.RkMatrix, misc.Uniform,
+                     misc.ClusterBasis]
+        verify_type(a, mvm_types)
 
-    def addevaltrans_amatrix_avector(self, alpha: float,
-                                     a: 'mat.AMatrix', src: 'AVector'):
-        libamatrix.addevaltrans_amatrix_avector(alpha, a, src, self)
+        if isinstance(a, mat.AMatrix):
+            mvm_func = libamatrix.mvm_amatrix_avector
+        elif isinstance(a, mat.SparseMatrix):
+            mvm_func = libsparsematrix.mvm_sparsematrix_avector
+        elif isinstance(a, mat.HMatrix):
+            mvm_func = libhmatrix.mvm_hmatrix_avector
+        elif isinstance(a, mat.H2Matrix):
+            mvm_func = libh2matrix.mvm_h2matrix_avector
+        elif isinstance(a, mat.RkMatrix):
+            mvm_func = librkmatrix.mvm_rkmatrix_avector
+        elif isinstance(a, mat.DH2Matrix):
+            raise ValueError('MVM for DH2-matrizes not yet implemented.')
+        elif isinstance(a, misc.Uniform):
+            mvm_func = libuniform.mvm_uniform_avector
+        elif isinstance(a, misc.ClusterBasis):
+            def mvm_cb(alpha, trans, cb, src, tgt):
+                if trans:
+                    func = libclusterbasis.addeval_clusterbasis_avector
+                else:
+                    func = libclusterbasis.addevaltrans_clusterbasis_avector
+                func(alpha, cb, src, self)
+            mvm_func = mvm_cb
 
-    def mvm_amatrix_avector(self, alpha: float, trans: bool,
-                            a: 'mat.AMatrix', src: 'AVector'):
-        libamatrix.mvm_amatrix_avector(alpha, trans, a, src, self)
+        mvm_func(alpha, trans, a, src, self)
 
-    def mvm_hmatrix_avector(self, alpha: float, trans: bool,
-                            h: 'mat.HMatrix', src: 'AVector'):
-        libhmatrix.mvm_hmatrix_avector(alpha, trans, h, src, self)
+    def fast_addeval(self, alpha: float, trans: bool,
+                     h: Union['mat.HMatrix', 'mat.H2Matrix'], src: 'AVector'):
+        verify_type(h, [mat.HMatrix, mat.H2Matrix])
 
-    def fastaddeval_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
-                                    src: 'AVector'):
-        libhmatrix.fastaddeval_hmatrix_avector(alpha, h, src, self)
+        if isinstance(h, mat.HMatrix):
+            if trans:
+                func = libhmatrix.fastaddevaltrans_hmatrix_avector
+            else:
+                func = libhmatrix.fastaddeval_hmatrix_avector
+        elif isinstance(h, mat.H2Matrix):
+            if trans:
+                func = libh2matrix.fastaddevaltrans_h2matrix_avector
+            else:
+                func = libh2matrix.fastaddeval_h2matrix_avector
 
-    def addeval_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
-                                src: 'AVector'):
-        libhmatrix.addeval_hmatrix_avector(alpha, h, src, self)
-
-    def fastaddevaltrans_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
-                                         src: 'AVector'):
-        libhmatrix.fastaddevaltrans_hmatrix_avector(alpha, h, src, self)
-
-    def addevaltrans_hmatrix_avector(self, alpha: float, h: 'mat.HMatrix',
-                                     src: 'AVector'):
-        libhmatrix.addevaltrans_hmatrix_avector(alpha, h, src, self)
-
-    def addeval_sparsematrix_avector(self, alpha: float, a: 'mat.SparseMatrix',
-                                     src: 'AVector'):
-        libsparsematrix.addeval_sparsematrix_avector(alpha, a, src, self)
-
-    def addevaltrans_sparsematrix_avector(self, alpha: float,
-                                          a: 'mat.SparseMatrix',
-                                          src: 'AVector'):
-        libsparsematrix.addevaltrans_sparsematrix_avector(alpha, a, src, self)
-
-    def mvm_sparsematrix_avector(self, alpha: float, trans: bool,
-                                 a: 'mat.SparseMatrix', src: 'AVector'):
-        libsparsematrix.mvm_sparsematrix_avector(alpha, trans, a, src, self)
-
-    def addeval_rkmatrix_avector(self, alpha: float, a: 'mat.RkMatrix',
-                                 src: 'AVector'):
-        librkmatrix.addeval_rkmatrix_avector(alpha, a, src, self)
-
-    def addevaltrans_rkmatrix_avector(self, alpha: float,
-                                      a: 'mat.RkMatrix', src: 'AVector'):
-        librkmatrix.addevaltrans_rkmatrix_avector(alpha, a, src, self)
-
-    def mvm_rkmatrix_avector(self, alpha: float, trans: bool,
-                             a: 'mat.RkMatrix', src: 'AVector'):
-        librkmatrix.mvm_rkmatrix_avector(alpha, trans, a, src, self)
-
-    def mvm_h2matrix_avector(self, alpha: float, trans: bool,
-                             h: 'mat.H2Matrix', src: 'AVector'):
-        libh2matrix.mvm_h2matrix_avector(alpha, trans, h, src, self)
-
-    def fastaddeval_h2matrix_avector(self, alpha: float, h: 'mat.H2Matrix',
-                                     src: 'AVector'):
-        libh2matrix.fastaddeval_h2matrix_avector(alpha, h, src, self)
-
-    def addeval_h2matrix_avector(self, alpha: float, h: 'mat.H2Matrix',
-                                 src: 'AVector'):
-        libh2matrix.addeval_h2matrix_avector(alpha, h, src, self)
-
-    def fastaddevaltrans_h2matrix_avector(self, alpha: float,
-                                          h: 'mat.H2Matrix', src: 'AVector'):
-        libh2matrix.fastaddevaltrans_h2matrix_avector(alpha, h, src, self)
-
-    def addevaltrans_h2matrix_avector(self, alpha: float, h: 'mat.H2Matrix',
-                                      src: 'AVector'):
-        libh2matrix.addevaltrans_h2matrix_avector(alpha, h, src, self)
+        func(alpha, h, src, self)
 
     def forward_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
                                      src: 'AVector'):
@@ -222,19 +198,6 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     def expand_clusterbasis_avector(self, cb: 'misc.ClusterBasis',
                                     src: 'AVector'):
         libclusterbasis.expand_clusterbasis_avector(cb, self, src)
-
-    def addeval_clusterbasis_avector(self, alpha: float,
-                                     cb: 'misc.ClusterBasis', src: 'AVector'):
-        libclusterbasis.addeval_clusterbasis_avector(alpha, cb, src, self)
-
-    def addevaltrans_clusterbasis_avector(self, alpha: float,
-                                          cb: 'misc.ClusterBasis',
-                                          src: 'AVector'):
-        libclusterbasis.addevaltrans_clusterbasis_avector(alpha, cb, src, self)
-
-    def mvm_uniform_avector(self, alpha: float, trans: bool, u: 'misc.Uniform',
-                            src: 'AVector'):
-        libuniform.mvm_uniform_avector(alpha, trans, u, src, self)
 
     # ***** Operators ******
 
