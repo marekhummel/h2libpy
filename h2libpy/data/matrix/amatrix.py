@@ -21,7 +21,7 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     rows: int
     cols: int
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, rows: int, cols: int, *,
@@ -159,6 +159,9 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
     def bidiagmul(self, alpha: float, trans: bool,
                   dia: 'vec.AVector', lo: 'vec.AVector'):
         libamatrix.bidiagmul_amatrix(alpha, trans, self, dia, lo)
+
+    def delete(self) -> None:
+        libamatrix.del_amatrix(self)
 
     # ---------
 

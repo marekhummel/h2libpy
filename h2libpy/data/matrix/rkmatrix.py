@@ -12,7 +12,7 @@ class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
     b: 'mat.AMatrix'
     k: int
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, rows: int, cols: int, k: int) -> 'RkMatrix':
@@ -65,3 +65,6 @@ class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
 
     def norm2_diff(self, other: 'RkMatrix') -> float:
         return librkmatrix.norm2diff_rkmatrix(self, other)
+
+    def delete(self) -> None:
+        librkmatrix.del_rkmatrix(self)

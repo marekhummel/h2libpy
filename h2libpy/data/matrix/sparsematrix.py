@@ -14,8 +14,8 @@ class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparseMatrix):
     cols: int
     nz: int
     coeff: List[float]
-    
-    # ***** Constructors / destructor *****
+
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, rows: int, cols: int, nz: int) -> 'SparseMatrix':
@@ -77,6 +77,9 @@ class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparseMatrix):
 
     def norm2_diff(self, other: 'SparseMatrix') -> float:
         return libsparsematrix.norm2diff_sparsematrix(self, other)
+
+    def delete(self) -> None:
+        libsparsematrix.del_sparsematrix(self)
 
     # -------
 

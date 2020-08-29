@@ -10,7 +10,7 @@ class TriList(StructWrapper, cstruct=libbem3d.CStructTriList):
     vt: 'pbem3d.VertList'
     next: 'TriList'
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, nxt: 'TriList') -> 'TriList':
@@ -28,3 +28,6 @@ class TriList(StructWrapper, cstruct=libbem3d.CStructTriList):
         return try_wrap(self.cobj().next, TriList)
 
     # ***** Methods ******
+
+    def delete(self) -> None:
+        libbem3d.del_tri_list(self)

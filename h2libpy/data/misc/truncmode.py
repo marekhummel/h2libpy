@@ -12,7 +12,7 @@ class TruncMode(StructWrapper, cstruct=libtruncation.CStructTruncMode):
     zeta_level: float
     zeta_age: float
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, inittype: 'TruncModeInit' = TruncModeInit.Nothing) \
@@ -51,3 +51,6 @@ class TruncMode(StructWrapper, cstruct=libtruncation.CStructTruncMode):
 
     def find_rank(self, eps: float, sigma: 'vec.RealAVector') -> int:
         return libtruncation.findrank_truncmode(self, eps, sigma)
+
+    def delete(self) -> None:
+        libtruncation.del_truncmode(self)

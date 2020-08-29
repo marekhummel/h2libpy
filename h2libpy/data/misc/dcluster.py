@@ -19,7 +19,7 @@ class DCluster(StructWrapper, cstruct=libdcluster.CStructDCluster):
     bmax: List[float]
     directions: int
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, size: int, idx: List[int], sons: int, dim: int) -> 'DCluster':

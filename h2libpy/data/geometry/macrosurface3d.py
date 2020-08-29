@@ -16,7 +16,7 @@ class MacroSurface3d(StructWrapper,
     t: List[Tuple[int, ...]]
     s: List[Tuple[int, ...]]
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, vertices: int, edges: int, triangles: int) \
@@ -72,3 +72,8 @@ class MacroSurface3d(StructWrapper,
     def __getter_s(self) -> List[Tuple[int, ...]]:
         vs = cptr_to_list(self.cobj().s, self.triangles)
         return [tuple(int(x) for x in carray_to_tuple(v)) for v in vs]
+
+    # ***** Methods *****
+    
+    def delete(self) -> None:
+        libmacrosurface3d.del_macrosurface3d(self)

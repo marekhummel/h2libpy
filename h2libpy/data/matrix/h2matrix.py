@@ -19,8 +19,7 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
     refs: int
     desc: int
 
-
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, rb: 'misc.ClusterBasis', cb: 'misc.ClusterBasis',
@@ -136,3 +135,6 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
 
     def norm2_diff(self, other: 'H2Matrix') -> float:
         return libh2matrix.norm2diff_h2matrix(self, other)
+
+    def delete(self) -> None:
+        libh2matrix.del_h2matrix(self)

@@ -6,7 +6,7 @@ from h2libpy.base.structwrapper import StructWrapper
 class DClusterBasis(StructWrapper,
                     cstruct=libdclusterbasis.CStructDClusterBasis):
     pass
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     # ***** Properties *****
 

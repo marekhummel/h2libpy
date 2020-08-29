@@ -19,7 +19,7 @@ class Block(StructWrapper, cstruct=libblock.CStructBlock):
     csons: int
     desc: int
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, rc: 'misc.Cluster', cc: 'misc.Cluster', a: bool,
@@ -130,3 +130,6 @@ class Block(StructWrapper, cstruct=libblock.CStructBlock):
 
     def compute_csp(self) -> int:
         return libblock.compute_csp_block(self)
+
+    def delete(self) -> None:
+        libblock.del_block(self)

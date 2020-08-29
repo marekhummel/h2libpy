@@ -60,3 +60,6 @@ class SingQuad2d(StructWrapper, cstruct=libsingquad2d.CStructSingQuad2d):
         return self.cobj().nmax
 
     # ***** Methods ******
+
+    def delete(self) -> None:
+        libsingquad2d.del_singquad2d(self)

@@ -17,8 +17,8 @@ class DBlock(StructWrapper, cstruct=libdblock.CStructDBlock):
     rsons: int
     csons: int
     desc: int
-    
-    # ***** Constructors / destructor *****
+
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, rc: 'misc.DCluster', cc: 'misc.DCluster', rd: int, cd: int,
@@ -84,3 +84,6 @@ class DBlock(StructWrapper, cstruct=libdblock.CStructDBlock):
         ptr = libdblock.enumerate_dblock(self)
         lst = cptr_to_list(ptr, self.desc)
         return [try_wrap(cs, DBlock) for cs in lst]
+
+    def delete(self) -> None:
+        libdblock.del_dblock(self)

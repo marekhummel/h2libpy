@@ -14,7 +14,7 @@ class ClusterGeometry(StructWrapper,
     dim: int
     nidx: int
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, dim: int, nidx: int) -> 'ClusterGeometry':
@@ -36,3 +36,6 @@ class ClusterGeometry(StructWrapper,
 
     def update_support_bbox(self, t: 'misc.Cluster') -> None:
         libclustergeometry.update_support_bbox_cluster(self, t)
+
+    def delete(self) -> None:
+        libclustergeometry.del_clustergeometry(self)

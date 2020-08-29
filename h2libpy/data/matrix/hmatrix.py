@@ -18,8 +18,8 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
     csons: int
     refs: int
     desc: int
-   
-    # ***** Constructors / destructor *****
+
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, rc: 'misc.Cluster', cc: 'misc.Cluster') -> 'mat.HMatrix':
@@ -139,3 +139,6 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
 
     def write_file(self, file: str) -> None:
         libhmatrix.write_hlib_hmatrix(self, file.encode())
+
+    def delete(self) -> None:
+        libhmatrix.del_hmatrix(self)

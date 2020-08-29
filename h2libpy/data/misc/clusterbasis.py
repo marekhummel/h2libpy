@@ -23,7 +23,7 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
     rlist: 'misc.Uniform'
     rclist: 'misc.Uniform'
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, t: 'misc.Cluster', *, leaf: bool) -> 'ClusterBasis':
@@ -144,3 +144,6 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
     def weight_enum(self) -> 'mat.AMatrix':
         obj = libclusterbasis.weight_enum_clusterbasis_clusteroperator(self)
         return try_wrap(obj, mat.AMatrix)
+
+    def delete(self) -> None:
+        libclusterbasis.del_clusterbasis(self)

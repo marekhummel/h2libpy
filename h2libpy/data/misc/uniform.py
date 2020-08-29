@@ -17,7 +17,7 @@ class Uniform(StructWrapper, cstruct=libuniform.CStructUniform):
     cnext: 'Uniform'
     cprev: 'Uniform'
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, rb: 'misc.ClusterBasis', cb: 'misc.ClusterBasis') \
@@ -90,3 +90,6 @@ class Uniform(StructWrapper, cstruct=libuniform.CStructUniform):
 
     def add_rkmatrix(self, r: 'mat.RkMatrix') -> None:
         libuniform.add_rkmatrix_uniform(r, self)
+
+    def delete(self) -> None:
+        libuniform.del_uniform(self)

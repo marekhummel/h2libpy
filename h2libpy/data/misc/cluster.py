@@ -16,7 +16,7 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
     desc: int
     type: int
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, size: int, idx: List[int], sons: int, dim: int) -> 'Cluster':
@@ -139,6 +139,9 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
         ptr = libcluster.enumerate_cluster(self)
         lst = cptr_to_list(ptr, self.desc)
         return [try_wrap(c, Cluster) for c in lst]
+
+    def delete(self) -> None:
+        libcluster.del_cluster(self)
 
     # -------
 

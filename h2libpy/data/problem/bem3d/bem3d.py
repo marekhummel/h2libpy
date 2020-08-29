@@ -28,7 +28,7 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
     par: 'pbem3d.ParBem3d'
     kernels: 'pbem3d.KernelBem3d'
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, gr: 'geo.Surface3d', row_basis: 'pbem3d.BasisFunction',
@@ -473,3 +473,6 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
 
     # def build_curl_sparsematrix(self):
     #     pass
+
+    def delete(self) -> None:
+        libbem3d.del_bem3d(self)

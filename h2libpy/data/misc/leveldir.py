@@ -11,7 +11,7 @@ class LevelDir(StructWrapper, cstruct=libdcluster.CStructLevelDir):
     depth: int
     dim: int
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, depth: int, dim: int) -> 'LevelDir':

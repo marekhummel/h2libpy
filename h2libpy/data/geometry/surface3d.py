@@ -24,7 +24,7 @@ class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
     hmin: float
     hmax: float
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, vertices: int, edges: int, triangles: int) -> 'Surface3d':
@@ -142,3 +142,6 @@ class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
     def refine_red(self, other: 'Surface3d') -> 'Surface3d':
         obj = libsurface3d.refine_red_surface3d(self)
         return try_wrap(obj, Surface3d)
+
+    def delete(self) -> None:
+        libsurface3d.del_surface3d(self)

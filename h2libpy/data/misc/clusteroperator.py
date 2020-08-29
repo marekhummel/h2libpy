@@ -20,7 +20,7 @@ class ClusterOperator(StructWrapper,
     son: List['ClusterOperator']
     refs: int
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, t: 'misc.Cluster', *, leaf: bool = False) \
@@ -105,3 +105,6 @@ class ClusterOperator(StructWrapper,
     def basis_product(self, cb1: 'misc.ClusterBasis',
                       cb2: 'misc.ClusterBasis'):
         libclusteroperator.basisproduct_clusteroperator(cb1, cb2, self)
+
+    def delete(self) -> None:
+        libclusteroperator.del_clusteroperator(self)

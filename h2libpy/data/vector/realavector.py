@@ -11,7 +11,7 @@ class RealAVector(StructWrapper, cstruct=librealavector.CStructRealAVector):
     dim: int
     v: Tuple[float, ...]
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, dim: int) -> 'RealAVector':
@@ -80,6 +80,9 @@ class RealAVector(StructWrapper, cstruct=librealavector.CStructRealAVector):
 
     def add(self, other: 'RealAVector', alpha: float = 1.0) -> None:
         librealavector.add_realavector(alpha, other, self)
+
+    def delete(self) -> None:
+        librealavector.del_realavector(self)
 
     # ***** Operators ******
 

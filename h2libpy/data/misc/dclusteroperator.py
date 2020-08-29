@@ -5,7 +5,7 @@ from h2libpy.base.structwrapper import StructWrapper
 class DClusterOperator(StructWrapper,
                        cstruct=libdclusteroperator.CStructDClusterOperator):
     pass
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     # ***** Properties *****
 

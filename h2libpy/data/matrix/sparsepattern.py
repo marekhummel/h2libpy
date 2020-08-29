@@ -7,8 +7,8 @@ class SparsePattern(StructWrapper,
     # ***** Fields *****
     rows: int
     cols: int
-    
-    # ***** Constructors / destructor *****
+
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, rows: int, cols: int) -> 'SparsePattern':
@@ -35,3 +35,6 @@ class SparsePattern(StructWrapper,
 
     def print(self) -> None:
         libsparsepattern.print_sparsepattern(self)
+
+    def delete(self) -> None:
+        libsparsepattern.del_sparsepattern(self)

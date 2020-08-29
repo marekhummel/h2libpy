@@ -8,7 +8,7 @@ class VertList(StructWrapper, cstruct=libbem3d.CStructVertList):
     v: int
     next: 'VertList'
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, nxt: 'VertList') -> 'VertList':
@@ -23,3 +23,6 @@ class VertList(StructWrapper, cstruct=libbem3d.CStructVertList):
         return try_wrap(self.cobj().next, VertList)
 
     # ***** Methods ******
+
+    def delete(self) -> None:
+        libbem3d.del_vert_list(self)

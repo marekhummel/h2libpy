@@ -20,7 +20,7 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
     dim: int
     v: Tuple[float, ...]
 
-    # ***** Constructors / destructor *****
+    # ***** Constructors *****
 
     @classmethod
     def new(cls, dim: int, *, zeros: bool = False) -> 'AVector':
@@ -94,6 +94,9 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
 
     def add(self, other: 'AVector', alpha: float = 1.0) -> None:
         libavector.add_avector(alpha, other, self)
+
+    def delete(self) -> None:
+        libavector.del_avector(self)
 
     # -------
 
