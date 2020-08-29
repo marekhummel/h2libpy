@@ -51,6 +51,7 @@ class StructWrapper():
         return deref(self._as_parameter_)
 
     def as_voidp(self):
+        ''' Casts wrapped c object to void* '''
         return cast(self.cobj(), c_void_p)
 
     def avail_fields(self) -> List[str]:
