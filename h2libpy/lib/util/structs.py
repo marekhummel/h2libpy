@@ -53,3 +53,11 @@ class CStructTriList(Struct): pass
 class CStructTruncMode(Struct): pass
 class CStructUniform(Struct): pass
 class CStructVertList(Struct): pass
+
+# class CStructCopyNearData(Struct): pass
+# class CStructAddevalBlock(Struct): pass
+# class CStructAddevalData(Struct): pass
+# class CStructExpandData(Struct): pass
+# class CStructOrthoData(Struct): pass
+# class CStructAddevalData(Struct): pass
+# class CStructDirAdmData(Struct): pass
