@@ -15,5 +15,6 @@ build/
 *.egg-info/
 dist/
 
-# Todo
+# Todo + Token
 todo.txt
+pypi_token.txt
