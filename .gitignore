@@ -7,8 +7,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
-# C extensions
-libh2.so
 
 # distribution
 build/
@@ -18,3 +16,6 @@ dist/
 # Todo + Token
 todo.txt
 pypi_token.txt
+
+# Test files
+main.py
