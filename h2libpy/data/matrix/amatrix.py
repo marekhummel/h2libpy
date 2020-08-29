@@ -76,7 +76,8 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         else:
             return libamatrix.getsize_amatrix(self)
 
-    def clear(self, *, clear_type: 'mat.ClearType' = mat.ClearType.All) -> None:
+    def clear(self, *, clear_type: 'mat.ClearType' = mat.ClearType.All) \
+            -> None:
         if clear_type == mat.ClearType.Lower:
             libamatrix.clear_lower_amatrix(self, False)
         elif clear_type == mat.ClearType.LowerStrict:
@@ -97,7 +98,8 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         else:
             libamatrix.random_amatrix(self)
 
-    def rand_invert(self, alpha: float, *, ensure_pos_def: bool = False) -> None:
+    def rand_invert(self, alpha: float, *, ensure_pos_def: bool = False) \
+            -> None:
         if ensure_pos_def:
             libamatrix.random_spd_amatrix(self, alpha)
         else:

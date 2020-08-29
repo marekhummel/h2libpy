@@ -74,6 +74,6 @@ class MacroSurface3d(StructWrapper,
         return [tuple(int(x) for x in carray_to_tuple(v)) for v in vs]
 
     # ***** Methods *****
-    
+
     def delete(self) -> None:
         libmacrosurface3d.del_macrosurface3d(self)

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 with open('README.md', mode='r') as f:
     long_description = f.read()
-    
+
 setup(name='h2libpy',
       version='0.2',
       description='Python interface for the h2lib library',

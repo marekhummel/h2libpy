@@ -111,7 +111,7 @@ def main():
     mg.delete()
     gr.delete()
     uninit()
-    
+
     print(f'TOTAL TIME: {time.time() - tt:.5f} s')
 
 
