@@ -50,7 +50,7 @@ class StructWrapper():
         return deref(self._as_parameter_)
 
     def as_voidp(self):
-        return self.as_voidp()
+        return cast(self.cobj(), c_void_p)
 
     def avail_fields(self) -> List[str]:
         ''' Lists all available fields in c struct '''
