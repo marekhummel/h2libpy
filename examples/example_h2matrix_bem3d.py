@@ -156,6 +156,17 @@ def main():
     print(f'  {norm:.5e}')
 
     # cleanup
+    x.delete()
+    b.delete()
+    gd.delete()
+    V.delete()
+    KM.delete()
+    broot.delete()
+    root.delete()
+    bem_slp.delete()
+    bem_dlp.delete()
+    mg.delete()
+    gr.delete()
     uninit()
     print(f'TOTAL TIME: {time.time() - tt:.5f} s')
 
