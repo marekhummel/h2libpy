@@ -15,6 +15,9 @@ class StructWrapper():
             assert isinstance(cobj, POINTER(cstruct))
             self._as_parameter_ = cobj
             self._refs = refs
+            old_init(self)
+
+        old_init = cls.__init__
         cls.__init__ = _new_init
         # if hasattr(cls, 'delete'): cls.__del__ = cls.delete
         return super().__init_subclass__()
