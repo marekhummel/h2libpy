@@ -1,8 +1,7 @@
-import ctypes
 import time
 
 import init  # noqa
-from h2libpy.base.util import get_address
+from h2libpy.base.util import get_address, to_voidp
 from h2libpy.lib.avector import (clear_avector, del_avector, getsize_avector,
                                  new_avector)
 from h2libpy.lib.bem3d import (CEnumBasisFunctionBem3d, CFuncBoundaryFunc3d,
@@ -129,7 +128,7 @@ def main():
     start = time.time()
 
     # L2-projection onto the space of piecewise constant function on the boundary.
-    projectL2_bem3d_c_avector(bem_dlp, CFuncBoundaryFunc3d(eval_dirichlet_fundamental_laplacebem3d), gd, ctypes.cast(bem_dlp, ctypes.c_void_p))
+    projectL2_bem3d_c_avector(bem_dlp, CFuncBoundaryFunc3d(eval_dirichlet_fundamental_laplacebem3d), gd, to_voidp(bem_dlp))
     t = time.time() - start
     size = getsize_avector(gd) / 1024 / 1024
     print(f'  {t:.2f} s')

@@ -66,7 +66,7 @@ class DCluster(StructWrapper, cstruct=libdcluster.CStructDCluster):
         libdcluster.update_dcluster(self)
 
     def delete(self) -> None:
-        libdcluster.del_dcluster(self)
+        super().delete(libdcluster.del_dcluster)
 
     def diam(self) -> float:
         return libdcluster.diam_dcluster(self)

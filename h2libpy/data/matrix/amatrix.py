@@ -163,7 +163,7 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         libamatrix.bidiagmul_amatrix(alpha, trans, self, dia, lo)
 
     def delete(self) -> None:
-        libamatrix.del_amatrix(self)
+        super().delete(libamatrix.del_amatrix)
 
     # ---------
 

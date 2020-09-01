@@ -67,4 +67,4 @@ class RkMatrix(StructWrapper, cstruct=librkmatrix.CStructRkMatrix):
         return librkmatrix.norm2diff_rkmatrix(self, other)
 
     def delete(self) -> None:
-        librkmatrix.del_rkmatrix(self)
+        super().delete(librkmatrix.del_rkmatrix)

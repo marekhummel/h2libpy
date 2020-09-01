@@ -92,4 +92,4 @@ class Uniform(StructWrapper, cstruct=libuniform.CStructUniform):
         libuniform.add_rkmatrix_uniform(r, self)
 
     def delete(self) -> None:
-        libuniform.del_uniform(self)
+        super().delete(libuniform.del_uniform)

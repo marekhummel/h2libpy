@@ -38,4 +38,4 @@ class ClusterGeometry(StructWrapper,
         libclustergeometry.update_support_bbox_cluster(self, t)
 
     def delete(self) -> None:
-        libclustergeometry.del_clustergeometry(self)
+        super().delete(libclustergeometry.del_clustergeometry)

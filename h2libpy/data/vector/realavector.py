@@ -82,7 +82,7 @@ class RealAVector(StructWrapper, cstruct=librealavector.CStructRealAVector):
         librealavector.add_realavector(alpha, other, self)
 
     def delete(self) -> None:
-        librealavector.del_realavector(self)
+        super().delete(librealavector.del_realavector)
 
     # ***** Operators ******
 

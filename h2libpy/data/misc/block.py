@@ -132,7 +132,7 @@ class Block(StructWrapper, cstruct=libblock.CStructBlock):
         return libblock.compute_csp_block(self)
 
     def delete(self) -> None:
-        libblock.del_block(self)
+        super().delete(libblock.del_block)
 
     # ***** Operators *****
 

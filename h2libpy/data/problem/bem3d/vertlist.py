@@ -25,4 +25,4 @@ class VertList(StructWrapper, cstruct=libbem3d.CStructVertList):
     # ***** Methods ******
 
     def delete(self) -> None:
-        libbem3d.del_vert_list(self)
+        super().delete(libbem3d.del_vert_list)

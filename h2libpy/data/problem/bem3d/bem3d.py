@@ -475,4 +475,4 @@ class Bem3d(StructWrapper, cstruct=libbem3d.CStructBem3d):
     #     pass
 
     def delete(self) -> None:
-        libbem3d.del_bem3d(self)
+        super().delete(libbem3d.del_bem3d)

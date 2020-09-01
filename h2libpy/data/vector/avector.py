@@ -101,7 +101,7 @@ class AVector(StructWrapper, cstruct=libavector.CStructAVector):
         libavector.add_avector(alpha, other, self)
 
     def delete(self) -> None:
-        libavector.del_avector(self)
+        super().delete(libavector.del_avector)
 
     # -------
 

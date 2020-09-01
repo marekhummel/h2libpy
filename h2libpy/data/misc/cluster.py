@@ -141,7 +141,7 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
         return [try_wrap(c, Cluster) for c in lst]
 
     def delete(self) -> None:
-        libcluster.del_cluster(self)
+        super().delete(libcluster.del_cluster)
 
     # -------
 

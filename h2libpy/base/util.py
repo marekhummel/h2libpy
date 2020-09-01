@@ -1,4 +1,4 @@
-from ctypes import c_bool, c_double, c_int, pointer
+from ctypes import addressof, c_bool, c_double, c_int, c_void_p, cast, pointer
 from typing import Any, List, Tuple
 
 
@@ -41,17 +41,28 @@ def to_enum(obj, enum) -> Any:
     return None
 
 
-def get_address(obj, ctype=None) -> Any:
+def to_voidp(obj):
+    ''' Casts object to void* '''
+    return cast(obj, c_void_p)
+
+
+def get_address(pyobj, ctype=None) -> Any:
     ''' Returns memory location of given object.
         Needs to be converted to a c type first, provide if it can't be
         inferred.
     '''
     if ctype is None:
-        if isinstance(obj, float):
-            return pointer(c_double(obj))
-        elif isinstance(obj, int):
-            return pointer(c_int(obj))
-        elif isinstance(obj, bool):
-            return pointer(c_bool(obj))
+        if isinstance(pyobj, float):
+            return pointer(c_double(pyobj))
+        elif isinstance(pyobj, int):
+            return pointer(c_int(pyobj))
+        elif isinstance(pyobj, bool):
+            return pointer(c_bool(pyobj))
     else:
-        return pointer(ctype(obj))
+        return pointer(ctype(pyobj))
+
+
+def ptr_address(cptr) -> Any:
+    ''' Dedicated address getter since this is awfully complicated
+        in ctypes. Returns adress of pointer '''
+    return addressof(deref(cptr))

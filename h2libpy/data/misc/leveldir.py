@@ -28,7 +28,7 @@ class LevelDir(StructWrapper, cstruct=libdcluster.CStructLevelDir):
     # ***** Methods ******
 
     def delete(self) -> None:
-        libdcluster.del_leveldir(self)
+        super().delete(libdcluster.del_leveldir)
 
     def find_direction(self, l: int, alpha: float, d: List[float]) -> int:
         cd = pylist_to_ptr(d, real)

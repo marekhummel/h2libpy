@@ -144,4 +144,4 @@ class Surface3d(StructWrapper, cstruct=libsurface3d.CStructSurface3d):
         return try_wrap(obj, Surface3d)
 
     def delete(self) -> None:
-        libsurface3d.del_surface3d(self)
+        super().delete(libsurface3d.del_surface3d)

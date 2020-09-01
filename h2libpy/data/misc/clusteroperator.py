@@ -111,4 +111,4 @@ class ClusterOperator(StructWrapper,
 
     def delete(self) -> None:
         self.cobj().refs -= 1
-        libclusteroperator.del_clusteroperator(self)
+        super().delete(libclusteroperator.del_clusteroperator)

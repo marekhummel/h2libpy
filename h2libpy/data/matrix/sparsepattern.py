@@ -37,4 +37,4 @@ class SparsePattern(StructWrapper,
         libsparsepattern.print_sparsepattern(self)
 
     def delete(self) -> None:
-        libsparsepattern.del_sparsepattern(self)
+        super().delete(libsparsepattern.del_sparsepattern)

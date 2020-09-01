@@ -150,4 +150,4 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
 
     def delete(self) -> None:
         self.cobj().refs -= 1
-        libclusterbasis.del_clusterbasis(self)
+        super().delete(libclusterbasis.del_clusterbasis)

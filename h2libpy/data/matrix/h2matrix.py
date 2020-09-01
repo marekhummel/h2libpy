@@ -141,7 +141,7 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
 
     def delete(self) -> None:
         self.cobj().refs -= 1
-        libh2matrix.del_h2matrix(self)
+        super().delete(libh2matrix.del_h2matrix)
 
     # ***** Operators *****
 

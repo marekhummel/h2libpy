@@ -86,7 +86,7 @@ class DBlock(StructWrapper, cstruct=libdblock.CStructDBlock):
         return [try_wrap(cs, DBlock) for cs in lst]
 
     def delete(self) -> None:
-        libdblock.del_dblock(self)
+        super().delete(libdblock.del_dblock)
 
     # ***** Operators *****
 

@@ -145,4 +145,4 @@ class HMatrix(StructWrapper, cstruct=libhmatrix.CStructHMatrix):
 
     def delete(self) -> None:
         self.cobj().refs -= 1
-        libhmatrix.del_hmatrix(self)
+        super().delete(libhmatrix.del_hmatrix)

@@ -62,4 +62,4 @@ class SingQuad2d(StructWrapper, cstruct=libsingquad2d.CStructSingQuad2d):
     # ***** Methods ******
 
     def delete(self) -> None:
-        libsingquad2d.del_singquad2d(self)
+        super().delete(libsingquad2d.del_singquad2d)

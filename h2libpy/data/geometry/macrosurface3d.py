@@ -76,4 +76,4 @@ class MacroSurface3d(StructWrapper,
     # ***** Methods *****
 
     def delete(self) -> None:
-        libmacrosurface3d.del_macrosurface3d(self)
+        super().delete(libmacrosurface3d.del_macrosurface3d)

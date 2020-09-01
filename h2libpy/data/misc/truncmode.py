@@ -53,4 +53,4 @@ class TruncMode(StructWrapper, cstruct=libtruncation.CStructTruncMode):
         return libtruncation.findrank_truncmode(self, eps, sigma)
 
     def delete(self) -> None:
-        libtruncation.del_truncmode(self)
+        super().delete(libtruncation.del_truncmode)

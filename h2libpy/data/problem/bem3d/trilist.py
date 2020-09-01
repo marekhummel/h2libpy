@@ -30,4 +30,4 @@ class TriList(StructWrapper, cstruct=libbem3d.CStructTriList):
     # ***** Methods ******
 
     def delete(self) -> None:
-        libbem3d.del_tri_list(self)
+        super().delete(libbem3d.del_tri_list)

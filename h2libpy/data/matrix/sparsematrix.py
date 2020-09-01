@@ -79,7 +79,7 @@ class SparseMatrix(StructWrapper, cstruct=libsparsematrix.CStructSparseMatrix):
         return libsparsematrix.norm2diff_sparsematrix(self, other)
 
     def delete(self) -> None:
-        libsparsematrix.del_sparsematrix(self)
+        super().delete(libsparsematrix.del_sparsematrix)
 
     # -------
 

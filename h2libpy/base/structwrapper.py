@@ -1,11 +1,13 @@
-from ctypes import POINTER, cast, c_void_p
-from typing import Any, Callable, List
+from collections import defaultdict
+from ctypes import POINTER
+from typing import Any, Callable, Dict, List
 
-from h2libpy.base.util import deref
+from h2libpy.base.util import deref, ptr_address, to_voidp
 
 
 class StructWrapper():
     __init__: Callable[[Any, List[Any]], None]
+    _objs: Dict[Any, int] = defaultdict(lambda: 0)
 
     def __init_subclass__(cls, *, cstruct):
         ''' Sets default constructor for all struct wrappers.
@@ -15,10 +17,15 @@ class StructWrapper():
             assert isinstance(cobj, POINTER(cstruct))
             self._as_parameter_ = cobj
             self._refs = refs
+            StructWrapper._objs[ptr_address(cobj)] += 1
             old_init(self)
+
+        def _new_del(self):
+            StructWrapper._objs[ptr_address(self._as_parameter_)] -= 1
 
         old_init = cls.__init__
         cls.__init__ = _new_init
+        cls.__del__ = _new_del
         # if hasattr(cls, 'delete'): cls.__del__ = cls.delete
         return super().__init_subclass__()
 
@@ -55,10 +62,16 @@ class StructWrapper():
 
     def as_voidp(self):
         ''' Casts wrapped c object to void* '''
-        return cast(self.cobj(), c_void_p)
+        return to_voidp(self.cobj())
 
     def avail_fields(self) -> List[str]:
         ''' Lists all available fields in c struct '''
         fields = self._as_parameter_.contents._fields_
         members = [name for (name, ctype) in fields]
         return members
+
+    def delete(self, del_func):
+        ''' Generic delete function. Only deletes if no other wrapper
+            to the same c objects exist '''
+        if StructWrapper._objs[ptr_address(self._as_parameter_)] == 1:
+            del_func(self)
