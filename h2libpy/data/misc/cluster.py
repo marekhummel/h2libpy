@@ -147,3 +147,11 @@ class Cluster(StructWrapper, cstruct=libcluster.CStructCluster):
 
     def update_bbox(self) -> None:
         libclustergeometry.update_bbox_cluster(self)
+
+    # ***** Operators *****
+
+    def __len__(self):
+        return self.desc
+
+    def __getitem__(self, index):
+        return self.enumerate()[index]

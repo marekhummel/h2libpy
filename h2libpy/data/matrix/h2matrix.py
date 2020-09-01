@@ -138,3 +138,11 @@ class H2Matrix(StructWrapper, cstruct=libh2matrix.CStructH2Matrix):
 
     def delete(self) -> None:
         libh2matrix.del_h2matrix(self)
+
+    # ***** Operators *****
+
+    def __len__(self):
+        return self.desc
+
+    def __getitem__(self, index):
+        return self.enumerate()[index]

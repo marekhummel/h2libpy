@@ -133,3 +133,11 @@ class Block(StructWrapper, cstruct=libblock.CStructBlock):
 
     def delete(self) -> None:
         libblock.del_block(self)
+
+    # ***** Operators *****
+
+    def __len__(self):
+        return self.desc
+
+    def __getitem__(self, index):
+        return self.enumerate()[index]
