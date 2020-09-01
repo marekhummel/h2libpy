@@ -22,6 +22,9 @@ class ClusterOperator(StructWrapper,
 
     # ***** Constructors *****
 
+    def __init__(self):
+        self.cobj().refs += 1
+
     @classmethod
     def new(cls, t: 'misc.Cluster', *, leaf: bool = False) \
             -> 'ClusterOperator':
@@ -107,4 +110,5 @@ class ClusterOperator(StructWrapper,
         libclusteroperator.basisproduct_clusteroperator(cb1, cb2, self)
 
     def delete(self) -> None:
+        self.cobj().refs -= 1
         libclusteroperator.del_clusteroperator(self)

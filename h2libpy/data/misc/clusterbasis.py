@@ -25,6 +25,9 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
 
     # ***** Constructors *****
 
+    def __init__(self):
+        self.cobj().refs += 1
+
     @classmethod
     def new(cls, t: 'misc.Cluster', *, leaf: bool) -> 'ClusterBasis':
         if leaf:
@@ -146,4 +149,5 @@ class ClusterBasis(StructWrapper, cstruct=libclusterbasis.CStructClusterBasis):
         return try_wrap(obj, mat.AMatrix)
 
     def delete(self) -> None:
+        self.cobj().refs -= 1
         libclusterbasis.del_clusterbasis(self)
