@@ -249,8 +249,6 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         return -1 * self
 
     def __getitem__(self, index) -> List[float]:
-        if index not in range(self.cols):
-            raise ValueError('Index out of range.')
         return self.a[index]
 
     def __eq__(self, other) -> bool:
@@ -259,7 +257,7 @@ class AMatrix(StructWrapper, cstruct=libamatrix.CStructAMatrix):
         return self.a == other.a
 
     def __len__(self) -> int:
-        return self.cols * self.rows
+        return self.cols
 
     def __iadd__(self, rhs: Union['AMatrix', 'mat.SparseMatrix']) -> 'AMatrix':
         verify_type(rhs, [AMatrix, mat.SparseMatrix])
