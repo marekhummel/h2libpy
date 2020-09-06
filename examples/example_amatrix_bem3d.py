@@ -1,6 +1,6 @@
 import time
 
-import init  # noqa
+# import init  # noqa
 import h2libpy.solver.krylovsolvers as krylovsolvers
 from h2libpy.data.geometry import MacroSurface3d, Surface3d
 from h2libpy.data.matrix import AMatrix
@@ -11,10 +11,10 @@ from h2libpy.lib.laplacebem3d import (eval_dirichlet_fundamental_laplacebem3d,
 from h2libpy.lib.util.helper import uninit
 
 
-def main():
+def main(qreg=2, split=8):
     # Basic params
     tt = time.time()
-    q_reg = 2
+    q_reg = qreg  # 2
     q_sing = q_reg + 2
     basis = BasisFunction.Constant
     eps_solve = 1.0E-10
@@ -23,7 +23,7 @@ def main():
 
     # Geometry
     mg = MacroSurface3d.new_sphere()
-    gr = Surface3d.from_macrosurface3d(mg, 8)
+    gr = Surface3d.from_macrosurface3d(mg, split)
     print(f'Created geometry with {gr.vertices} vertices, {gr.edges} edges and {gr.triangles} triangles')
 
 
@@ -113,6 +113,7 @@ def main():
     uninit()
 
     print(f'TOTAL TIME: {time.time() - tt:.5f} s')
+    return norm
 
 
 if __name__ == '__main__':
