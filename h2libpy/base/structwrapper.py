@@ -70,8 +70,10 @@ class StructWrapper():
         members = [name for (name, ctype) in fields]
         return members
 
-    def delete(self, del_func):
+    def delete(self, del_func) -> None:
         ''' Generic delete function. Only deletes if no other wrapper
             to the same c objects exist '''
-        if StructWrapper._objs[ptr_address(self._as_parameter_)] == 1:
-            del_func(self)
+        if del_func:
+            if StructWrapper._objs[ptr_address(self._as_parameter_)] == 1:
+                del_func(self)
+            self.__del__()

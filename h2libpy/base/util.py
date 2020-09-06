@@ -22,9 +22,9 @@ def pylist_to_ptr(lst: List[Any], ctype) -> Any:
     return (ctype * len(lst))(*lst)
 
 
-def try_wrap(obj, wrapperclass) -> Any:
+def try_wrap(cobj, wrapperclass) -> Any:
     ''' Trys to wrap C object in corresponding wrapper class '''
-    return wrapperclass(obj) if obj else None
+    return wrapperclass(cobj) if cobj else None
 
 
 def verify_type(obj, types) -> None:
