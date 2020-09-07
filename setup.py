@@ -5,7 +5,7 @@ with open('README.md', mode='r') as f:
     long_description = f.read()
 
 setup(name='h2libpy',
-      version='0.2',
+      version='1.0',
       description='Python interface for the h2lib library',
       long_description=long_description,
       long_description_content_type="text/markdown",
