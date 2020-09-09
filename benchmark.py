@@ -18,14 +18,14 @@ class HiddenPrints:
         sys.stdout.close()
         sys.stdout = self._original_stdout
 
-# funcs = {'amatrix': exa.main, 'hmatrix': exh.main, 'h2matrix': exht.main}
-funcs = {'hmatrix': exh.main}
+funcs = {'amatrix': exa.main, 'hmatrix': exh.main, 'h2matrix': exht.main}
+# funcs = {'hmatrix': exh.main}
 reps = 5
 
 with open('benchmark.txt', 'w') as f:
     for func in funcs.items():
-        for split in [8]:
-            for qreg in [2]:
+        for split in [32]:
+            for qreg in [4]:
                 print(f'{func[0]}: {split},{qreg}')
                 start = time.time()
                 for i in range(reps):
@@ -33,7 +33,4 @@ with open('benchmark.txt', 'w') as f:
                     with HiddenPrints():
                         norm = func[1](qreg, split)          
                 t = (time.time() - start) / reps
-                f.write(f'{func[0].ljust(8)}: {split:-2d},{qreg} = {t:9.5f}s ({norm})\n')
-                f.flush()
-        
-        f.write('\n')
+                print(f'{func[0].ljust(8)}: {split:-2d},{qreg} = {t:9.5f}s ({norm})')
